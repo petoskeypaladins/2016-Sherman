@@ -2,7 +2,6 @@ package org.usfirst.frc.team3618.robot;
 
 import org.usfirst.frc.team3618.robot.commands.*;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -16,8 +15,7 @@ public class OI {
 	public Joystick shootJoystick = new Joystick(0);
 	public Joystick driveJoystick = new Joystick(1);
 	
-	public DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
-	public DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
+	
 	
 	public Button shootButton;
 	public Button readyButton;
@@ -45,14 +43,6 @@ public class OI {
 		
 		holdBallButton = new JoystickButton(shootJoystick, 5);
 		holdBallButton.whenPressed(new HoldBallCommand());
-		
-		if (backSensor.get()) {
-			new HoldBallCommand();
-		}
-		
-		if (frontSensor.get()) {
-			new IntakeStartCommand();
-		}
 	}
 	
 }

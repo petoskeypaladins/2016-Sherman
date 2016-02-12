@@ -41,7 +41,6 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         chooser = new SendableChooser();
         SmartDashboard.putData("Auto mode", chooser);
-        new SensorListener();
     }
 	
 	/**
