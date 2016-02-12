@@ -21,6 +21,8 @@ public class SensorListener extends Command {
     protected void initialize() {
     	frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
     	backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
+    	System.out.println("initailized sensors");
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -29,6 +29,7 @@ public class Robot extends IterativeRobot {
 	public static ShooterRotate shooterRotate = new ShooterRotate();
 	public static ShooterTilt shooterTilt = new ShooterTilt();
 	public static ShooterWheels shooterWheels = new ShooterWheels();
+	public static ArmLift armLift = new ArmLift();
 
     Command autonomousCommand;
     SendableChooser chooser;
@@ -41,6 +42,8 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         chooser = new SendableChooser();
         SmartDashboard.putData("Auto mode", chooser);
+        System.out.println("Robot on.");
+        Command sensorListener = (Command) new SensorListener();
     }
 	
 	/**

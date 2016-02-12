@@ -16,7 +16,6 @@ public class OI {
 	public Joystick driveJoystick = new Joystick(1);
 	
 	
-	
 	public Button shootButton;
 	public Button readyButton;
 	public Button unReadyButton;
@@ -43,6 +42,8 @@ public class OI {
 		
 		holdBallButton = new JoystickButton(shootJoystick, 5);
 		holdBallButton.whenPressed(new HoldBallCommand());
+		
+		
 	}
 	
 }
