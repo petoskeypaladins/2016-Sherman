@@ -2,6 +2,7 @@
 package org.usfirst.frc.team3618.robot;
 
 import org.usfirst.frc.team3618.robot.subsystems.Drive;
+import org.usfirst.frc.team3618.robot.commands.SensorListener;
 import org.usfirst.frc.team3618.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -40,6 +41,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         chooser = new SendableChooser();
         SmartDashboard.putData("Auto mode", chooser);
+        new SensorListener();
     }
 	
 	/**
@@ -87,6 +89,8 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        
+        
     }
 
     /**

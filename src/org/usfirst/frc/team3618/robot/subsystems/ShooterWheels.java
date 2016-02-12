@@ -19,12 +19,18 @@ public class ShooterWheels extends Subsystem {
 	Servo leftBallServo = new Servo(RobotMap.LEFT_BALL_SERVO);
 	Servo rightBallServo = new Servo(RobotMap.RIGHT_BALL_SERVO);
 	
-	private final double FULLSPEED = 1.0;
+	private double fullSpeed = 1.0;
 	private final double OFF = 0;
+	
 	private final double LEFT_SHOOT_POSITION = 0;
-	private final double LEFT_OPEN_POSITION = 360;
-	private final double RIGHT_SHOOT_POSITION = 360;
-	private final double RIGHT_OPEN_POSITION = 0;
+	private final double LEFT_OPEN_POSITION = 90;
+	
+	private final double LEFT_HOLD_POSITION = 135;
+	
+	private final double RIGHT_SHOOT_POSITION = 180;
+	private final double RIGHT_OPEN_POSITION = 90;
+	
+	private final double RIGHT_HOLD_POSITION = 45;
 
 	public ShooterWheels() {
 		rightShootWheel.setInverted(true);
@@ -45,10 +51,10 @@ public class ShooterWheels extends Subsystem {
 //    		}
 //    	}
     	
+    	fullSpeed = output;
+    	
     	wheelSpeed(output);
     	
-    	leftBallServo.setAngle(LEFT_OPEN_POSITION);
-		rightBallServo.setAngle(RIGHT_OPEN_POSITION);
     }
     
     public void wheelSpeed(double output) {
@@ -57,11 +63,12 @@ public class ShooterWheels extends Subsystem {
     }
     
     public boolean testReady() {
-    	return (leftShootWheel.get() == FULLSPEED && rightShootWheel.get() == FULLSPEED);
+    	return (leftShootWheel.get() == fullSpeed && rightShootWheel.get() == fullSpeed);
     }
     
     public void shoot() {
-    	leftBallServo.set(LEFT_SHOOT_POSITION);
+    	
+		leftBallServo.set(LEFT_SHOOT_POSITION);
     	rightBallServo.set(RIGHT_SHOOT_POSITION);
     	DriverStation.reportError("Triggered. \n", false);
     	
@@ -82,13 +89,17 @@ public class ShooterWheels extends Subsystem {
     }
     
     public void stopIntake() {
-    	wheelSpeed(0);
+    	wheelSpeed(OFF);
     }
     
     public void reverseWheels() {
     	leftShootWheel.setInverted(!leftShootWheel.getInverted());
     	rightShootWheel.setInverted(!rightShootWheel.getInverted());
-    	
+    }
+    
+    public void holdBall() {
+    	leftBallServo.setAngle(LEFT_HOLD_POSITION);
+    	rightBallServo.setAngle(RIGHT_HOLD_POSITION);
     }
 }
 
