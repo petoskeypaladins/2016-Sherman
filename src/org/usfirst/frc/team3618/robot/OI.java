@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3618.robot;
 
+import org.usfirst.frc.team3618.robot.commands.IntakeCommand;
 import org.usfirst.frc.team3618.robot.commands.ReadyCommand;
 import org.usfirst.frc.team3618.robot.commands.ShootCommand;
 
@@ -18,6 +19,7 @@ public class OI {
 	
 	public Button shootButton;
 	public Button readyButton;
+	public Button startIntakeButton;
 	
 	public OI() {
 		
@@ -26,6 +28,9 @@ public class OI {
 		
 		readyButton = new JoystickButton(shootJoystick, 2);
 		readyButton.whenPressed(new ReadyCommand());
+		
+		startIntakeButton = new JoystickButton(shootJoystick, 3);
+		readyButton.whenPressed(new IntakeCommand());
 	}
 	
 }
