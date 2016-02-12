@@ -23,10 +23,8 @@ public class ShooterWheels extends Subsystem {
 	private final double OFF = 0;
 	private final double LEFT_SHOOT_POSITION = 0;
 	private final double LEFT_OPEN_POSITION = 360;
-	private final double LEFT_HOLD_POSITION = 90;
 	private final double RIGHT_SHOOT_POSITION = 360;
 	private final double RIGHT_OPEN_POSITION = 0;
-	private final double RIGHT_HOLD_POSITION = 90;
 
 	public ShooterWheels() {
 		rightShootWheel.setInverted(true);
@@ -81,8 +79,6 @@ public class ShooterWheels extends Subsystem {
     	wheelSpeed(output);
     	reverseWheels();
     	//fix this later, just tests the angle right now
-    	leftBallServo.setAngle(LEFT_HOLD_POSITION);
-		rightBallServo.setAngle(RIGHT_HOLD_POSITION);
     }
     
     public void stopIntake() {

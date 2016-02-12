@@ -1,9 +1,6 @@
 package org.usfirst.frc.team3618.robot;
 
-import org.usfirst.frc.team3618.robot.commands.IntakeCommand;
-import org.usfirst.frc.team3618.robot.commands.ReadyCommand;
-import org.usfirst.frc.team3618.robot.commands.ShootCommand;
-
+import org.usfirst.frc.team3618.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -14,11 +11,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	
-	public Joystick driveJoystick = new Joystick(1);
 	public Joystick shootJoystick = new Joystick(0);
+	public Joystick driveJoystick = new Joystick(1);
 	
 	public Button shootButton;
 	public Button readyButton;
+	public Button unReadyButton;
 	public Button startIntakeButton;
 	public Button stopIntakeButton;
 	
@@ -30,11 +28,16 @@ public class OI {
 		readyButton = new JoystickButton(shootJoystick, 2);
 		readyButton.whenPressed(new ReadyCommand());
 		
+		unReadyButton = new JoystickButton(shootJoystick, 6);
+		unReadyButton.whenPressed(new UnReadyCommand());
+		
 		startIntakeButton = new JoystickButton(shootJoystick, 3);
-		startIntakeButton.whenPressed(new IntakeCommand(true));
+		startIntakeButton.whenPressed(new IntakeStartCommand());
 		
 		stopIntakeButton = new JoystickButton(shootJoystick, 4);
-		stopIntakeButton.whenPressed(new IntakeCommand(false));
+		stopIntakeButton.whenPressed(new IntakeStopCommand());
+		
+		
 	}
 	
 }

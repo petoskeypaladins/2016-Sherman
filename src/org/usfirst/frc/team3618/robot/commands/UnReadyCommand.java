@@ -7,18 +7,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ReadyCommand extends Command {
-	
-	
-    public ReadyCommand() {
-        requires(Robot.shooterWheels);
+public class UnReadyCommand extends Command {
+
+    public UnReadyCommand() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	requires(Robot.shooterWheels);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	double speed = 1 - (Robot.oi.shootJoystick.getThrottle() * .5);
-    	System.out.println("SHOOTER READY");
-    	Robot.shooterWheels.readyShoot(speed);
+    	Robot.shooterWheels.wheelSpeed(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -38,6 +37,4 @@ public class ReadyCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
-    
-    
 }
