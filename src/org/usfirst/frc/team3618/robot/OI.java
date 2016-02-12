@@ -20,6 +20,7 @@ public class OI {
 	public Button shootButton;
 	public Button readyButton;
 	public Button startIntakeButton;
+	public Button stopIntakeButton;
 	
 	public OI() {
 		
@@ -30,7 +31,10 @@ public class OI {
 		readyButton.whenPressed(new ReadyCommand());
 		
 		startIntakeButton = new JoystickButton(shootJoystick, 3);
-		readyButton.whenPressed(new IntakeCommand());
+		startIntakeButton.whenPressed(new IntakeCommand(true));
+		
+		stopIntakeButton = new JoystickButton(shootJoystick, 4);
+		stopIntakeButton.whenPressed(new IntakeCommand(false));
 	}
 	
 }

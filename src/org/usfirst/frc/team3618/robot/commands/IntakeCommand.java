@@ -1,24 +1,31 @@
 package org.usfirst.frc.team3618.robot.commands;
 
+import org.usfirst.frc.team3618.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class IntakeCommand extends Command {
-
-    public IntakeCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+	
+	
+    public IntakeCommand(boolean start) {
+        requires(Robot.shooterWheels);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	final double INTAKE_SPEED = .25;
+    	
+    	SmartDashboard.putString(null, "INPUT MODE");
     	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -28,6 +35,7 @@ public class IntakeCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	
     }
 
     // Called when another command which requires one or more of the same

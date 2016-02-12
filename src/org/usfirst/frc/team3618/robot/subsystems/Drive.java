@@ -28,7 +28,8 @@ public class Drive extends Subsystem {
 
 
 	public Drive() {
-		
+		leftRearMotor.setInverted(true);
+		rightRearMotor.setInverted(true);
 	}
 	
 	    public void initDefaultCommand() {

@@ -18,9 +18,9 @@ public class DriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double left = Robot.oi.driveJoystick.getRawAxis(2);
+    	double left = Robot.oi.driveJoystick.getRawAxis(1);
     	double right = Robot.oi.driveJoystick.getRawAxis(5);
-    	double limit = 0.1;
+    	double limit = 1.0;
     	
     	Robot.drive.DriveMe(left*limit, right*limit);
     	

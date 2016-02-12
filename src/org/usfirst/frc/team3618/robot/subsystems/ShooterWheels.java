@@ -1,13 +1,13 @@
 package org.usfirst.frc.team3618.robot.subsystems;
 
 import org.usfirst.frc.team3618.robot.RobotMap;
-import org.usfirst.frc.team3618.robot.commands.ReadyCommand;
 import org.usfirst.frc.team3618.robot.commands.ShootCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -29,14 +29,26 @@ public class ShooterWheels extends Subsystem {
 	private final double RIGHT_HOLD_POSITION = 90;
 
 	public ShooterWheels() {
-		leftShootWheel.setInverted(true);
+		rightShootWheel.setInverted(true);
 	}
 	
     public void initDefaultCommand() {
         setDefaultCommand(new ShootCommand());
     }
     
-    public void readyShoot() {
+    public void readyShoot(double output) {
+//    	while (leftShootWheel.get() < output && rightShootWheel.get() < output) {
+//    		if (leftShootWheel.get() < output - .2 && rightShootWheel.get() < output - .2) {
+//    			leftShootWheel.set(leftShootWheel.get() + .2);
+//    	    	rightShootWheel.set(rightShootWheel.get() + .2);
+//    		} else {
+//    			leftShootWheel.set(output);
+//    	    	rightShootWheel.set(output);
+//    		}
+//    	}
+    	
+    	wheelSpeed(output);
+    	
     	leftBallServo.setAngle(LEFT_OPEN_POSITION);
 		rightBallServo.setAngle(RIGHT_OPEN_POSITION);
     }
@@ -58,8 +70,8 @@ public class ShooterWheels extends Subsystem {
     }
     
     public void stopShoot() {
-    	leftShootWheel.set(OFF);
-    	rightShootWheel.set(OFF);
+    	SmartDashboard.putString(null, "Wheels Stopping");
+    	wheelSpeed(OFF);
     	leftBallServo.setAngle(LEFT_OPEN_POSITION);
 		rightBallServo.setAngle(RIGHT_OPEN_POSITION);
     }
@@ -71,6 +83,10 @@ public class ShooterWheels extends Subsystem {
     	//fix this later, just tests the angle right now
     	leftBallServo.setAngle(LEFT_HOLD_POSITION);
 		rightBallServo.setAngle(RIGHT_HOLD_POSITION);
+    }
+    
+    public void stopIntake() {
+    	wheelSpeed(0);
     }
     
     public void reverseWheels() {
