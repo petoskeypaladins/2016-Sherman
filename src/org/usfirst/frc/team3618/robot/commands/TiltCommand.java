@@ -9,19 +9,25 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class TiltCommand extends Command {
 
+	
+	
     public TiltCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooter);
+    	requires(Robot.shooterTilt);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.tilt();
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	double tilt = Robot.oi.shootJoystick.getY();
+    	double limit = 0.5;
+    	
+    	Robot.shooterTilt.tilt(tilt*limit);
     }
 
     // Make this return true when this Command no longer needs to run execute()

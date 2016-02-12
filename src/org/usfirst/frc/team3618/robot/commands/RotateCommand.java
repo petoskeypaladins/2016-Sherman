@@ -10,7 +10,7 @@ public class RotateCommand extends Command {
 
     public RotateCommand() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.shooter);
+        requires(Robot.shooterRotate);
     }
 
     // Called just before this Command runs the first time
@@ -22,7 +22,7 @@ public class RotateCommand extends Command {
     	double rotate = Robot.oi.shootJoystick.getZ();
     	double limit = 0.5;
     	
-    	Robot.shooter.rotate(rotate*limit);
+    	Robot.shooterRotate.rotate(rotate*limit);
     	
     }
 

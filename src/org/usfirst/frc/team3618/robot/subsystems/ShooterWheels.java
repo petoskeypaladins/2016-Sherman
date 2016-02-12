@@ -1,8 +1,7 @@
-
 package org.usfirst.frc.team3618.robot.subsystems;
 
 import org.usfirst.frc.team3618.robot.RobotMap;
-import org.usfirst.frc.team3618.robot.commands.RotateCommand;
+import org.usfirst.frc.team3618.robot.commands.ShootCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -12,8 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class Shooter extends Subsystem {
-    CANTalon rotateMotor = new CANTalon(RobotMap.ROTATE_SHOOTER_MOTOR);
+public class ShooterWheels extends Subsystem {
 	CANTalon leftShootWheel = new CANTalon(RobotMap.LEFT_SHOOT_WHEEL_MOTOR);
 	CANTalon rightShootWheel = new CANTalon(RobotMap.RIGHT_SHOOT_WHEEL_MOTOR);
 	
@@ -26,20 +24,9 @@ public class Shooter extends Subsystem {
 	private final double LEFT_OPEN_POSITION = 360;
 	private final double RIGHT_SHOOT_POSITION = 360;
 	private final double RIGHT_OPEN_POSITION = 0;
-    
-	public Shooter() {
-		rightShootWheel.setInverted(true);
-		
-	}
-	
+
     public void initDefaultCommand() {
-    	setDefaultCommand(new RotateCommand());
-    	
-    }
-    
-    
-    public void rotate(double output) {
-    	rotateMotor.set(output);
+        setDefaultCommand(new ShootCommand());
     }
     
     public void readyShoot() {
@@ -65,10 +52,6 @@ public class Shooter extends Subsystem {
     	rightShootWheel.set(OFF);
     	leftBallServo.setAngle(LEFT_OPEN_POSITION);
 		rightBallServo.setAngle(RIGHT_OPEN_POSITION);
-    }
-    
-    public void tilt() {
-    	
     }
 }
 

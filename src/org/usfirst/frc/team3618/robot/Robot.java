@@ -2,7 +2,7 @@
 package org.usfirst.frc.team3618.robot;
 
 import org.usfirst.frc.team3618.robot.subsystems.Drive;
-import org.usfirst.frc.team3618.robot.subsystems.Shooter;
+import org.usfirst.frc.team3618.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -25,7 +25,9 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	
-	public static Shooter shooter = new Shooter();
+	public static ShooterRotate shooterRotate = new ShooterRotate();
+	public static ShooterTilt shooterTilt = new ShooterTilt();
+	public static ShooterWheels shooterWheels = new ShooterWheels();
 
     Command autonomousCommand;
     SendableChooser chooser;

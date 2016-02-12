@@ -14,19 +14,19 @@ public class ShootCommand extends Command {
     public ShootCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooter);
+    	requires(Robot.shooterWheels);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.shoot();
+    	Robot.shooterWheels.shoot();
     	try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	Robot.shooter.stopShoot();
+    	Robot.shooterWheels.stopShoot();
     }
 
     // Called repeatedly when this Command is scheduled to run

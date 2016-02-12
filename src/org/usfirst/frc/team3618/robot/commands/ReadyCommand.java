@@ -12,12 +12,12 @@ public class ReadyCommand extends Command {
     public ReadyCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooter);
+    	requires(Robot.shooterWheels);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.readyShoot();
+    	Robot.shooterWheels.readyShoot();
     }
 
     // Called repeatedly when this Command is scheduled to run
