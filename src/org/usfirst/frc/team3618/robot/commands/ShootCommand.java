@@ -15,23 +15,21 @@ public class ShootCommand extends Command {
     public ShootCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooterWheels);
+    	requires(Robot.shooterServos);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	SmartDashboard.putString(null, "#TRIGGERED");
     	
-    	Robot.shooterWheels.shoot();
+    	Robot.shooterServos.shoot();
     	try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	Robot.shooterWheels.stopShoot();
-    	
-    	new SensorListener();
+    	Robot.shooterServos.stopShoot();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -40,7 +38,7 @@ public class ShootCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

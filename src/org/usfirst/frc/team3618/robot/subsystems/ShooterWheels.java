@@ -16,21 +16,12 @@ public class ShooterWheels extends Subsystem {
 	CANTalon leftShootWheel = new CANTalon(RobotMap.LEFT_SHOOT_WHEEL_MOTOR);
 	CANTalon rightShootWheel = new CANTalon(RobotMap.RIGHT_SHOOT_WHEEL_MOTOR);
 	
-	Servo leftBallServo = new Servo(RobotMap.LEFT_BALL_SERVO);
-	Servo rightBallServo = new Servo(RobotMap.RIGHT_BALL_SERVO);
+	
 	
 	private double fullSpeed = 1.0;
 	private final double OFF = 0;
 	
-	private final double LEFT_SHOOT_POSITION = 0;
-	private final double LEFT_OPEN_POSITION = 90;
 	
-	private final double LEFT_HOLD_POSITION = 135;
-	
-	private final double RIGHT_SHOOT_POSITION = 180;
-	private final double RIGHT_OPEN_POSITION = 90;
-	
-	private final double RIGHT_HOLD_POSITION = 45;
 
 	public ShooterWheels() {
 		rightShootWheel.setInverted(true);
@@ -64,22 +55,7 @@ public class ShooterWheels extends Subsystem {
     public boolean testReady() {
     	return (leftShootWheel.get() == fullSpeed && rightShootWheel.get() == fullSpeed);
     }
-    
-    public void shoot() {
-    	
-		leftBallServo.set(LEFT_SHOOT_POSITION);
-    	rightBallServo.set(RIGHT_SHOOT_POSITION);
-    	DriverStation.reportError("Triggered. \n", false);
-    	
-    }
-    
-    public void stopShoot() {
-    	SmartDashboard.putString(null, "Wheels Stopping");
-    	wheelSpeed(OFF);
-    	leftBallServo.setAngle(LEFT_OPEN_POSITION);
-		rightBallServo.setAngle(RIGHT_OPEN_POSITION);
-    }
-    
+        
     public void intake(double output) {
     	reverseWheels();
     	wheelSpeed(output);
@@ -96,15 +72,6 @@ public class ShooterWheels extends Subsystem {
     	rightShootWheel.setInverted(!rightShootWheel.getInverted());
     }
     
-    public void holdBall() {
-    	leftBallServo.setAngle(LEFT_HOLD_POSITION);
-    	rightBallServo.setAngle(RIGHT_HOLD_POSITION);
-    	System.out.println("the servos should have moved");
-    }
     
-    public void releaseBall() {
-    	leftBallServo.setAngle(LEFT_OPEN_POSITION);
-    	rightBallServo.setAngle(RIGHT_OPEN_POSITION);
-    }
 }
 

@@ -4,8 +4,8 @@ package org.usfirst.frc.team3618.robot;
 import org.usfirst.frc.team3618.robot.subsystems.Drive;
 import org.usfirst.frc.team3618.robot.commands.HoldBallCommand;
 import org.usfirst.frc.team3618.robot.commands.IntakeStartCommand;
+import org.usfirst.frc.team3618.robot.commands.IntakeStopCommand;
 import org.usfirst.frc.team3618.robot.commands.ReleaseBallCommand;
-import org.usfirst.frc.team3618.robot.commands.SensorListener;
 import org.usfirst.frc.team3618.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -34,6 +34,7 @@ public class Robot extends IterativeRobot {
 	public static ShooterTilt shooterTilt = new ShooterTilt();
 	public static ShooterWheels shooterWheels = new ShooterWheels();
 	public static ArmLift armLift = new ArmLift();
+	public static ShooterServos shooterServos = new ShooterServos();
 
 	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
@@ -53,7 +54,7 @@ public class Robot extends IterativeRobot {
         chooser = new SendableChooser();
         SmartDashboard.putData("Auto mode", chooser);
         System.out.println("Robot on.");
-        Command sensorListener = (Command) new SensorListener();
+
     }
 	
 	/**
@@ -120,18 +121,17 @@ public class Robot extends IterativeRobot {
         
         System.out.println(Boolean.toString(thisRunBackSensor));
         
-        if (thisRunBackSensor && !lastRunBackSensor) {
+        if (!thisRunBackSensor && lastRunBackSensor) {
+        	Scheduler.getInstance().add(new IntakeStopCommand());
 			Scheduler.getInstance().add(new HoldBallCommand());
 			System.out.println("Hold ball");
-		} else if (!thisRunBackSensor && lastRunBackSensor) {
+		} else if (thisRunBackSensor && !lastRunBackSensor) {
 			Scheduler.getInstance().add(new ReleaseBallCommand());
 		}
         
-        
-		
-//		if (thisRunFrontSensor && !lastRunFrontSensor) {
-//			Scheduler.getInstance().add(new IntakeStartCommand());
-//		}
+		if (!thisRunFrontSensor && lastRunFrontSensor) {
+			Scheduler.getInstance().add(new IntakeStartCommand());		
+		} 
 		
 		lastRunBackSensor = thisRunBackSensor;
 		lastRunFrontSensor = thisRunFrontSensor;
