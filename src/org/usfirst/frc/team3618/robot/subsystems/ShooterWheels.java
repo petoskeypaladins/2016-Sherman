@@ -37,7 +37,6 @@ public class ShooterWheels extends Subsystem {
 	}
 	
     public void initDefaultCommand() {
-        setDefaultCommand(new ShootCommand());
     }
     
     public void readyShoot(double output) {
@@ -100,6 +99,12 @@ public class ShooterWheels extends Subsystem {
     public void holdBall() {
     	leftBallServo.setAngle(LEFT_HOLD_POSITION);
     	rightBallServo.setAngle(RIGHT_HOLD_POSITION);
+    	System.out.println("the servos should have moved");
+    }
+    
+    public void releaseBall() {
+    	leftBallServo.setAngle(LEFT_OPEN_POSITION);
+    	rightBallServo.setAngle(RIGHT_OPEN_POSITION);
     }
 }
 

@@ -30,6 +30,8 @@ public class ShootCommand extends Command {
 			e.printStackTrace();
 		}
     	Robot.shooterWheels.stopShoot();
+    	
+    	new SensorListener();
     }
 
     // Called repeatedly when this Command is scheduled to run

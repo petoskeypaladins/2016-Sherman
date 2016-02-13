@@ -23,7 +23,7 @@ public class IntakeStartCommand extends Command {
     	double intakeSpeed = .31;
     	
     	System.out.println(Double.toString(intakeSpeed));
-    	Robot.shooterWheels.intake(intakeSpeed);    	
+    	Robot.shooterWheels.intake(intakeSpeed);
     }
 
     // Called repeatedly when this Command is scheduled to run

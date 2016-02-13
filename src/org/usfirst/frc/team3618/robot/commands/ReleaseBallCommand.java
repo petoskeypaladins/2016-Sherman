@@ -7,30 +7,27 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ArmLiftCommand extends Command {
+public class ReleaseBallCommand extends Command {
 
-    public ArmLiftCommand() {
+    public ReleaseBallCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.armLift);
+    	requires(Robot.shooterWheels);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.shooterWheels.releaseBall();
     	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double liftSpeed = Robot.oi.shootJoystick.getX();
-    	double limit = 0.5;
-    	
-    	Robot.armLift.armLift(liftSpeed*limit);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
