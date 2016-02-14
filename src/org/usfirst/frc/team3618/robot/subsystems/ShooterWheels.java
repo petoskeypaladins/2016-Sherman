@@ -1,13 +1,9 @@
 package org.usfirst.frc.team3618.robot.subsystems;
 
 import org.usfirst.frc.team3618.robot.RobotMap;
-import org.usfirst.frc.team3618.robot.commands.ShootCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *

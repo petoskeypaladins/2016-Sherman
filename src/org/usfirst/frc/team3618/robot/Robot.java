@@ -35,6 +35,7 @@ public class Robot extends IterativeRobot {
 	public static ShooterWheels shooterWheels = new ShooterWheels();
 	public static ArmLift armLift = new ArmLift();
 	public static ShooterServos shooterServos = new ShooterServos();
+	public static ArmRoller armRoller = new ArmRoller();
 
 	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);

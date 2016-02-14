@@ -23,6 +23,9 @@ public class OI {
 	public Button stopIntakeButton;
 	public Button holdBallButton;
 	
+	public Button rollerIn;
+	public Button rollerOut;
+	
 	public OI() {
 		
 		shootButton = new JoystickButton(shootJoystick, 1);
@@ -43,7 +46,8 @@ public class OI {
 		holdBallButton = new JoystickButton(shootJoystick, 5);
 		holdBallButton.whenPressed(new HoldBallCommand());
 		
-		
+//		rollerIn = new JoystickButton(driveJoystick, 5);
+//		rollerOut = new JoystickButton(driveJoystick, 6);
 		
 		
 	}
