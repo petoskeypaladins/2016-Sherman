@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ShooterServos extends Subsystem {
 	Servo leftBallServo = new Servo(RobotMap.LEFT_BALL_SERVO);
 	Servo rightBallServo = new Servo(RobotMap.RIGHT_BALL_SERVO);
+	Servo cameraArm = new Servo(RobotMap.CAMERA_ARM_SERVO);
 	
 	private final double LEFT_SHOOT_POSITION = 0;
 	private final double LEFT_OPEN_POSITION = 90;
@@ -25,6 +26,9 @@ public class ShooterServos extends Subsystem {
 	private final double RIGHT_OPEN_POSITION = 90;
 	
 	private final double RIGHT_HOLD_POSITION = 45;
+	
+	private final double CAMERA_UP = 66;
+	private final double CAMERA_DOWN = 0;
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -55,6 +59,14 @@ public void shoot() {
     public void releaseBall() {
     	leftBallServo.setAngle(LEFT_OPEN_POSITION);
     	rightBallServo.setAngle(RIGHT_OPEN_POSITION);
+    }
+    
+    public void cameraUp() {
+    	cameraArm.setAngle(CAMERA_UP);
+    }
+    
+    public void cameraDown() {
+    	cameraArm.setAngle(CAMERA_DOWN);
     }
 }
 

@@ -1,13 +1,21 @@
 
 package org.usfirst.frc.team3618.robot;
 
-import org.usfirst.frc.team3618.robot.subsystems.Drive;
 import org.usfirst.frc.team3618.robot.commands.HoldBallCommand;
 import org.usfirst.frc.team3618.robot.commands.IntakeStartCommand;
 import org.usfirst.frc.team3618.robot.commands.IntakeStopCommand;
 import org.usfirst.frc.team3618.robot.commands.ReleaseBallCommand;
-import org.usfirst.frc.team3618.robot.subsystems.*;
+import org.usfirst.frc.team3618.robot.subsystems.ArmLift;
+import org.usfirst.frc.team3618.robot.subsystems.ArmRoller;
+import org.usfirst.frc.team3618.robot.subsystems.Drive;
+import org.usfirst.frc.team3618.robot.subsystems.ShooterRotate;
+import org.usfirst.frc.team3618.robot.subsystems.ShooterServos;
+import org.usfirst.frc.team3618.robot.subsystems.ShooterTilt;
+import org.usfirst.frc.team3618.robot.subsystems.ShooterWheels;
 
+import com.ni.vision.NIVision.Image;
+
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,6 +23,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.USBCamera;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -43,6 +52,9 @@ public class Robot extends IterativeRobot {
 	private boolean lastRunBackSensor = false; 
     private boolean lastRunFrontSensor = false;
 	
+    CameraServer camServer;
+    USBCamera lifecam;
+    
     Command autonomousCommand;
     SendableChooser chooser;
 
@@ -56,6 +68,8 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Auto mode", chooser);
         System.out.println("Robot on.");
 
+        camServer = CameraServer.getInstance();
+        lifecam = new USBCamera("cam0");
     }
 	
 	/**
@@ -106,11 +120,20 @@ public class Robot extends IterativeRobot {
         
         lastRunBackSensor = false; 
         lastRunFrontSensor = false;
+        
+        lifecam.setFPS(30);
+        lifecam.openCamera();
+        camServer.startAutomaticCapture(lifecam);
     }
 
+    
+    
     /**
      * This function is called periodically during operator control
      */
+    
+    Image frame;
+    
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
@@ -120,7 +143,7 @@ public class Robot extends IterativeRobot {
         boolean thisRunBackSensor = backSensor.get();
         boolean thisRunFrontSensor = frontSensor.get();
         
-        System.out.println(Boolean.toString(thisRunBackSensor));
+//        System.out.println(Boolean.toString(thisRunBackSensor));
         
         if (!thisRunBackSensor && lastRunBackSensor) {
         	Scheduler.getInstance().add(new IntakeStopCommand());
@@ -136,6 +159,27 @@ public class Robot extends IterativeRobot {
 		
 		lastRunBackSensor = thisRunBackSensor;
 		lastRunFrontSensor = thisRunFrontSensor;
+		
+		shooterWheels.displayRPMS();
+//		if(cycles >= 20) {
+//			cycles = 0;
+//			int leftThisPosition = leftMotor.getEncPosition();
+//			int rightThisPosition = rightMotor.getEncPosition();
+//			
+//			double leftRps = ((double) leftThisPosition - leftLastPosition);
+//			double rightRps = ((double) rightThisPosition - rightLastPosition);
+//			
+//			leftLastPosition = leftThisPosition;
+//			rightLastPosition = rightThisPosition;
+//			
+//			System.out.println("Left Wheel sec: " + Double.toString(leftRps));
+//	    	System.out.println("Right Wheel sec: " + Double.toString(rightRps));
+//			
+//			System.out.println("Left Wheel min: " + Double.toString(leftRps * 60));
+//	    	System.out.println("Right Wheel min: " + Double.toString(rightRps * 60));
+//		} else {
+//			cycles++;
+//		}
     }
     
     /**

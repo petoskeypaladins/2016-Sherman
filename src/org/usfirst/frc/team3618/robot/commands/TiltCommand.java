@@ -25,7 +25,7 @@ public class TiltCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double tilt = Robot.oi.shootJoystick.getY();
-    	double limit = 0.5;
+    	double limit = 0.75;
     	
     	Robot.shooterTilt.tilt(tilt*limit);
     }

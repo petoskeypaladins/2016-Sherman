@@ -34,6 +34,8 @@ public class RobotMap {
 	
 	public static int LEFT_BALL_SERVO = 0;
 	public static int RIGHT_BALL_SERVO = 1;
+//	public static int
+	public static int CAMERA_ARM_SERVO = 3;
 	
 	public static int BACK_BALL_SENSOR = 6;
 	public static int FRONT_BALL_SENSOR = 7;

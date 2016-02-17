@@ -16,19 +16,19 @@ public class ArmRoller extends Subsystem {
     // here. Call these from Commands.
 
     public void initDefaultCommand() {
-//    	setDefaultCommand(new RollerCommand());
+    	setDefaultCommand(new RollerCommand());
     }
     
     public void spinIn() {
-    	rollerMotor.set(1);
+    	rollerMotor.set(1.0);
     }
     
     public void spinOut() {
-    	rollerMotor.set(-1);
+    	rollerMotor.set(-1.0);
     }
     
     public void stop() {
-    	rollerMotor.set(0);
+    	rollerMotor.set(0.0);
     }
 }
 

@@ -4,7 +4,6 @@ package org.usfirst.frc.team3618.robot.commands;
 import org.usfirst.frc.team3618.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,20 +19,20 @@ public class IntakeStartCommand extends Command {
     protected void initialize() {
     	
 //    	double intakeSpeed = .75 - (Robot.oi.shootJoystick.getThrottle() * .5);
-    	double intakeSpeed = .31;
     	
-    	System.out.println(Double.toString(intakeSpeed));
-    	Robot.shooterWheels.intake(intakeSpeed);
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	Robot.shooterWheels.startIntake();
+    	Robot.shooterWheels.getSpeed();
+    	Robot.shooterWheels.displayRPMS();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

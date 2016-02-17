@@ -2,6 +2,7 @@ package org.usfirst.frc.team3618.robot.commands;
 
 import org.usfirst.frc.team3618.robot.Robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,13 +24,9 @@ public class ShootCommand extends Command {
     	SmartDashboard.putString(null, "#TRIGGERED");
     	
     	Robot.shooterServos.shoot();
-    	try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	Timer.delay(0.5);
     	Robot.shooterServos.stopShoot();
+    	Robot.shooterServos.cameraDown();
     }
 
     // Called repeatedly when this Command is scheduled to run

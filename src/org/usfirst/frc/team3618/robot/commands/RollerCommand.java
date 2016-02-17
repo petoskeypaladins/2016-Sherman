@@ -13,11 +13,11 @@ public class RollerCommand extends Command {
     public RollerCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.armRoller);
     } 
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	requires(Robot.armRoller);
     }
 
     // Called repeatedly when this Command is scheduled to run

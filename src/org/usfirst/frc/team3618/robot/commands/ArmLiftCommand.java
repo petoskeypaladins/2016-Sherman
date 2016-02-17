@@ -22,10 +22,10 @@ public class ArmLiftCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double liftSpeed = Robot.oi.shootJoystick.getX();
-    	double limit = 0.5;
+    	double speed = Robot.oi.driveJoystick.getRawAxis(2) - Robot.oi.driveJoystick.getRawAxis(3);
+    	double limit = 1.0;
     	
-    	Robot.armLift.armLift(liftSpeed*limit);
+    	Robot.armLift.liftArm(speed * limit);    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -46,8 +46,8 @@ public class OI {
 		holdBallButton = new JoystickButton(shootJoystick, 5);
 		holdBallButton.whenPressed(new HoldBallCommand());
 		
-//		rollerIn = new JoystickButton(driveJoystick, 5);
-//		rollerOut = new JoystickButton(driveJoystick, 6);
+		rollerIn = new JoystickButton(driveJoystick, 5);
+		rollerOut = new JoystickButton(driveJoystick, 6);
 		
 		
 	}
