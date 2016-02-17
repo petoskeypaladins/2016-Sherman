@@ -9,10 +9,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
+
 public class ShooterRotate extends Subsystem {
+	
     CANTalon rotateMotor = new CANTalon(RobotMap.ROTATE_SHOOTER_MOTOR);
-    
-    
+       
     
     public void initDefaultCommand() {
     	setDefaultCommand(new RotateCommand());
