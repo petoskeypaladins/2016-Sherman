@@ -27,6 +27,10 @@ public class TiltCommand extends Command {
     	double tilt = Robot.oi.shootJoystick.getY();
     	double limit = 0.75;
     	
+    	if(Math.abs(tilt) < 0.2){
+    		tilt = 0;
+    	}
+    	
     	Robot.shooterTilt.tilt(tilt*limit);
     }
 

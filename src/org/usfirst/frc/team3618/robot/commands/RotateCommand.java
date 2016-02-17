@@ -22,6 +22,11 @@ public class RotateCommand extends Command {
     	double rotate = Robot.oi.shootJoystick.getZ();
     	double limit = 0.25;
     	
+    	if(Math.abs(rotate) < 0.2){
+    		rotate = 0;    		
+    	}
+    		
+    	
     	Robot.shooterRotate.rotate(rotate*limit);
     	
     }
