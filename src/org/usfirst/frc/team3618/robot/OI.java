@@ -17,8 +17,8 @@ public class OI {
 	
 	
 	public Button shootButton;
-	public Button readyButton;
-	public Button unReadyButton;
+	public Button spinShooterButton;
+	public Button stopShooterButton;
 	public Button startIntakeButton;
 	public Button stopIntakeButton;
 	public Button holdBallButton;
@@ -33,26 +33,32 @@ public class OI {
 		shootButton = new JoystickButton(shootJoystick, 1);
 		shootButton.whenPressed(new ShootCommand());
 		
-		readyButton = new JoystickButton(shootJoystick, 2);
-		readyButton.whenPressed(new ReadyCommand());
+		spinShooterButton = new JoystickButton(shootJoystick, 2);
+		spinShooterButton.whileHeld(new SpinShooterCommand());
 		
-		unReadyButton = new JoystickButton(shootJoystick, 6);
-		unReadyButton.whenPressed(new UnReadyCommand());
+		stopShooterButton = new JoystickButton(shootJoystick, 7);
+		stopShooterButton.whenPressed(new StopShooterCommand());
 		
-		startIntakeButton = new JoystickButton(shootJoystick, 3);
-		startIntakeButton.whenPressed(new IntakeStartCommand());
+		startIntakeButton = new JoystickButton(shootJoystick, 4);
+		startIntakeButton.whileHeld(new IntakeStartCommand());
 		
-		stopIntakeButton = new JoystickButton(shootJoystick, 4);
+		stopIntakeButton = new JoystickButton(shootJoystick, 9);
 		stopIntakeButton.whenPressed(new IntakeStopCommand());
 		
-		holdBallButton = new JoystickButton(shootJoystick, 5);
-		holdBallButton.whenPressed(new HoldBallCommand());
+		holdBallButton = new JoystickButton(shootJoystick, 6);
+		holdBallButton.whileHeld(new HoldBallCommand());
 		
 		rollerIn = new JoystickButton(driveJoystick, 5);
-		rollerOut = new JoystickButton(driveJoystick, 6);
-		rollerIn2 = new JoystickButton(shootJoystick, 10);
-		rollerOut2 = new JoystickButton(shootJoystick, 8);
+		rollerIn.whileHeld(new RollerInCommand());
 		
+		rollerOut = new JoystickButton(driveJoystick, 6);
+		rollerOut.whileHeld(new RollerOutCommand());
+		
+		rollerIn2 = new JoystickButton(shootJoystick, 3);
+		rollerIn.whileHeld(new RollerInCommand());
+		
+		rollerOut2 = new JoystickButton(shootJoystick, 5);
+		rollerOut.whileHeld(new RollerOutCommand());
 		
 	}
 	

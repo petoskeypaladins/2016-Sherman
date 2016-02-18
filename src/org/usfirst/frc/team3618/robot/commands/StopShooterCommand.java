@@ -7,18 +7,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class HoldBallCommand extends Command {
+public class StopShooterCommand extends Command {
 
-    public HoldBallCommand() {
+    public StopShooterCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooterServos);
+    	requires(Robot.shooterWheels);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooterServos.holdBall();
-    	System.out.println("Hold ball called");
+    	Robot.shooterWheels.wheelSpeed(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,12 +31,10 @@ public class HoldBallCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooterServos.releaseBall();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

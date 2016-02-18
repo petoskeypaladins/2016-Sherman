@@ -1,7 +1,7 @@
 package org.usfirst.frc.team3618.robot.subsystems;
 
 import org.usfirst.frc.team3618.robot.RobotMap;
-import org.usfirst.frc.team3618.robot.commands.UnReadyCommand;
+import org.usfirst.frc.team3618.robot.commands.StopShooterCommand;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
@@ -45,7 +45,7 @@ public void shoot() {
     
     public void stopShoot() {
     	SmartDashboard.putString(null, "Wheels Stopping");
-    	Scheduler.getInstance().add(new UnReadyCommand());
+    	Scheduler.getInstance().add(new StopShooterCommand());
     	leftBallServo.setAngle(LEFT_OPEN_POSITION);
 		rightBallServo.setAngle(RIGHT_OPEN_POSITION);
     }

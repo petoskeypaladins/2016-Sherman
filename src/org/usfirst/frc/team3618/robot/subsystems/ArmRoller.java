@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3618.robot.subsystems;
 
 import org.usfirst.frc.team3618.robot.RobotMap;
-import org.usfirst.frc.team3618.robot.commands.RollerCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -16,7 +15,6 @@ public class ArmRoller extends Subsystem {
     // here. Call these from Commands.
 
     public void initDefaultCommand() {
-    	setDefaultCommand(new RollerCommand());
     }
     
     public void spinIn() {
