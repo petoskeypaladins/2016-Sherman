@@ -132,7 +132,7 @@ public class Robot extends IterativeRobot {
         lastRunBackSensor = false; 
         lastRunFrontSensor = false;
         
-        if (IS_USING_OPENCV) {
+        if (!IS_USING_OPENCV) {
         	lifecam.setFPS(30);
             lifecam.openCamera();
             lifecam.setSize(CAM_WIDTH, CAM_HEIGHT);
@@ -157,14 +157,14 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         
-        if (IS_USING_OPENCV) {
+        if (!IS_USING_OPENCV) {
 	        lifecam.getImage(frame);
 	        
 	        // The cross will be 20px in each direction from the center of the image
 	        int radius = 20;
 	        
 	        NIVision.imaqDrawLineOnImage(frame, frame, DrawMode.DRAW_VALUE, new NIVision.Point(CAM_WIDTH / 2, (CAM_HEIGHT / 2) + radius), new NIVision.Point(CAM_WIDTH / 2, (CAM_HEIGHT / 2) - radius), 0);
-	        NIVision.imaqDrawLineOnImage(frame, frame, DrawMode.DRAW_VALUE, new NIVision.Point((CAM_WIDTH / 2) - radius, CAM_HEIGHT / 2), new NIVision.Point((CAM_WIDTH / 2) + radius, CAM_HEIGHT), 0);
+	        NIVision.imaqDrawLineOnImage(frame, frame, DrawMode.DRAW_VALUE, new NIVision.Point((CAM_WIDTH / 2) - radius, CAM_HEIGHT / 2), new NIVision.Point((CAM_WIDTH / 2) + radius, CAM_HEIGHT / 2), 0);
 	        
 	        camServer.setImage(frame);
         }
