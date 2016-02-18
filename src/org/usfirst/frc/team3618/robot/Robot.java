@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot {
 	public static ShooterServos shooterServos = new ShooterServos();
 	public static ArmRoller armRoller = new ArmRoller();
 
-	public static boolean IS_USING_OPENCV = false;
+	public static boolean IS_USING_OPENCV = true;
 	
 	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
@@ -78,9 +78,10 @@ public class Robot extends IterativeRobot {
 
         if (!IS_USING_OPENCV) {
         	camServer = CameraServer.getInstance();
-	        lifecam = new USBCamera("cam0");
-	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
-        }
+	        lifecam = new USBCamera("cam0"
+	        		+ "");
+	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 1);
+        } 
     }
 	
 	/**

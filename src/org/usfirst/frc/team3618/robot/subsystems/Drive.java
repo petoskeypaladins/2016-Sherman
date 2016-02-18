@@ -6,6 +6,7 @@ import org.usfirst.frc.team3618.robot.commands.DriveCommand;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -30,6 +31,7 @@ public class Drive extends Subsystem {
 	public Drive() {
 		leftFrontMotor.setInverted(true);
 		rightFrontMotor.setInverted(true);
+		//rightRearMotor.changeControlMode(TalonControlMode.Voltage);
 	}
 	
 	    public void initDefaultCommand() {
@@ -39,7 +41,7 @@ public class Drive extends Subsystem {
 	    
 	    public void DriveMe (double left, double right) {
 	    	myRobotDrive.tankDrive(left, right);
-	    	
+//	    	myRobotDrive.drive(1.0, 0.0);
 	    }
 }
 

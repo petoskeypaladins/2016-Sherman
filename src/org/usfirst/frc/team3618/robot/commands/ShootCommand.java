@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ShootCommand extends Command {
 
-	
+	Timer timer;
 	
     public ShootCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -21,12 +21,10 @@ public class ShootCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	SmartDashboard.putString(null, "#TRIGGERED");
+    	timer = new Timer();
     	
     	Robot.shooterServos.shoot();
-    	Timer.delay(0.5);
-    	Robot.shooterServos.stopShoot();
-    	Robot.shooterServos.cameraDown();
+    	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,12 +33,13 @@ public class ShootCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return timer.get() >= 0.75;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	
+    	timer.stop();
+    	Robot.shooterServos.stopShoot();
     }
 
     // Called when another command which requires one or more of the same

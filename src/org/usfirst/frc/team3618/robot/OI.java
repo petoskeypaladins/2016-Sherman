@@ -51,7 +51,7 @@ public class OI {
 		rollerIn = new JoystickButton(driveJoystick, 5);
 		rollerOut = new JoystickButton(driveJoystick, 6);
 		rollerIn2 = new JoystickButton(shootJoystick, 10);
-		rollerOut2 = new JoystickButton(shootJoystick, 11);
+		rollerOut2 = new JoystickButton(shootJoystick, 8);
 		
 		
 	}
