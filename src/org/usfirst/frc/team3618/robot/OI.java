@@ -25,6 +25,8 @@ public class OI {
 	
 	public Button rollerIn;
 	public Button rollerOut;
+	public Button rollerIn2;
+	public Button rollerOut2;
 	
 	public OI() {
 		
@@ -48,6 +50,8 @@ public class OI {
 		
 		rollerIn = new JoystickButton(driveJoystick, 5);
 		rollerOut = new JoystickButton(driveJoystick, 6);
+		rollerIn2 = new JoystickButton(shootJoystick, 10);
+		rollerOut2 = new JoystickButton(shootJoystick, 11);
 		
 		
 	}
