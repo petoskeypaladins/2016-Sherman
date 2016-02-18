@@ -39,6 +39,5 @@ public class RobotMap {
 	
 	public static int BACK_BALL_SENSOR = 6;
 	public static int FRONT_BALL_SENSOR = 7;
-	
 		
 }

@@ -13,7 +13,10 @@ import org.usfirst.frc.team3618.robot.subsystems.ShooterServos;
 import org.usfirst.frc.team3618.robot.subsystems.ShooterTilt;
 import org.usfirst.frc.team3618.robot.subsystems.ShooterWheels;
 
+import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.DrawMode;
 import com.ni.vision.NIVision.Image;
+import com.ni.vision.NIVision.ImageType;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -46,6 +49,8 @@ public class Robot extends IterativeRobot {
 	public static ShooterServos shooterServos = new ShooterServos();
 	public static ArmRoller armRoller = new ArmRoller();
 
+	public static boolean IS_USING_OPENCV = false;
+	
 	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
 	
@@ -54,6 +59,9 @@ public class Robot extends IterativeRobot {
 	
     CameraServer camServer;
     USBCamera lifecam;
+    
+    int CAM_WIDTH = 640;
+    int CAM_HEIGHT = 480;
     
     Command autonomousCommand;
     SendableChooser chooser;
@@ -68,8 +76,11 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putData("Auto mode", chooser);
         System.out.println("Robot on.");
 
-        camServer = CameraServer.getInstance();
-        lifecam = new USBCamera("cam0");
+        if (!IS_USING_OPENCV) {
+        	camServer = CameraServer.getInstance();
+	        lifecam = new USBCamera("cam0");
+	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
+        }
     }
 	
 	/**
@@ -121,9 +132,14 @@ public class Robot extends IterativeRobot {
         lastRunBackSensor = false; 
         lastRunFrontSensor = false;
         
-        lifecam.setFPS(30);
-        lifecam.openCamera();
-        camServer.startAutomaticCapture(lifecam);
+        if (IS_USING_OPENCV) {
+        	lifecam.setFPS(30);
+            lifecam.openCamera();
+            lifecam.setSize(CAM_WIDTH, CAM_HEIGHT);
+            lifecam.updateSettings();
+            lifecam.startCapture();
+            camServer.setQuality(100);
+        }
     }
 
     
@@ -134,12 +150,25 @@ public class Robot extends IterativeRobot {
     
     Image frame;
     
+    NIVision.Line yCross;
+    NIVision.Line xCross;
+    
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         
-        
-        
+        if (IS_USING_OPENCV) {
+	        lifecam.getImage(frame);
+	        
+	        // The cross will be 20px in each direction from the center of the image
+	        int radius = 20;
+	        
+	        NIVision.imaqDrawLineOnImage(frame, frame, DrawMode.DRAW_VALUE, new NIVision.Point(CAM_WIDTH / 2, (CAM_HEIGHT / 2) + radius), new NIVision.Point(CAM_WIDTH / 2, (CAM_HEIGHT / 2) - radius), 0);
+	        NIVision.imaqDrawLineOnImage(frame, frame, DrawMode.DRAW_VALUE, new NIVision.Point((CAM_WIDTH / 2) - radius, CAM_HEIGHT / 2), new NIVision.Point((CAM_WIDTH / 2) + radius, CAM_HEIGHT), 0);
+	        
+	        camServer.setImage(frame);
+        }
+	        
         boolean thisRunBackSensor = backSensor.get();
         boolean thisRunFrontSensor = frontSensor.get();
         
