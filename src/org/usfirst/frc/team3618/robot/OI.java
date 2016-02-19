@@ -28,6 +28,8 @@ public class OI {
 	public Button rollerIn2;
 	public Button rollerOut2;
 	
+	public Button autoAlignShooter;
+	
 	public OI() {
 		
 		shootButton = new JoystickButton(shootJoystick, 1);
@@ -53,12 +55,9 @@ public class OI {
 		
 		rollerOut = new JoystickButton(driveJoystick, 6);
 		rollerOut.whileHeld(new RollerOutCommand());
-		
-		rollerIn2 = new JoystickButton(shootJoystick, 3);
-		rollerIn.whileHeld(new RollerInCommand());
-		
-		rollerOut2 = new JoystickButton(shootJoystick, 5);
-		rollerOut.whileHeld(new RollerOutCommand());
+	
+		autoAlignShooter = new JoystickButton(shootJoystick, 11);
+		autoAlignShooter.whileHeld(new AutoAlignShooterCommand());
 		
 	}
 	

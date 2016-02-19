@@ -39,12 +39,10 @@ public void shoot() {
     	
 		leftBallServo.set(LEFT_SHOOT_POSITION);
     	rightBallServo.set(RIGHT_SHOOT_POSITION);
-    	DriverStation.reportError("Triggered. \n", false);
     	
     }
     
     public void stopShoot() {
-    	SmartDashboard.putString(null, "Wheels Stopping");
     	Scheduler.getInstance().add(new StopShooterCommand());
     	leftBallServo.setAngle(LEFT_OPEN_POSITION);
 		rightBallServo.setAngle(RIGHT_OPEN_POSITION);
@@ -53,7 +51,6 @@ public void shoot() {
     public void holdBall() {
     	leftBallServo.setAngle(LEFT_HOLD_POSITION);
     	rightBallServo.setAngle(RIGHT_HOLD_POSITION);
-    	System.out.println("the servos should have moved");
     }
     
     public void releaseBall() {

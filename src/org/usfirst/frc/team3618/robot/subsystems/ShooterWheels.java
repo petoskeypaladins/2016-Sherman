@@ -46,7 +46,7 @@ public class ShooterWheels extends Subsystem {
 //    		}
 //    	}
     	
-    	fullSpeed = output;
+    	//fullSpeed = output;
     	
     	wheelSpeed(output);
     	
@@ -63,9 +63,7 @@ public class ShooterWheels extends Subsystem {
     }
         
     public void startIntake() {
-    	reverseWheels();
-    	wheelSpeed(.5);
-    	reverseWheels();
+    	wheelSpeed(-.5);
     	//fix this later, just tests the angle right now
     }
     
@@ -98,10 +96,6 @@ public class ShooterWheels extends Subsystem {
     public void displayRPMS() {
     	SmartDashboard.putNumber("Left Shooter RPM", leftSpeed);
     	SmartDashboard.putNumber("Right Shooter RPM", rightSpeed);
-    	
-    	System.out.println("Left Shooter Speed : " + Double.toString(leftSpeed));
-    	System.out.println("Right Shooter Speed: " + Double.toString(rightSpeed));
-    	
     }
     
 }

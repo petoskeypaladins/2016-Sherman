@@ -16,7 +16,6 @@ public class SpinShooterCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("SHOOTER READY");
     	// Brendon is abusing his power
     	// so is James
     	//except I have no power
@@ -27,12 +26,15 @@ public class SpinShooterCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double speed = 1 - (Robot.oi.shootJoystick.getThrottle() * .5);
+    	if (speed > 1.0) {
+    		speed = 1.0;
+    	}
     	Robot.shooterWheels.readyShoot(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

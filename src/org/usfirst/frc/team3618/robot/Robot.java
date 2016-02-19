@@ -60,8 +60,8 @@ public class Robot extends IterativeRobot {
     CameraServer camServer;
     USBCamera lifecam;
     
-    int CAM_WIDTH = 640;
-    int CAM_HEIGHT = 480;
+    public static int CAM_WIDTH = 640;
+    public static int CAM_HEIGHT = 480;
     
     Command autonomousCommand;
     SendableChooser chooser;

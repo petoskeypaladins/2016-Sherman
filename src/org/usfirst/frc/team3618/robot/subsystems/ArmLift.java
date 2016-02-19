@@ -18,6 +18,7 @@ public class ArmLift extends Subsystem {
 	}
 
     public void initDefaultCommand() {
+    	setDefaultCommand(new ArmLiftCommand());
     }
     
     
