@@ -63,7 +63,7 @@ public class ShooterWheels extends Subsystem {
     }
         
     public void startIntake() {
-    	wheelSpeed(-.5);
+    	wheelSpeed(-.3);
     	//fix this later, just tests the angle right now
     }
     

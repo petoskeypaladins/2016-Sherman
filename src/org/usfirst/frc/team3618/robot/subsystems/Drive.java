@@ -6,10 +6,11 @@ import org.usfirst.frc.team3618.robot.commands.DriveCommand;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,6 +21,9 @@ public class Drive extends Subsystem {
 	CANTalon rightFrontMotor = new CANTalon(RobotMap.RIGHT_FRONT_MOTOR);
 	CANTalon rightRearMotor = new CANTalon(RobotMap.RIGHT_REAR_MOTOR);
 	
+	Encoder leftEncoder = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
+	Encoder rightEncoder = new Encoder(2, 3, false, Encoder.EncodingType.k4X);
+	
 	RobotDrive myRobotDrive =new RobotDrive (leftFrontMotor,
 			leftRearMotor,
 			rightFrontMotor,
@@ -29,19 +33,26 @@ public class Drive extends Subsystem {
 
 
 	public Drive() {
+		leftEncoder.reset();
+		rightEncoder.reset();
+		
 		leftFrontMotor.setInverted(true);
 		rightFrontMotor.setInverted(true);
-		//rightRearMotor.changeControlMode(TalonControlMode.Voltage);
 	}
 	
-	    public void initDefaultCommand() {
+	public void initDefaultCommand() {
 	        // Set the default command for a subsystem here.
-	        setDefaultCommand(new DriveCommand());
-	    }
+		setDefaultCommand(new DriveCommand());
+	}
 	    
-	    public void DriveMe (double left, double right) {
-	    	myRobotDrive.tankDrive(left, right);
-//	    	myRobotDrive.drive(1.0, 0.0);
-	    }
+	public void DriveMe (double left, double right) {
+		myRobotDrive.tankDrive(left, right);
+	}
+	
+	public void displayEncoderData() {
+		SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
+		SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
+	}
+	
 }
 

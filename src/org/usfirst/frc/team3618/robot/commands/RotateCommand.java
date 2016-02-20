@@ -19,7 +19,7 @@ public class RotateCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double rotate = Robot.oi.shootJoystick.getZ();
+    	double rotate = Math.pow(Robot.oi.shootJoystick.getZ(), 3);
     	double limit = 0.6;
     	
     	if(Math.abs(rotate) < 0.2){

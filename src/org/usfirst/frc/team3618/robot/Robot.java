@@ -38,7 +38,7 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 public class Robot extends IterativeRobot {
 
 
-	public static final Drive drive = new org.usfirst.frc.team3618.robot.subsystems.Drive() ;
+	public static Drive drive = new Drive() ;
 
 	public static OI oi;
 	
@@ -78,8 +78,7 @@ public class Robot extends IterativeRobot {
 
         if (!IS_USING_OPENCV) {
         	camServer = CameraServer.getInstance();
-	        lifecam = new USBCamera("cam0"
-	        		+ "");
+	        lifecam = new USBCamera("cam0");
 	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 1);
         } 
     }
@@ -101,18 +100,6 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         autonomousCommand = (Command) chooser.getSelected();
         
-		/* String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		switch(autoSelected) {
-		case "My Auto":
-			autonomousCommand = new MyAutoCommand();
-			break;
-		case "Default Auto":
-		default:
-			autonomousCommand = new ExampleCommand();
-			break;
-		} */
-    	
-    	// schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -170,10 +157,12 @@ public class Robot extends IterativeRobot {
 	        camServer.setImage(frame);
         }
 	        
+        drive.displayEncoderData();
+        
         boolean thisRunBackSensor = backSensor.get();
         boolean thisRunFrontSensor = frontSensor.get();
         
-//        System.out.println(Boolean.toString(thisRunBackSensor));
+//      System.out.println(Boolean.toString(thisRunBackSensor));
         
         if (!thisRunBackSensor && lastRunBackSensor) {
         	Scheduler.getInstance().add(new IntakeStopCommand());
@@ -191,25 +180,6 @@ public class Robot extends IterativeRobot {
 		lastRunFrontSensor = thisRunFrontSensor;
 		
 		shooterWheels.displayRPMS();
-//		if(cycles >= 20) {
-//			cycles = 0;
-//			int leftThisPosition = leftMotor.getEncPosition();
-//			int rightThisPosition = rightMotor.getEncPosition();
-//			
-//			double leftRps = ((double) leftThisPosition - leftLastPosition);
-//			double rightRps = ((double) rightThisPosition - rightLastPosition);
-//			
-//			leftLastPosition = leftThisPosition;
-//			rightLastPosition = rightThisPosition;
-//			
-//			System.out.println("Left Wheel sec: " + Double.toString(leftRps));
-//	    	System.out.println("Right Wheel sec: " + Double.toString(rightRps));
-//			
-//			System.out.println("Left Wheel min: " + Double.toString(leftRps * 60));
-//	    	System.out.println("Right Wheel min: " + Double.toString(rightRps * 60));
-//		} else {
-//			cycles++;
-//		}
     }
     
     /**

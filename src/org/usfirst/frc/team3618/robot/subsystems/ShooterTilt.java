@@ -16,6 +16,10 @@ public class ShooterTilt extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
+    public ShooterTilt() {
+    	tiltMotor.setInverted(true);
+    }
+    
     public void initDefaultCommand() {
         setDefaultCommand(new TiltCommand());
     }

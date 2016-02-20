@@ -32,7 +32,8 @@ public class HoldBallCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooterServos.releaseBall();
+    	//you can't do this Kyle!!!
+//    	Robot.shooterServos.releaseBall();
     }
 
     // Called when another command which requires one or more of the same
