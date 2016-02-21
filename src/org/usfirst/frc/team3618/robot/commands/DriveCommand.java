@@ -9,7 +9,7 @@ public class DriveCommand extends Command {
 
     public DriveCommand() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.drive);
+        requires(Robot.driveSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -22,7 +22,7 @@ public class DriveCommand extends Command {
     	double right = Robot.oi.driveJoystick.getRawAxis(5);
     	double limit = 1.0;
     	
-    	Robot.drive.DriveMe(left*limit, right*limit);
+    	Robot.driveSubsystem.DriveMe(left*limit, right*limit);
     	
     }
 

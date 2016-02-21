@@ -12,22 +12,16 @@ public class IntakeStartCommand extends Command {
 	
 	
     public IntakeStartCommand() {
-        requires(Robot.shooterWheels);
+        requires(Robot.turretSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
-//    	double intakeSpeed = .75 - (Robot.oi.shootJoystick.getThrottle() * .5);
-    	
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooterWheels.startIntake();
-    	Robot.shooterWheels.getSpeed();
-    	Robot.shooterWheels.displayRPMS();
+    	Robot.turretSubsystem.spinShooter(-0.5);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,12 +31,12 @@ public class IntakeStartCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooterWheels.stopIntake();
+    	Robot.turretSubsystem.spinShooter(0.0);
+
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

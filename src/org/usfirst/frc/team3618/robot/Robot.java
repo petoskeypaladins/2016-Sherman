@@ -5,13 +5,9 @@ import org.usfirst.frc.team3618.robot.commands.HoldBallCommand;
 import org.usfirst.frc.team3618.robot.commands.IntakeStartCommand;
 import org.usfirst.frc.team3618.robot.commands.IntakeStopCommand;
 import org.usfirst.frc.team3618.robot.commands.ReleaseBallCommand;
-import org.usfirst.frc.team3618.robot.subsystems.ArmLift;
-import org.usfirst.frc.team3618.robot.subsystems.ArmRoller;
-import org.usfirst.frc.team3618.robot.subsystems.Drive;
-import org.usfirst.frc.team3618.robot.subsystems.ShooterRotate;
-import org.usfirst.frc.team3618.robot.subsystems.ShooterServos;
-import org.usfirst.frc.team3618.robot.subsystems.ShooterTilt;
-import org.usfirst.frc.team3618.robot.subsystems.ShooterWheels;
+import org.usfirst.frc.team3618.robot.subsystems.ArmsSubsystem;
+import org.usfirst.frc.team3618.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team3618.robot.subsystems.TurretSubsystem;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.DrawMode;
@@ -28,27 +24,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.vision.USBCamera;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
 public class Robot extends IterativeRobot {
 
-	public static Drive drive = new Drive() ;
-
+	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
+	public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
+	public static TurretSubsystem turretSubsystem = new TurretSubsystem();
+		
 	public static OI oi;
 	
-	public static ShooterRotate shooterRotate = new ShooterRotate();
-	public static ShooterTilt shooterTilt = new ShooterTilt();
-	public static ShooterWheels shooterWheels = new ShooterWheels();
-	public static ArmLift armLift = new ArmLift();
-	public static ShooterServos shooterServos = new ShooterServos();
-	public static ArmRoller armRoller = new ArmRoller();
-
-	public static boolean IS_USING_OPENCV;
+	public static boolean IS_USING_OPENCV = false;
 	
 	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
@@ -59,30 +43,25 @@ public class Robot extends IterativeRobot {
     CameraServer camServer;
     USBCamera lifecam;
     
-    public static int CAM_WIDTH = 640;
-    public static int CAM_HEIGHT = 480;
+    int CAM_WIDTH = 640;
+    int CAM_HEIGHT = 480;
     
     Command autonomousCommand;
     SendableChooser chooser;
 
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
     public void robotInit() {
 		oi = new OI();
         chooser = new SendableChooser();
         SmartDashboard.putData("Auto mode", chooser);
-        SmartDashboard.putBoolean("Using OpenCV", true);
+        System.out.println("Robot on.");
 
-        updateDashValues();
+        if (!IS_USING_OPENCV) {
+        	camServer = CameraServer.getInstance();
+	        lifecam = new USBCamera("cam0");
+	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
+        }
     }
 	
-	/**
-     * This function is called once each time the robot enters Disabled mode.
-     * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-     */
     public void disabledInit(){
 
     }
@@ -91,37 +70,21 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 	}
 
-	
     public void autonomousInit() {
         autonomousCommand = (Command) chooser.getSelected();
         
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
-    /**
-     * This function is called periodically during autonomous
-     */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
     }
 
     public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
         
         lastRunBackSensor = false; 
         lastRunFrontSensor = false;
-        
-        updateDashValues();
-        
-        if (!IS_USING_OPENCV) {
-        	camServer = CameraServer.getInstance();
-	        lifecam = new USBCamera("cam0");
-	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 1);
-        }         
         
         if (!IS_USING_OPENCV) {
         	lifecam.setFPS(30);
@@ -132,12 +95,6 @@ public class Robot extends IterativeRobot {
             camServer.setQuality(100);
         }
     }
-
-    
-    
-    /**
-     * This function is called periodically during operator control
-     */
     
     Image frame;
     
@@ -147,8 +104,6 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        
-        updateDashValues();
         
         if (!IS_USING_OPENCV) {
 	        lifecam.getImage(frame);
@@ -162,12 +117,8 @@ public class Robot extends IterativeRobot {
 	        camServer.setImage(frame);
         }
 	        
-        drive.displayEncoderData();
-        
         boolean thisRunBackSensor = backSensor.get();
         boolean thisRunFrontSensor = frontSensor.get();
-        
-//      System.out.println(Boolean.toString(thisRunBackSensor));
         
         if (!thisRunBackSensor && lastRunBackSensor) {
         	Scheduler.getInstance().add(new IntakeStopCommand());
@@ -183,19 +134,9 @@ public class Robot extends IterativeRobot {
 		
 		lastRunBackSensor = thisRunBackSensor;
 		lastRunFrontSensor = thisRunFrontSensor;
-		
-		shooterWheels.displayRPMS();
     }
     
-    /**
-     * This function is called periodically during test mode
-     */
     public void testPeriodic() {
         LiveWindow.run();
     }
-    
-    public void updateDashValues() {
-    	IS_USING_OPENCV = SmartDashboard.getBoolean("Using OpenCV");
-    }
-    
 }

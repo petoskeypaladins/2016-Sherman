@@ -12,12 +12,12 @@ public class IntakeStopCommand extends Command {
     public IntakeStopCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooterWheels);
+    	requires(Robot.turretSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooterWheels.stopIntake();
+    	Robot.turretSubsystem.spinShooter(0.0);
     }
 
     // Called repeatedly when this Command is scheduled to run

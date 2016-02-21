@@ -10,7 +10,7 @@ public class RotateCommand extends Command {
 
     public RotateCommand() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.shooterRotate);
+        requires(Robot.turretSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -25,10 +25,8 @@ public class RotateCommand extends Command {
     	if(Math.abs(rotate) < 0.2){
     		rotate = 0;    		
     	}
-    		
     	
-    	Robot.shooterRotate.rotate(rotate*limit);
-    	
+    	Robot.turretSubsystem.rotateTurret(rotate*limit);
     }
 
     // Make this return true when this Command no longer needs to run execute()

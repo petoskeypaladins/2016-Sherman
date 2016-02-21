@@ -14,7 +14,7 @@ public class TiltCommand extends Command {
     public TiltCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooterTilt);
+    	requires(Robot.turretSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -31,7 +31,7 @@ public class TiltCommand extends Command {
     		tilt = 0;
     	}
     	
-    	Robot.shooterTilt.tilt(tilt*limit);
+    	Robot.turretSubsystem.tiltTurret(tilt*limit);
     }
 
     // Make this return true when this Command no longer needs to run execute()

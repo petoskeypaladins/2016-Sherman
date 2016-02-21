@@ -12,7 +12,7 @@ public class ArmLiftCommand extends Command {
     public ArmLiftCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.armLift);
+    	requires(Robot.armsSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -25,7 +25,7 @@ public class ArmLiftCommand extends Command {
     	double speed = Robot.oi.driveJoystick.getRawAxis(2) - Robot.oi.driveJoystick.getRawAxis(3);
     	double limit = 1.0;
     	
-    	Robot.armLift.liftArm(speed * limit);    	
+    	Robot.armsSubsystem.liftArm(speed * limit);    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

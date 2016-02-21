@@ -11,16 +11,11 @@ public class SpinShooterCommand extends Command {
 	
 	
     public SpinShooterCommand() {
-        requires(Robot.shooterWheels);
+        requires(Robot.turretSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	// Brendon is abusing his power
-    	// so is James
-    	//except I have no power
-    	//that is true
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -29,7 +24,7 @@ public class SpinShooterCommand extends Command {
     	if (speed > 1.0) {
     		speed = 1.0;
     	}
-    	Robot.shooterWheels.readyShoot(speed);
+    	Robot.turretSubsystem.spinShooter(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,13 +34,13 @@ public class SpinShooterCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooterWheels.stopIntake();
+    	Robot.turretSubsystem.spinShooter(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
+    	// TODO - Decide whether this needs any code
     }
     
     

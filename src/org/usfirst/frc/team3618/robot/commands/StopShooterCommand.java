@@ -12,12 +12,12 @@ public class StopShooterCommand extends Command {
     public StopShooterCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooterWheels);
+    	requires(Robot.turretSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooterWheels.wheelSpeed(0);
+    	Robot.turretSubsystem.spinShooter(0);
     }
 
     // Called repeatedly when this Command is scheduled to run

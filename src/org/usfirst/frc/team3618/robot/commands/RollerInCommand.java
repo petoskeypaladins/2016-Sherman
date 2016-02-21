@@ -12,18 +12,16 @@ public class RollerInCommand extends Command {
     public RollerInCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.armRoller);
+    	requires(Robot.armsSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("Initialized roller out");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.armRoller.spinIn();
-    	System.out.println("Running roller out");
+    	Robot.armsSubsystem.spinRoller(1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -33,13 +31,12 @@ public class RollerInCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.armRoller.stop();
+    	Robot.armsSubsystem.spinRoller(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	System.out.println("Interrupted");
     	end();
     }
 }
