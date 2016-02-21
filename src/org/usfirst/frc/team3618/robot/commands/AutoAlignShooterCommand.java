@@ -10,8 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class AutoAlignShooterCommand extends Command {
 
-	double cenX, cenY;
+	double cenX, cenY, targetWidth, camOffset;
 	int vCamWidth, vCamHeight;
+	
     public AutoAlignShooterCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -23,24 +24,44 @@ public class AutoAlignShooterCommand extends Command {
     	// These are as interpreted by the openCV program
     	vCamWidth = 320;
     	vCamHeight = 240;
+    	camOffset = 6.75;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	cenX = SmartDashboard.getNumber("Center X");
     	cenY = SmartDashboard.getNumber("Center Y");
-	    	double xError = cenX - (vCamWidth / 2) + 15;
-	    	double mvmtRatioX = (xError / 360);
-	    	
-	    	Robot.shooterRotate.rotate(mvmtRatioX);
-			
-	    	SmartDashboard.putBoolean("Centered Shooter", (Math.abs(xError) < 5));
-	    	
-	    	double yError = -(cenY - (vCamHeight / 2) - 100);
-	    	double mvmtRatioY = (yError / 180);
-	    	
-	    	Robot.shooterTilt.tilt(mvmtRatioY);
+    	targetWidth = SmartDashboard.getNumber("Goal Width");
     	
+    	if (cenX > 0 && cenY > 0) {
+    		
+    		double xOff = .3375 * targetWidth;
+		    double xError = cenX - (vCamWidth / 2) + xOff;
+		    double mvmtRatioX = (xError / 360);
+		    
+		    if ((Math.abs(xError) > 7)) {
+		    	if (xError < 40 && xError > 0) {
+			    	// The value is too small for the motor to do anything
+			    	mvmtRatioX = 0.06;
+			    } else if (xError < -40 && xError < 40) {
+			    	mvmtRatioX = -0.06;
+			    }
+			    
+			    Robot.shooterRotate.rotate(mvmtRatioX);
+				
+			    SmartDashboard.putBoolean("Centered Shooter", false);
+		    } else {
+		    	SmartDashboard.putBoolean("Centered Shooter", true);
+		    }
+			    
+		    SmartDashboard.putNumber("X Error", xError);
+		    SmartDashboard.putNumber("X Ratio", mvmtRatioX);
+		    
+//		    double yError = -(cenY - (vCamHeight / 2) - 100);
+//		    double mvmtRatioY = (yError / 180);
+//		    	
+//		    Robot.shooterTilt.tilt(mvmtRatioY);
+    	}
     	
     
     }

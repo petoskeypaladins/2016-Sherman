@@ -37,7 +37,6 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
  */
 public class Robot extends IterativeRobot {
 
-
 	public static Drive drive = new Drive() ;
 
 	public static OI oi;
@@ -49,7 +48,7 @@ public class Robot extends IterativeRobot {
 	public static ShooterServos shooterServos = new ShooterServos();
 	public static ArmRoller armRoller = new ArmRoller();
 
-	public static boolean IS_USING_OPENCV = true;
+	public static boolean IS_USING_OPENCV;
 	
 	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
@@ -74,13 +73,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         chooser = new SendableChooser();
         SmartDashboard.putData("Auto mode", chooser);
-        System.out.println("Robot on.");
+        SmartDashboard.putBoolean("Using OpenCV", true);
 
-        if (!IS_USING_OPENCV) {
-        	camServer = CameraServer.getInstance();
-	        lifecam = new USBCamera("cam0");
-	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 1);
-        } 
+        updateDashValues();
     }
 	
 	/**
@@ -120,6 +115,14 @@ public class Robot extends IterativeRobot {
         lastRunBackSensor = false; 
         lastRunFrontSensor = false;
         
+        updateDashValues();
+        
+        if (!IS_USING_OPENCV) {
+        	camServer = CameraServer.getInstance();
+	        lifecam = new USBCamera("cam0");
+	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 1);
+        }         
+        
         if (!IS_USING_OPENCV) {
         	lifecam.setFPS(30);
             lifecam.openCamera();
@@ -144,6 +147,8 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        
+        updateDashValues();
         
         if (!IS_USING_OPENCV) {
 	        lifecam.getImage(frame);
@@ -188,4 +193,9 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
+    
+    public void updateDashValues() {
+    	IS_USING_OPENCV = SmartDashboard.getBoolean("Using OpenCV");
+    }
+    
 }
