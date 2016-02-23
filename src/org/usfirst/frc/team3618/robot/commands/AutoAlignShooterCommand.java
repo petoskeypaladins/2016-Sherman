@@ -24,7 +24,7 @@ public class AutoAlignShooterCommand extends Command {
     	// These are as interpreted by the openCV program
     	vCamWidth = 320;
     	vCamHeight = 240;
-    	camOffset = 6.75;
+    	camOffset = 6.5;
     }
 
     // Called repeatedly when this Command is scheduled to run

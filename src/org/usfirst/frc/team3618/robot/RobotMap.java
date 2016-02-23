@@ -19,7 +19,21 @@ public class RobotMap {
 	public static int RIGHT_BALL_SERVO = 1;
 	public static int CAMERA_ARM_SERVO = 3;
 	
-	public static int BACK_BALL_SENSOR = 6;
-	public static int FRONT_BALL_SENSOR = 7;
+	public static int BACK_BALL_SENSOR = 4;
+	public static int FRONT_BALL_SENSOR = 8;
 		
+	public static int TILT_ANALOG = 0;
+	public static int ROTATE_ANALOG = 1;
+	
+	public static int RIGHT_DRIVE_ENCODER_A = 0;
+	public static int RIGHT_DRIVE_ENCODER_B = 1;
+	
+	public static int LEFT_DRIVE_ENCODER_A = 2;
+	public static int LEFT_DRIVE_ENCODER_B = 3;
+	
+	public static int TILT_MIN_DIO = 5;
+	public static int TILT_MAX_DIO = 6;
+	
+	public static int ROTATE_DIO = 7;
+	
 }

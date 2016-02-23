@@ -7,6 +7,8 @@ import org.usfirst.frc.team3618.robot.commands.IntakeStopCommand;
 import org.usfirst.frc.team3618.robot.commands.ReleaseBallCommand;
 import org.usfirst.frc.team3618.robot.subsystems.ArmsSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team3618.robot.subsystems.RollerSubsystem;
+import org.usfirst.frc.team3618.robot.subsystems.ShooterSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.TurretSubsystem;
 
 import com.ni.vision.NIVision;
@@ -29,10 +31,12 @@ public class Robot extends IterativeRobot {
 	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 	public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
 	public static TurretSubsystem turretSubsystem = new TurretSubsystem();
-		
+	public static RollerSubsystem rollerSubsystem = new RollerSubsystem();	
+	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+
 	public static OI oi;
 	
-	public static boolean IS_USING_OPENCV = false;
+	public static boolean IS_USING_OPENCV = true;
 	
 	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
@@ -53,8 +57,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         chooser = new SendableChooser();
         SmartDashboard.putData("Auto mode", chooser);
-        System.out.println("Robot on.");
-
+        
         if (!IS_USING_OPENCV) {
         	camServer = CameraServer.getInstance();
 	        lifecam = new USBCamera("cam0");
@@ -104,6 +107,10 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        
+        Robot.turretSubsystem.displayData();
+        Robot.driveSubsystem.displayData();
+        Robot.armsSubsystem.displayData();
         
         if (!IS_USING_OPENCV) {
 	        lifecam.getImage(frame);

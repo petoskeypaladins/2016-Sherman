@@ -46,10 +46,10 @@ public class OI {
 		holdBallButton = new JoystickButton(shootJoystick, 6);
 		holdBallButton.whileHeld(new HoldBallCommand());
 		
-		rollerIn = new JoystickButton(driveJoystick, 5);
+		rollerIn = new JoystickButton(driveJoystick, 6);
 		rollerIn.whileHeld(new RollerInCommand());
 		
-		rollerOut = new JoystickButton(driveJoystick, 6);
+		rollerOut = new JoystickButton(driveJoystick, 5);
 		rollerOut.whileHeld(new RollerOutCommand());
 	
 		autoAlignShooter = new JoystickButton(shootJoystick, 11);

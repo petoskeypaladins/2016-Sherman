@@ -11,7 +11,7 @@ public class SpinShooterCommand extends Command {
 	
 	
     public SpinShooterCommand() {
-        requires(Robot.turretSubsystem);
+        requires(Robot.shooterSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -24,7 +24,7 @@ public class SpinShooterCommand extends Command {
     	if (speed > 1.0) {
     		speed = 1.0;
     	}
-    	Robot.turretSubsystem.spinShooter(speed);
+    	Robot.shooterSubsystem.spinShooter(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -34,13 +34,14 @@ public class SpinShooterCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.turretSubsystem.spinShooter(0);
+    	Robot.shooterSubsystem.spinShooter(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
     	// TODO - Decide whether this needs any code
+    	end();
     }
     
     
