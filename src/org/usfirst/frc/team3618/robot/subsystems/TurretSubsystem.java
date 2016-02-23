@@ -51,7 +51,7 @@ public class TurretSubsystem extends Subsystem {
 		tiltMaxLimit = new DigitalInput(RobotMap.TILT_MAX_DIO);
 		
 		rotateMotor = new CANTalon(RobotMap.ROTATE_SHOOTER_MOTOR);
-		rotatePot = new AnalogPotentiometer(RobotMap.ROTATE_ANALOG);
+		rotatePot = new AnalogPotentiometer(RobotMap.ROTATE_ANALOG, 360);
 		
 		tiltMotor.setInverted(true);
 		rotateMotor.setInverted(true);
@@ -67,7 +67,7 @@ public class TurretSubsystem extends Subsystem {
 	
 	public void displayData() {
 		SmartDashboard.putNumber("Rotate Pot", rotatePot.get());
-		SmartDashboard.putNumber("Tilt Pot", tiltPot.get());
+		SmartDashboard.putNumber("Angle", tiltPot.get());
 		SmartDashboard.putBoolean("Tilt Min Limit", tiltMinLimit.get());
 		SmartDashboard.putBoolean("Tilt Max Limit", tiltMaxLimit.get());
 		SmartDashboard.putNumber("Tilt Encoder", tiltMotor.getEncPosition());
