@@ -20,7 +20,7 @@ public class ShooterSubsystem extends Subsystem {
 		leftMotor = new CANTalon(RobotMap.LEFT_SHOOT_WHEEL_MOTOR);
 		rightMotor = new CANTalon(RobotMap.RIGHT_SHOOT_WHEEL_MOTOR);
 		
-		rightMotor.setInverted(true);
+		rightMotor.setInverted(false); //false = competition true = practice
 	}
 	
 	public void displayData() {

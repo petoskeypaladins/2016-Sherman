@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class AutoAlignShooterCommand extends Command {
+public class AutoAlignShooterXCommand extends Command {
 
 	double cenX, cenY, targetWidth, camOffset;
 	int vCamWidth, vCamHeight;
 	
-    public AutoAlignShooterCommand() {
+    public AutoAlignShooterXCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.turretSubsystem);
@@ -39,12 +39,18 @@ public class AutoAlignShooterCommand extends Command {
 		    double xError = cenX - (vCamWidth / 2) + xOff;
 		    double mvmtRatioX = (xError / 360);
 		    
-		    if ((Math.abs(xError) > 7)) {
+		    if ((Math.abs(xError) > 5)) {
 		    	if (xError < 40 && xError > 0) {
 			    	// The value is too small for the motor to do anything
 			    	mvmtRatioX = 0.06;
-			    } else if (xError < -40 && xError < 40) {
+			    	if (xError < 20 && xError > 0) {
+			    		mvmtRatioX = 0.05;
+			    	}
+			    } else if (xError < -40) {
 			    	mvmtRatioX = -0.06;
+			    	if (xError < -20 && xError > -40) {
+			    		mvmtRatioX = -0.05;
+			    	}
 			    }
 			    
 			    Robot.turretSubsystem.rotateTurret(mvmtRatioX);
@@ -56,11 +62,6 @@ public class AutoAlignShooterCommand extends Command {
 			    
 		    SmartDashboard.putNumber("X Error", xError);
 		    SmartDashboard.putNumber("X Ratio", mvmtRatioX);
-		    
-//		    double yError = -(cenY - (vCamHeight / 2) - 100);
-//		    double mvmtRatioY = (yError / 180);
-//		    	
-//		    Robot.shooterTilt.tilt(mvmtRatioY);
     	}
     	
     

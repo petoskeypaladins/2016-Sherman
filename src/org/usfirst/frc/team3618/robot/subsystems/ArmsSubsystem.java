@@ -16,6 +16,8 @@ public class ArmsSubsystem extends Subsystem {
 
 	public ArmsSubsystem() {
 		armMotor = new CANTalon(RobotMap.TILT_INTAKE_ARM_MOTOR);
+
+		armMotor.setInverted(true);
 	}
 	
 	public void displayData() {

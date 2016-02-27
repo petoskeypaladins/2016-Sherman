@@ -24,7 +24,9 @@ public class OI {
 	public Button rollerIn2;
 	public Button rollerOut2;
 	
-	public Button autoAlignShooter;
+	public Button autoAlignShooterX;
+	public Button autoAlignShooterY;
+	public Button centerTurret;
 	
 	public OI() {
 		
@@ -34,8 +36,8 @@ public class OI {
 		spinShooterButton = new JoystickButton(shootJoystick, 2);
 		spinShooterButton.whileHeld(new SpinShooterCommand());
 		
-		stopShooterButton = new JoystickButton(shootJoystick, 7);
-		stopShooterButton.whenPressed(new StopShooterCommand());
+//		stopShooterButton = new JoystickButton(shootJoystick, 7);
+//		stopShooterButton.whenPressed(new StopShooterCommand());
 		
 		startIntakeButton = new JoystickButton(shootJoystick, 4);
 		startIntakeButton.whileHeld(new IntakeStartCommand());
@@ -52,8 +54,14 @@ public class OI {
 		rollerOut = new JoystickButton(driveJoystick, 5);
 		rollerOut.whileHeld(new RollerOutCommand());
 	
-		autoAlignShooter = new JoystickButton(shootJoystick, 11);
-		autoAlignShooter.whileHeld(new AutoAlignShooterCommand());
+		autoAlignShooterX = new JoystickButton(shootJoystick, 11);
+		autoAlignShooterX.whileHeld(new AutoAlignShooterXCommand());
+		
+		autoAlignShooterY = new JoystickButton(shootJoystick, 12);
+		autoAlignShooterY.whileHeld(new AutoAlignShooterYCommand());
+		
+		centerTurret = new JoystickButton(shootJoystick, 7);
+		centerTurret.whenPressed(new ResetTurretCommand());
 		
 	}
 	

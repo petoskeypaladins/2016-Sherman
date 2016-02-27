@@ -34,7 +34,7 @@ public class TurretMovementCommand extends Command {
     	
     	//Code for rotation movement
     	double rotate = Math.pow(Robot.oi.shootJoystick.getZ(), 3);
-    	double rLimit = 0.2;
+    	double rLimit = 0.4;
     	
     	if(Math.abs(rotate) < 0.2){
     		rotate = 0;    		

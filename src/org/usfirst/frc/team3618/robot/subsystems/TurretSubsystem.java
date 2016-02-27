@@ -33,12 +33,12 @@ public class TurretSubsystem extends Subsystem {
 	//Tilt Declarations
     CANTalon tiltMotor;
     Potentiometer tiltPot;
-    DigitalInput tiltMinLimit;
+    public DigitalInput tiltMinLimit;
     DigitalInput tiltMaxLimit;
     
     //Rotate Declarations
     CANTalon rotateMotor;
-    Potentiometer rotatePot;
+    public Potentiometer rotatePot;
     
 	public TurretSubsystem() {
 		leftMotor = new CANTalon(RobotMap.LEFT_SHOOT_WHEEL_MOTOR);
@@ -53,8 +53,8 @@ public class TurretSubsystem extends Subsystem {
 		rotateMotor = new CANTalon(RobotMap.ROTATE_SHOOTER_MOTOR);
 		rotatePot = new AnalogPotentiometer(RobotMap.ROTATE_ANALOG, 360);
 		
-		tiltMotor.setInverted(true);
-		rotateMotor.setInverted(true);
+		tiltMotor.setInverted(false); //true = competition    false = practice
+		rotateMotor.setInverted(false); //true = competiion    false = practice
 		
 		rightMotor.setInverted(true);
 	}
@@ -67,7 +67,8 @@ public class TurretSubsystem extends Subsystem {
 	
 	public void displayData() {
 		SmartDashboard.putNumber("Rotate Pot", rotatePot.get());
-		SmartDashboard.putNumber("Angle", tiltPot.get());
+		SmartDashboard.putNumber("Tilt Pot", tiltPot.get());
+		SmartDashboard.putNumber("Rotate Output", rotateMotor.get());
 		SmartDashboard.putBoolean("Tilt Min Limit", tiltMinLimit.get());
 		SmartDashboard.putBoolean("Tilt Max Limit", tiltMaxLimit.get());
 		SmartDashboard.putNumber("Tilt Encoder", tiltMotor.getEncPosition());
@@ -89,6 +90,20 @@ public class TurretSubsystem extends Subsystem {
     }
     
     public void rotateTurret(double output) {
+    	double offset = 69;
+    	if (output < 0) {
+    		// Left
+    		SmartDashboard.putString("Turret Direcrion", "Trying to move right");
+    		if (rotatePot.get() >= 216 + offset) {
+    			output = 0;
+    		}
+    	} else if (output > 0) {
+    		// Right
+    		SmartDashboard.putString("Turret Direcrion", "Trying to move left");
+    		if (rotatePot.get() <= 37 + offset) {
+    			output = 0;
+    		}
+    	}
     	rotateMotor.set(output);
     }
     public void shoot() {

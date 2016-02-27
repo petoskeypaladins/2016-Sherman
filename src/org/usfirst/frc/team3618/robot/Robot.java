@@ -112,6 +112,9 @@ public class Robot extends IterativeRobot {
         Robot.driveSubsystem.displayData();
         Robot.armsSubsystem.displayData();
         
+        SmartDashboard.putBoolean("Back Sensor", backSensor.get());
+        SmartDashboard.putBoolean("Front Sensor", frontSensor.get());
+        
         if (!IS_USING_OPENCV) {
 	        lifecam.getImage(frame);
 	        
