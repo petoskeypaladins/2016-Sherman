@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team3618.robot;
 
 import org.usfirst.frc.team3618.robot.commands.HoldBallCommand;
