@@ -25,11 +25,11 @@ public class RobotMap {
 	public static int TILT_ANALOG = 0;
 	public static int ROTATE_ANALOG = 1;
 	
-	public static int RIGHT_DRIVE_ENCODER_A = 0;
-	public static int RIGHT_DRIVE_ENCODER_B = 1;
+	public static int RIGHT_DRIVE_ENCODER_A = 2;
+	public static int RIGHT_DRIVE_ENCODER_B = 3;
 	
-	public static int LEFT_DRIVE_ENCODER_A = 2;
-	public static int LEFT_DRIVE_ENCODER_B = 3;
+	public static int LEFT_DRIVE_ENCODER_A = 0;
+	public static int LEFT_DRIVE_ENCODER_B = 1;
 	
 	public static int TILT_MIN_DIO = 5;
 	public static int TILT_MAX_DIO = 6;

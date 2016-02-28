@@ -4,6 +4,7 @@ import org.usfirst.frc.team3618.robot.commands.HoldBallCommand;
 import org.usfirst.frc.team3618.robot.commands.IntakeStartCommand;
 import org.usfirst.frc.team3618.robot.commands.IntakeStopCommand;
 import org.usfirst.frc.team3618.robot.commands.ReleaseBallCommand;
+import org.usfirst.frc.team3618.robot.commands.autonomous.AutonomousCommandManager;
 import org.usfirst.frc.team3618.robot.subsystems.ArmsSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.RollerSubsystem;
@@ -27,25 +28,27 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 
 public class Robot extends IterativeRobot {
 
-	  public static DriveSubsystem driveSubsystem = new DriveSubsystem();
-	  public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
-	  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
-	  public static RollerSubsystem rollerSubsystem = new RollerSubsystem();	
-	  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
+	public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
+	public static TurretSubsystem turretSubsystem = new TurretSubsystem();
+	public static RollerSubsystem rollerSubsystem = new RollerSubsystem();	
+	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
-	  public static OI oi;
+	public static OI oi;
 	
-	  public static boolean IS_USING_OPENCV = true;
+	public static boolean IS_USING_OPENCV = true;
 	
-	  private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
-	  private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
+	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
+	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
 	
-	  private boolean lastRunBackSensor = false; 
-    private boolean lastRunFrontSensor = false;
-    private SendableChooser autoBallChooser, autoDefenseChooser;
-    
-    CameraServer camServer;
-    USBCamera lifecam;
+	private boolean lastRunBackSensor = false; 
+	private boolean lastRunFrontSensor = false;
+	private SendableChooser autoBallChooser, autoDefenseChooser, autoPositionChooser;
+	  
+	public String[] defenses;
+	  
+	CameraServer camServer;
+	USBCamera lifecam;
     
     int CAM_WIDTH = 640;
     int CAM_HEIGHT = 480;
@@ -53,8 +56,15 @@ public class Robot extends IterativeRobot {
     Command autonomousCommand;
 
     public void robotInit() {
-		oi = new OI();
-       SmartDashboard.putData("Auto mode", chooser);
+    	oi = new OI();
+    	
+    	autoBallChooser = new SendableChooser();
+        autoDefenseChooser = new SendableChooser();
+        autoPositionChooser = new SendableChooser();
+    	
+    	SmartDashboard.putData("Autonomous Type", autoBallChooser);
+    	SmartDashboard.putData("Autonomous Defense Type", autoDefenseChooser);
+    	SmartDashboard.putData("Autonomous Position", autoPositionChooser);
         
         if (!IS_USING_OPENCV) {
         	camServer = CameraServer.getInstance();
@@ -62,18 +72,24 @@ public class Robot extends IterativeRobot {
 	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
         }
 
-        autoBallChooser = new SendableChooser();
-        autoDefenseChooser = new SendableChooser();
-        String[] defenses = {"Low Bar", "Portcullis", "Cheval de Frise", "Rock Wall", "Rough Terrain", "Ramparts", "Moat", "DrawBridge", "Sally Port"};
+        defenses = new String[]{"Low Bar", "Portcullis", "Cheval de Frise", "Rock Wall", "Rough Terrain", "Ramparts", "Moat", "DrawBridge", "Sally Port"};
         
-        autoBallChooser.addDefault("One", 1);
-        autoBallChooser.addObject("Two", 2);
-        autoBallChooser.addObject("Zero", 3);
+        autoBallChooser.addDefault("One Ball", 1);
+        autoBallChooser.addObject("Two Ball", 2);
+        autoBallChooser.addObject("Defense", 3);
+        autoBallChooser.addObject("Sit There and Cry", 4);
 
         autoDefenseChooser.addDefault(defenses[0], 1);
         for (int i = 2; i < defenses.length + 1; i++) {
             autoDefenseChooser.addObject(defenses[i - 1], i);
         }
+        
+        autoPositionChooser.addDefault("Position 1", 1);
+        autoPositionChooser.addObject("Position 2", 2);
+        autoPositionChooser.addObject("Position 3", 3);
+        autoPositionChooser.addObject("Position 4", 4);
+        autoPositionChooser.addObject("Position 5", 5);
+        autoPositionChooser.addObject("NONE", 6);
     }
 	
     public void disabledInit(){
@@ -85,7 +101,13 @@ public class Robot extends IterativeRobot {
 	}
 
     public void autonomousInit() {
-        
+        try {
+        	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
+    		autonomousCommand = new AutonomousCommandManager((int) autoBallChooser.getSelected(), (int) autoDefenseChooser.getSelected(), (int) autoPositionChooser.getSelected());
+    		autonomousCommand.start();
+        } catch(Exception e) {
+        	System.out.println("Unable to read chooser data!");
+        }
     }
 
     public void autonomousPeriodic() {
@@ -94,6 +116,8 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
         if (autonomousCommand != null) autonomousCommand.cancel();
+        
+        Robot.driveSubsystem.resetEncoders();
         
         lastRunBackSensor = false; 
         lastRunFrontSensor = false;
