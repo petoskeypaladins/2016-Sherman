@@ -27,22 +27,23 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 
 public class Robot extends IterativeRobot {
 
-	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
-	public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
-	public static TurretSubsystem turretSubsystem = new TurretSubsystem();
-	public static RollerSubsystem rollerSubsystem = new RollerSubsystem();	
-	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+	  public static DriveSubsystem driveSubsystem = new DriveSubsystem();
+	  public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
+	  public static TurretSubsystem turretSubsystem = new TurretSubsystem();
+	  public static RollerSubsystem rollerSubsystem = new RollerSubsystem();	
+	  public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
-	public static OI oi;
+	  public static OI oi;
 	
-	public static boolean IS_USING_OPENCV = true;
+	  public static boolean IS_USING_OPENCV = true;
 	
-	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
-	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
+	  private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
+	  private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
 	
-	private boolean lastRunBackSensor = false; 
+	  private boolean lastRunBackSensor = false; 
     private boolean lastRunFrontSensor = false;
-	
+    private SendableChooser autoBallChooser, autoDefenseChooser;
+    
     CameraServer camServer;
     USBCamera lifecam;
     
@@ -50,17 +51,28 @@ public class Robot extends IterativeRobot {
     int CAM_HEIGHT = 480;
     
     Command autonomousCommand;
-    SendableChooser chooser;
 
     public void robotInit() {
 		oi = new OI();
-        chooser = new SendableChooser();
-        SmartDashboard.putData("Auto mode", chooser);
+       SmartDashboard.putData("Auto mode", chooser);
         
         if (!IS_USING_OPENCV) {
         	camServer = CameraServer.getInstance();
 	        lifecam = new USBCamera("cam0");
 	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
+        }
+
+        autoBallChooser = new SendableChooser();
+        autoDefenseChooser = new SendableChooser();
+        String[] defenses = {"Low Bar", "Portcullis", "Cheval de Frise", "Rock Wall", "Rough Terrain", "Ramparts", "Moat", "DrawBridge", "Sally Port"};
+        
+        autoBallChooser.addDefault("One", 1);
+        autoBallChooser.addObject("Two", 2);
+        autoBallChooser.addObject("Zero", 3);
+
+        autoDefenseChooser.addDefault(defenses[0], 1);
+        for (int i = 2; i < defenses.length + 1; i++) {
+            autoDefenseChooser.addObject(defenses[i - 1], i);
         }
     }
 	
@@ -73,9 +85,7 @@ public class Robot extends IterativeRobot {
 	}
 
     public void autonomousInit() {
-        autonomousCommand = (Command) chooser.getSelected();
         
-        if (autonomousCommand != null) autonomousCommand.start();
     }
 
     public void autonomousPeriodic() {
