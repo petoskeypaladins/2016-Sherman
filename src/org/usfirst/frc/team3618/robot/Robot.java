@@ -109,7 +109,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         try {
         	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
-    		autonomousCommand = new AutonomousCommandManager((int) autoBallChooser.getSelected(), (int) autoDefenseChooser.getSelected(), (int) autoPositionChooser.getSelected());
+    		autonomousCommand = new AutonomousCommandManager();
     		autonomousCommand.start();
         } catch(Exception e) {
         	System.out.println("Unable to read chooser data!");
