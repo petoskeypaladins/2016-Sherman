@@ -3,8 +3,6 @@ package org.usfirst.frc.team3618.robot.subsystems;
 import org.usfirst.frc.team3618.robot.RobotMap;
 import org.usfirst.frc.team3618.robot.commands.DriveCommand;
 
-import com.analog.adis16448.frc.ADIS16448_IMU;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -22,7 +20,6 @@ public class DriveSubsystem extends Subsystem {
 
 	Encoder rightEncoder;
 	Encoder leftEncoder;
-	ADIS16448_IMU weirdGyro;
 	
 	public static final double TICKS_PER_FOOT = 415.25;
 	
@@ -37,11 +34,6 @@ public class DriveSubsystem extends Subsystem {
 		rightEncoder = new Encoder(RobotMap.RIGHT_DRIVE_ENCODER_A, RobotMap.RIGHT_DRIVE_ENCODER_B, false);
 		leftEncoder = new Encoder(RobotMap.LEFT_DRIVE_ENCODER_A, RobotMap.LEFT_DRIVE_ENCODER_B, true);
 		
-		weirdGyro = new ADIS16448_IMU();
-		
-		weirdGyro.calibrate();
-		weirdGyro.reset();
-		
 		leftEncoder.reset();
 		rightEncoder.reset();
 		
@@ -50,10 +42,13 @@ public class DriveSubsystem extends Subsystem {
 	}
     
 	public void displayData() {
-		SmartDashboard.putNumber("Gyro X Angle", weirdGyro.getAngleX());
-		SmartDashboard.putNumber("Left Drive Encoder", leftEncoder.get());
-		SmartDashboard.putNumber("Right Drive Encoder", rightEncoder.get());
-		SmartDashboard.putNumber("Drive Encoders", getEncoders());
+		SmartDashboard.putNumber("Encoder - Left Drive", leftEncoder.get());
+		SmartDashboard.putNumber("Encoder - Right Drive", rightEncoder.get());
+		SmartDashboard.putNumber("Encoder - Drive Train", getEncoders());
+		SmartDashboard.putNumber("Output - LF Drive", leftFrontMotor.get());
+		SmartDashboard.putNumber("Output - LR Drive", leftRearMotor.get());
+		SmartDashboard.putNumber("Output - RF Drive", rightFrontMotor.get());
+		SmartDashboard.putNumber("Output - RR Drive", rightRearMotor.get());
 	}
 	
     public void initDefaultCommand() {

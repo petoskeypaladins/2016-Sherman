@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3618.robot.subsystems;
 
+import org.usfirst.frc.team3618.robot.Robot;
 import org.usfirst.frc.team3618.robot.RobotMap;
 import org.usfirst.frc.team3618.robot.commands.TurretMovementCommand;
 
@@ -24,16 +25,15 @@ public class TurretSubsystem extends Subsystem {
 	private final double RIGHT_OPEN_POSITION = 90;
 	
 	private final double RIGHT_HOLD_POSITION = 45;
-	//Shooter declarations 
-	CANTalon leftMotor;
-	CANTalon rightMotor;
+	
 	//Servo Declarations
 	Servo leftServo;
 	Servo rightServo;
+	
 	//Tilt Declarations
+	DigitalInput tiltMinLimit;
     CANTalon tiltMotor;
     Potentiometer tiltPot;
-    public DigitalInput tiltMinLimit;
     DigitalInput tiltMaxLimit;
     
     //Rotate Declarations
@@ -41,8 +41,6 @@ public class TurretSubsystem extends Subsystem {
     public Potentiometer rotatePot;
     
 	public TurretSubsystem() {
-		leftMotor = new CANTalon(RobotMap.LEFT_SHOOT_WHEEL_MOTOR);
-		rightMotor = new CANTalon(RobotMap.RIGHT_SHOOT_WHEEL_MOTOR);
 		leftServo = new Servo(RobotMap.LEFT_BALL_SERVO);
 		rightServo = new Servo(RobotMap.RIGHT_BALL_SERVO);
 		tiltMotor = new CANTalon(RobotMap.TILT_SHOOTER_MOTOR);
@@ -53,10 +51,14 @@ public class TurretSubsystem extends Subsystem {
 		rotateMotor = new CANTalon(RobotMap.ROTATE_SHOOTER_MOTOR);
 		rotatePot = new AnalogPotentiometer(RobotMap.ROTATE_ANALOG, 360);
 		
-		tiltMotor.setInverted(false); //true = competition    false = practice
-		rotateMotor.setInverted(false); //true = competiion    false = practice
-		
-		rightMotor.setInverted(true);
+    	// TODO - Always check before deploying
+		if (Robot.IS_COMPETITION_ROBOT) {
+			tiltMotor.setInverted(true);
+			rotateMotor.setInverted(true);
+		} else {
+			tiltMotor.setInverted(false);
+			rotateMotor.setInverted(false);
+		}
 	}
     
 	public void initDefaultCommand() {
@@ -66,13 +68,14 @@ public class TurretSubsystem extends Subsystem {
 	}
 	
 	public void displayData() {
-		SmartDashboard.putNumber("Rotate Pot", rotatePot.get());
-		SmartDashboard.putNumber("Tilt Pot", tiltPot.get());
-		SmartDashboard.putNumber("Rotate Output", rotateMotor.get());
-		SmartDashboard.putBoolean("Tilt Min Limit", tiltMinLimit.get());
-		SmartDashboard.putBoolean("Tilt Max Limit", tiltMaxLimit.get());
-		SmartDashboard.putNumber("Tilt Encoder", tiltMotor.getEncPosition());
-		SmartDashboard.putNumber("Rotate Encoder", rotateMotor.getEncPosition());
+		SmartDashboard.putNumber("Sensor - Rotate Pot", rotatePot.get());
+		SmartDashboard.putNumber("Sensor - Tilt Pot", tiltPot.get());
+		SmartDashboard.putNumber("Sensor - Left Servo", leftServo.getAngle());
+		SmartDashboard.putNumber("Sensor - Right Servo", rightServo.getAngle());
+		SmartDashboard.putNumber("Output - Rotate Motor", rotateMotor.get());
+		SmartDashboard.putNumber("Output - Tilt Motor", tiltMotor.get());
+		SmartDashboard.putBoolean("Sensor - Tilt Min Limit", tiltMinLimit.get());
+		SmartDashboard.putBoolean("Sensor - Tilt Max Limit", tiltMaxLimit.get());
 	}
     
     public void tiltTurret(double output) {
@@ -85,21 +88,28 @@ public class TurretSubsystem extends Subsystem {
     			output = 0;
     		}
     	}
-    	SmartDashboard.putNumber("Tilt Value", output);
     	tiltMotor.set(output);
     }
     
     public void rotateTurret(double output) {
-    	double offset = 69;
+    	double offset;
+    	
+    	// TODO - Always check before deploying
+    	if (Robot.IS_COMPETITION_ROBOT) {
+    		offset = 0;
+    	} else {
+    		offset = 69;
+    	}
+    	
     	if (output < 0) {
     		// Left
-    		SmartDashboard.putString("Turret Direcrion", "Trying to move right");
+    		SmartDashboard.putString("Debug - Turret Direction", "Trying to move right");
     		if (rotatePot.get() >= 216 + offset) {
     			output = 0;
     		}
     	} else if (output > 0) {
     		// Right
-    		SmartDashboard.putString("Turret Direcrion", "Trying to move left");
+    		SmartDashboard.putString("Debug - Turret Direction", "Trying to move left");
     		if (rotatePot.get() <= 37 + offset) {
     			output = 0;
     		}
@@ -125,5 +135,14 @@ public class TurretSubsystem extends Subsystem {
     	leftServo.setAngle(LEFT_OPEN_POSITION);
     	rightServo.setAngle(RIGHT_OPEN_POSITION);
     }
+    
+    public boolean isMinLimitSet() {
+    	return tiltMinLimit.get();
+    }
+    
+    public boolean isMaxLimitSet() {
+    	return tiltMaxLimit.get();
+    }
+    
 }
 

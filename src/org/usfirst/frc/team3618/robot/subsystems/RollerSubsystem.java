@@ -4,6 +4,7 @@ import org.usfirst.frc.team3618.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -17,6 +18,10 @@ public class RollerSubsystem extends Subsystem {
 
 	public RollerSubsystem() {
 		rollerMotor = new CANTalon(RobotMap.INTAKE_ROLLER_MOTOR);
+	}
+	
+	public void displayData() {
+		SmartDashboard.putNumber("Output - Roller Motor", rollerMotor.get());
 	}
 	
     public void initDefaultCommand() {
