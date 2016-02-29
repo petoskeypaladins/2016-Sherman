@@ -60,9 +60,6 @@ public class OI {
 		autoAlignShooterY = new JoystickButton(shootJoystick, 12);
 		autoAlignShooterY.whileHeld(new AutoAlignShooterYCommand());
 		
-		centerTurret = new JoystickButton(shootJoystick, 7);
-		centerTurret.whenPressed(new ResetTurretCommand());
-		
 	}
 	
 }

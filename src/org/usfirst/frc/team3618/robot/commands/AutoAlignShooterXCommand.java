@@ -33,7 +33,7 @@ public class AutoAlignShooterXCommand extends Command {
     	cenY = SmartDashboard.getNumber("Center Y");
     	targetWidth = SmartDashboard.getNumber("Goal Width");
     	
-    	if (cenX > 0 && cenY > 0) {
+    	if (cenX > 0 && cenY > 0  && targetWidth > 0) {
     		
     		double xOff = .3375 * targetWidth;
 		    double xError = cenX - (vCamWidth / 2) + xOff;

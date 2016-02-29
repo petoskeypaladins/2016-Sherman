@@ -21,7 +21,8 @@ public class ArmsSubsystem extends Subsystem {
 	}
 	
 	public void displayData() {
-		SmartDashboard.putNumber("Arms Encoder", armMotor.getEncPosition());
+		SmartDashboard.putNumber("Encoder - Arms", armMotor.getEncPosition());
+		SmartDashboard.putNumber("Output - Arms", armMotor.get());
 	}
 	
     public void initDefaultCommand() {
