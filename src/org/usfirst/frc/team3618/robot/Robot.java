@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 
 public class Robot extends IterativeRobot {
 
-	public static boolean IS_USING_OPENCV = true;
+	public static boolean IS_USING_OPENCV = false;
 	public static boolean IS_COMPETITION_ROBOT = true;
 	
 	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
@@ -93,7 +93,7 @@ public class Robot extends IterativeRobot {
         
         if (!IS_USING_OPENCV) {
         	camServer = CameraServer.getInstance();
-	        lifecam = new USBCamera("cam0");
+	        lifecam = new USBCamera("cam1");
 	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
         }
     }
@@ -107,9 +107,10 @@ public class Robot extends IterativeRobot {
 	}
 
     public void autonomousInit() {
+    	Robot.turretSubsystem.resetGyro();
         try {
         	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
-    		autonomousCommand = new AutonomousCommandManager();
+    		autonomousCommand = new AutonomousCommandManager((int) autoBallChooser.getSelected(), (int) autoDefenseChooser.getSelected(), (int) autoPositionChooser.getSelected());
     		autonomousCommand.start();
         } catch(Exception e) {
         	System.out.println("Unable to read chooser data!");
@@ -130,6 +131,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         if (autonomousCommand != null) autonomousCommand.cancel();
         
+        Robot.turretSubsystem.resetGyro();
         Robot.driveSubsystem.resetEncoders();
         
         lastRunBackSensor = false; 

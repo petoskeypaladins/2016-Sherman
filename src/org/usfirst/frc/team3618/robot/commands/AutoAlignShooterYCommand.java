@@ -30,10 +30,28 @@ public class AutoAlignShooterYCommand extends Command {
     	cenY = SmartDashboard.getNumber("Center Y");
     	targetWidth = SmartDashboard.getNumber("Goal Width");
     	
-    	double yError = -(cenY - (vCamHeight / 2) - (targetWidth*1.25));
+    	double yError = -(cenY - (vCamHeight / 2));
 	    double mvmtRatioY = (yError / 240);
 	    	
-	    Robot.turretSubsystem.tiltTurret(mvmtRatioY);
+	    if (Math.abs(yError) >= 3) {
+	    	if (yError < 30 && yError > 0) {
+		    	// The value is too small for the motor to do anything
+		    	mvmtRatioY = 0.06;
+		    	if (yError < 15 && yError > 0) {
+		    		mvmtRatioY = 0.06;
+		    	}
+		    } else if (yError > -30 && yError < 0) {
+		    	mvmtRatioY = -0.06;
+		    	if (yError > -20 && yError < 0) {
+		    		mvmtRatioY = -0.06;
+		    	}
+		    }
+	    	
+		    Robot.turretSubsystem.tiltTurret(mvmtRatioY);
+	    } else {
+		    Robot.turretSubsystem.tiltTurret(0);
+	    }
+	    
     }
 
     // Make this return true when this Command no longer needs to run execute()

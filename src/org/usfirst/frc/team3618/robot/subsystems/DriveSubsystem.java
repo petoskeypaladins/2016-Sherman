@@ -39,6 +39,12 @@ public class DriveSubsystem extends Subsystem {
 		
 		leftFrontMotor.setInverted(true);
 		rightFrontMotor.setInverted(true);
+		
+		leftRearMotor.setSafetyEnabled(false);
+		leftFrontMotor.setSafetyEnabled(false);
+		rightFrontMotor.setSafetyEnabled(false);
+		rightRearMotor.setSafetyEnabled(false);
+		myRobotDrive.setSafetyEnabled(false);
 	}
     
 	public void displayData() {

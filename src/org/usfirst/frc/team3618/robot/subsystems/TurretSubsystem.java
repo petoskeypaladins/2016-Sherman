@@ -4,11 +4,13 @@ import org.usfirst.frc.team3618.robot.Robot;
 import org.usfirst.frc.team3618.robot.RobotMap;
 import org.usfirst.frc.team3618.robot.commands.TurretMovementCommand;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -35,7 +37,8 @@ public class TurretSubsystem extends Subsystem {
     CANTalon tiltMotor;
     Potentiometer tiltPot;
     DigitalInput tiltMaxLimit;
-    
+    Gyro tiltGyro;
+
     //Rotate Declarations
     CANTalon rotateMotor;
     public Potentiometer rotatePot;
@@ -47,7 +50,8 @@ public class TurretSubsystem extends Subsystem {
 		tiltPot = new AnalogPotentiometer(RobotMap.TILT_ANALOG);
 		tiltMinLimit = new DigitalInput(RobotMap.TILT_MIN_DIO);
 		tiltMaxLimit = new DigitalInput(RobotMap.TILT_MAX_DIO);
-		
+		tiltGyro = new AnalogGyro(RobotMap.TILT_GYRO);
+
 		rotateMotor = new CANTalon(RobotMap.ROTATE_SHOOTER_MOTOR);
 		rotatePot = new AnalogPotentiometer(RobotMap.ROTATE_ANALOG, 360);
 		
@@ -59,8 +63,14 @@ public class TurretSubsystem extends Subsystem {
 			tiltMotor.setInverted(false);
 			rotateMotor.setInverted(false);
 		}
+		
+		tiltGyro.calibrate();
 	}
     
+	public void resetGyro() {
+		tiltGyro.reset();
+	}
+	
 	public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
@@ -74,6 +84,7 @@ public class TurretSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Sensor - Right Servo", rightServo.getAngle());
 		SmartDashboard.putNumber("Output - Rotate Motor", rotateMotor.get());
 		SmartDashboard.putNumber("Output - Tilt Motor", tiltMotor.get());
+		SmartDashboard.putNumber("Sensor - Tilt Gyro", tiltGyro.getAngle());
 		SmartDashboard.putBoolean("Sensor - Tilt Min Limit", tiltMinLimit.get());
 		SmartDashboard.putBoolean("Sensor - Tilt Max Limit", tiltMaxLimit.get());
 	}
@@ -103,13 +114,11 @@ public class TurretSubsystem extends Subsystem {
     	
     	if (output < 0) {
     		// Left
-    		SmartDashboard.putString("Debug - Turret Direction", "Trying to move right");
     		if (rotatePot.get() >= 216 + offset) {
     			output = 0;
     		}
     	} else if (output > 0) {
     		// Right
-    		SmartDashboard.putString("Debug - Turret Direction", "Trying to move left");
     		if (rotatePot.get() <= 37 + offset) {
     			output = 0;
     		}

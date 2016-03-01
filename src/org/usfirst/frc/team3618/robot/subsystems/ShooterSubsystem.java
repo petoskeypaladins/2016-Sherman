@@ -22,7 +22,7 @@ public class ShooterSubsystem extends Subsystem {
 		
     	// TODO - Always check before deploying
 		if (Robot.IS_COMPETITION_ROBOT) {
-			rightMotor.setInverted(false);
+			rightMotor.setInverted(true);
 		} else {
 			rightMotor.setInverted(false);
 		}

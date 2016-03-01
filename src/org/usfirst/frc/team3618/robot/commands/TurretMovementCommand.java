@@ -33,7 +33,7 @@ public class TurretMovementCommand extends Command {
     	Robot.turretSubsystem.tiltTurret(tilt*tLimit);
     	
     	//Code for rotation movement
-    	double rotate = Math.pow(Robot.oi.shootJoystick.getZ(), 3);
+    	double rotate = Robot.oi.shootJoystick.getZ();
     	double rLimit = 0.4;
     	
     	if(Math.abs(rotate) < 0.2){

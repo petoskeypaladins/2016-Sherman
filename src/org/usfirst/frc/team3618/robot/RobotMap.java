@@ -21,8 +21,9 @@ public class RobotMap {
 	
 	public static int BACK_BALL_SENSOR = 4;
 	public static int FRONT_BALL_SENSOR = 8;
-		
-	public static int TILT_ANALOG = 0;
+	
+	public static int TILT_GYRO = 0;
+	public static int TILT_ANALOG = 2;
 	public static int ROTATE_ANALOG = 1;
 	
 	public static int RIGHT_DRIVE_ENCODER_A = 2;

@@ -24,7 +24,7 @@ public class AutoAlignShooterXCommand extends Command {
     	// These are as interpreted by the openCV program
     	vCamWidth = 320;
     	vCamHeight = 240;
-    	camOffset = 6.5;
+    	camOffset = 8.125;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,21 +35,21 @@ public class AutoAlignShooterXCommand extends Command {
     	
     	if (cenX > 0 && cenY > 0  && targetWidth > 0) {
     		
-    		double xOff = .3375 * targetWidth;
+    		double xOff = (targetWidth / 20) * camOffset; //TargetWidth/20 gives pixels/inch. Times camOffset in inches gives pixel offset.
 		    double xError = cenX - (vCamWidth / 2) + xOff;
 		    double mvmtRatioX = (xError / 360);
 		    
-		    if ((Math.abs(xError) > 5)) {
+		    if ((Math.abs(xError) >= 3)) {
 		    	if (xError < 40 && xError > 0) {
 			    	// The value is too small for the motor to do anything
 			    	mvmtRatioX = 0.06;
 			    	if (xError < 20 && xError > 0) {
-			    		mvmtRatioX = 0.05;
+			    		mvmtRatioX = 0.055;
 			    	}
-			    } else if (xError < -40) {
+			    } else if (xError > -40 && xError < 0) {
 			    	mvmtRatioX = -0.06;
-			    	if (xError < -20 && xError > -40) {
-			    		mvmtRatioX = -0.05;
+			    	if (xError > -20 && xError < 0) {
+			    		mvmtRatioX = -0.055;
 			    	}
 			    }
 			    
@@ -58,7 +58,8 @@ public class AutoAlignShooterXCommand extends Command {
 			    SmartDashboard.putBoolean("Centered Shooter", false);
 		    } else {
 		    	SmartDashboard.putBoolean("Centered Shooter", true);
-		    }
+			    Robot.turretSubsystem.rotateTurret(0);
+	    }
 			    
 		    SmartDashboard.putNumber("X Error", xError);
 		    SmartDashboard.putNumber("X Ratio", mvmtRatioX);
