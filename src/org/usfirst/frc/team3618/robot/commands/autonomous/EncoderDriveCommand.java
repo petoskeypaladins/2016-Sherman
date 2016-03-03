@@ -27,7 +27,7 @@ public class EncoderDriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveSubsystem.AutonDrive(Robot.driveSubsystem.accel(power, timeSinceInitialized(), 0.5));
+    	Robot.driveSubsystem.autonDrive(Robot.driveSubsystem.accel(power, 0.05));
     }
 
     // Make this return true when this Command no longer needs to run execute()

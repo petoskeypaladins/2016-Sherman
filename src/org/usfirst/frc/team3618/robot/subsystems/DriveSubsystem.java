@@ -28,6 +28,8 @@ public class DriveSubsystem extends Subsystem {
 	
 	public static final double TICKS_PER_FOOT = 415.25;
 	
+	int steps = 0;
+	
 	private double kP = 0.3;
 	
 	public DriveSubsystem() {
@@ -82,15 +84,19 @@ public class DriveSubsystem extends Subsystem {
     	myRobotDrive.drive(0.0, 0.0);
     }
     
-    public void DriveMe(double left, double right) {
+    public void driveMe(double left, double right) {
     	myRobotDrive.tankDrive(left, right);
     }
     
-    public void AutonDrive(double power) {
+    public void driveMe(double speed) {
+    	myRobotDrive.tankDrive(speed, speed);
+    }
+    
+    public void autonDrive(double power) {
     	myRobotDrive.tankDrive(-power, -power);
     }
     
-    public void AutonStraightDrive(double power) {
+    public void autonStraightDrive(double power) {
     	myRobotDrive.drive(power, -spiGyro.getAngle()*this.kP);
     }
     
@@ -107,25 +113,27 @@ public class DriveSubsystem extends Subsystem {
 		rightEncoder.reset();
     }
     
-    public double accel(double speed, double time, double ramp) {
-    	double curSpeed = (speed*time)/ramp;
-    	if(curSpeed >= speed) {
-    		curSpeed = speed;
+    public double accel(double targetSpeed, double rate) {
+    	double newSpeed = getSpeed() + rate;
+    	if(newSpeed >= targetSpeed) {
+    		newSpeed = targetSpeed;
     	}
-		return curSpeed;   
+		return newSpeed;
     }
     
-    public double decel(double speed, double time, double ramp) {
-    	double curSpeed = (speed*time)/ramp;
-    	if(curSpeed >= speed) {
-    		curSpeed = speed;
+    public void deccel(double targetSpeed, double rate) {
+    	while (getSpeed() > targetSpeed) {
+	    	double newSpeed = getSpeed() - rate;
+	    	autonStraightDrive(newSpeed);
     	}
-		return curSpeed;   
+    }
+    
+    public double getSpeed() {
+    	return rightRearMotor.getSpeed();
     }
     
     public double getEncoders() {
     	return rightEncoder.get();
-    }
-    
+    }    
 }
 
