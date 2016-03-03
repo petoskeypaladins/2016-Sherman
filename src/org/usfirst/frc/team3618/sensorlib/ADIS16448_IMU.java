@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.analog.adis16448.frc;
+package org.usfirst.frc.team3618.sensorlib;
 
 import java.nio.ByteOrder;
 import java.nio.ByteBuffer;

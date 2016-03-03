@@ -2,8 +2,8 @@ package org.usfirst.frc.team3618.robot.subsystems;
 
 import org.usfirst.frc.team3618.robot.RobotMap;
 import org.usfirst.frc.team3618.robot.commands.DriveCommand;
-
-import com.analog.adis16448.frc.ADIS16448_IMU;
+import org.usfirst.frc.team3618.sensorlib.ADIS16448_IMU;
+import org.usfirst.frc.team3618.sensorlib.ADXRS453Gyro;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
@@ -23,9 +23,12 @@ public class DriveSubsystem extends Subsystem {
 	Encoder rightEncoder;
 	Encoder leftEncoder;
 	
-	ADIS16448_IMU gyro;
+	ADIS16448_IMU imuGyro;
+	ADXRS453Gyro spiGyro;
 	
 	public static final double TICKS_PER_FOOT = 415.25;
+	
+	private double kP = 0.3;
 	
 	public DriveSubsystem() {
 		leftFrontMotor = new CANTalon(RobotMap.LEFT_FRONT_MOTOR);
@@ -35,10 +38,13 @@ public class DriveSubsystem extends Subsystem {
 		
 		myRobotDrive = new RobotDrive(leftFrontMotor, leftRearMotor, rightFrontMotor, rightRearMotor);
 		
-		gyro = new ADIS16448_IMU();
+		imuGyro = new ADIS16448_IMU();
+		spiGyro = new ADXRS453Gyro();
 		
-		gyro.calibrate();
-		gyro.reset();
+		imuGyro.calibrate();
+		imuGyro.reset();
+		
+		spiGyro.startThread();
 		
 		rightEncoder = new Encoder(RobotMap.RIGHT_DRIVE_ENCODER_A, RobotMap.RIGHT_DRIVE_ENCODER_B, false);
 		leftEncoder = new Encoder(RobotMap.LEFT_DRIVE_ENCODER_A, RobotMap.LEFT_DRIVE_ENCODER_B, true);
@@ -64,7 +70,8 @@ public class DriveSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Output - LR Drive", leftRearMotor.get());
 		SmartDashboard.putNumber("Output - RF Drive", rightFrontMotor.get());
 		SmartDashboard.putNumber("Output - RR Drive", rightRearMotor.get());
-		SmartDashboard.putNumber("Gyro Angle", gyro.getAngleX());
+		SmartDashboard.putNumber("IMU Gyro Angle", imuGyro.getAngleX());
+		SmartDashboard.putNumber("SPI Gyro Angle", spiGyro.getAngle());
 	}
 	
     public void initDefaultCommand() {
@@ -81,6 +88,10 @@ public class DriveSubsystem extends Subsystem {
     
     public void AutonDrive(double power) {
     	myRobotDrive.tankDrive(-power, -power);
+    }
+    
+    public void AutonStraightDrive(double power) {
+    	myRobotDrive.drive(power, -spiGyro.getAngle()*this.kP);
     }
     
     public double getFeetFromTicks(double ticks) {
