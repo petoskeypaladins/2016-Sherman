@@ -38,6 +38,8 @@ public class TurretSubsystem extends Subsystem {
     Potentiometer tiltPot;
     DigitalInput tiltMaxLimit;
     Gyro tiltGyro;
+    
+    boolean overrideRotate = false, overrideTilt = false;
 
     //Rotate Declarations
     CANTalon rotateMotor;
@@ -90,14 +92,16 @@ public class TurretSubsystem extends Subsystem {
 	}
     
     public void tiltTurret(double output) {
-    	if (output < 0) {
-    		if (tiltMinLimit.get() == true) {
-    			output = 0;
-    		}
-    	} else if (output > 0) {
-    		if (tiltMaxLimit.get() == true) {
-    			output = 0;
-    		}
+    	if (!overrideTilt) {
+	    	if (output < 0) {
+	    		if (tiltMinLimit.get() == true) {
+	    			output = 0;
+	    		}
+	    	} else if (output > 0) {
+	    		if (tiltMaxLimit.get() == true) {
+	    			output = 0;
+	    		}
+	    	}
     	}
     	tiltMotor.set(output);
     }
@@ -111,17 +115,18 @@ public class TurretSubsystem extends Subsystem {
     	} else {
     		offset = 200;
     	}
-    	
-    	if (output < 0) {
-    		// Left
-    		if (rotatePot.get() >= 216 + offset) {
-    			output = 0;
-    		}
-    	} else if (output > 0) {
-    		// Right
-    		if (rotatePot.get() <= 37 + offset) {
-    			output = 0;
-    		}
+    	if (!overrideRotate) {
+	    	if (output < 0) {
+	    		// Left
+	    		if (rotatePot.get() >= 216 + offset) {
+	    			output = 0;
+	    		}
+	    	} else if (output > 0) {
+	    		// Right
+	    		if (rotatePot.get() <= 37 + offset) {
+	    			output = 0;
+	    		}
+	    	}
     	}
     	rotateMotor.set(output);
     }
@@ -153,5 +158,12 @@ public class TurretSubsystem extends Subsystem {
     	return tiltMaxLimit.get();
     }
     
+    public void setOverrideRotate(boolean overrideRotate) {
+    	this.overrideRotate = overrideRotate;
+    }
+    
+    public void setOverrideTilt(boolean overrideTilt) {
+    	this.overrideTilt = overrideTilt;
+    }
 }
 

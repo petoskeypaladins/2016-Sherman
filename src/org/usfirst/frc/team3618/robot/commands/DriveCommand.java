@@ -6,14 +6,14 @@ import org.usfirst.frc.team3618.robot.Robot;
  *
  */
 public class DriveCommand extends Command {
-	private int drivePower = 2;
+	private double drivePower = 2;
 	
     public DriveCommand() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.driveSubsystem);
     }
     
-    public DriveCommand(int drivePower) {
+    public DriveCommand(double drivePower) {
     	requires(Robot.driveSubsystem);
     	this.drivePower = drivePower;
     }

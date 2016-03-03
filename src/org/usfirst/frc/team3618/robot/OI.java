@@ -24,9 +24,11 @@ public class OI {
 	public Button rollerIn2;
 	public Button rollerOut2;
 	
-	public Button autoAlignShooterX;
-	public Button autoAlignShooterY;
+	public Button autoAlignShooter;
 	public Button centerTurret;
+	
+	public Button overrideRotate;
+	public Button overrideTilt;
 	
 	public OI() {
 		
@@ -54,12 +56,14 @@ public class OI {
 		rollerOut = new JoystickButton(driveJoystick, 5);
 		rollerOut.whileHeld(new RollerOutCommand());
 	
-		autoAlignShooterX = new JoystickButton(shootJoystick, 11);
-		autoAlignShooterX.whileHeld(new AutoAlignShooterXCommand());
+		autoAlignShooter = new JoystickButton(shootJoystick, 11);
+		autoAlignShooter.whileHeld(new AutoAlignShooterCommand());
 		
-		autoAlignShooterY = new JoystickButton(shootJoystick, 12);
-		autoAlignShooterY.whileHeld(new AutoAlignShooterYCommand());
+		overrideRotate = new JoystickButton(shootJoystick, 7);
+		overrideRotate.whileHeld(new OverrideRotateCommand());
 		
+		overrideTilt = new JoystickButton(shootJoystick, 8);
+		overrideRotate.whileHeld(new OverrideTiltCommand());
 	}
 	
 }

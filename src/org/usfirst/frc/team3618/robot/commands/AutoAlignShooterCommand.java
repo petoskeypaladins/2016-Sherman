@@ -8,12 +8,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class AutoAlignShooterXCommand extends Command {
+public class AutoAlignShooterCommand extends Command {
 
 	double cenX, cenY, targetWidth, camOffset;
 	int vCamWidth, vCamHeight;
+	boolean centeredX = false, centeredY = false;
 	
-    public AutoAlignShooterXCommand() {
+    public AutoAlignShooterCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.turretSubsystem);
@@ -60,10 +61,11 @@ public class AutoAlignShooterXCommand extends Command {
 			    Robot.turretSubsystem.rotateTurret(mvmtRatioX);
 				
 			    SmartDashboard.putBoolean("Centered Shooter (x)", false);
+			    
 		    } else {
 		    	SmartDashboard.putBoolean("Centered Shooter (x)", true);
 			    Robot.turretSubsystem.rotateTurret(0);
-	    }
+		    }
 			    
 		    SmartDashboard.putNumber("X Error", xError);
 		    SmartDashboard.putNumber("X Ratio", mvmtRatioX);
@@ -105,15 +107,17 @@ public class AutoAlignShooterXCommand extends Command {
 			    Robot.turretSubsystem.tiltTurret(0);
 		    }
     	}
-    	
-    	
-    	
+    }
+    
+    public boolean getCentered() {
+    	return (SmartDashboard.getBoolean("Centered Shooter (x)") && 
+    			SmartDashboard.getBoolean("Centered Shooter (y)"));
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	// Correct the turret horizontally
-        return false;
+        return getCentered();
     }
 
     // Called once after isFinished returns true
