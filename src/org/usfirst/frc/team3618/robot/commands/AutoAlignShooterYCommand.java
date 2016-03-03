@@ -30,20 +30,20 @@ public class AutoAlignShooterYCommand extends Command {
     	cenY = SmartDashboard.getNumber("Center Y");
     	targetWidth = SmartDashboard.getNumber("Goal Width");
     	
-    	double yError = -(cenY - (vCamHeight / 2));
+    	double yError = -(cenY - ((vCamHeight*3)/ 4));
 	    double mvmtRatioY = (yError / 240);
 	    	
 	    if (Math.abs(yError) >= 3) {
 	    	if (yError < 30 && yError > 0) {
 		    	// The value is too small for the motor to do anything
-		    	mvmtRatioY = 0.06;
+		    	mvmtRatioY = 0.08;
 		    	if (yError < 15 && yError > 0) {
-		    		mvmtRatioY = 0.06;
+		    		mvmtRatioY = 0.075;
 		    	}
 		    } else if (yError > -30 && yError < 0) {
-		    	mvmtRatioY = -0.06;
+		    	mvmtRatioY = -0.08;
 		    	if (yError > -20 && yError < 0) {
-		    		mvmtRatioY = -0.06;
+		    		mvmtRatioY = -0.075;
 		    	}
 		    }
 	    	

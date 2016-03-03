@@ -127,7 +127,7 @@ public class ADIS16448_IMU extends GyroBase implements Gyro, PIDSource, LiveWind
     if (readRegister(kRegPROD_ID) != 16448) {
       m_spi.free();
       m_spi = null;
-      DriverStation.reportError("could not find ADIS16448", false);
+      DriverStation.reportError("could not find ADIS16448, but instead found " + readRegister(kRegPROD_ID), false);
       return;
     }
 

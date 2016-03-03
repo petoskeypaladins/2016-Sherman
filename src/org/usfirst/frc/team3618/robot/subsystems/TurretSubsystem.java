@@ -109,7 +109,7 @@ public class TurretSubsystem extends Subsystem {
     	if (Robot.IS_COMPETITION_ROBOT) {
     		offset = 0;
     	} else {
-    		offset = 69;
+    		offset = 200;
     	}
     	
     	if (output < 0) {
