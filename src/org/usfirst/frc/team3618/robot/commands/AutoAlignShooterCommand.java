@@ -49,12 +49,12 @@ public class AutoAlignShooterCommand extends Command {
 			    	// The value is too small for the motor to do anything
 			    	mvmtRatioX = 0.06;
 			    	if (xError < 20 && xError > 0) {
-			    		mvmtRatioX = 0.0475;
+			    		mvmtRatioX = 0.05;
 			    	}
 			    } else if (xError > -40 && xError < 0) {
 			    	mvmtRatioX = -0.06;
 			    	if (xError > -20 && xError < 0) {
-			    		mvmtRatioX = -0.0475;
+			    		mvmtRatioX = -0.05;
 			    	}
 			    }
 			    
@@ -117,7 +117,7 @@ public class AutoAlignShooterCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	// Correct the turret horizontally
-        return getCentered();
+        return getCentered() || isTimedOut();
     }
 
     // Called once after isFinished returns true

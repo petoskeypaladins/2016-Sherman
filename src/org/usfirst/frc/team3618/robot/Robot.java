@@ -75,9 +75,9 @@ public class Robot extends IterativeRobot {
         
         autoBallChooser.addDefault("One Ball", 1);
         autoBallChooser.addObject("Two Ball", 2);
-        autoBallChooser.addObject("Defense", 3);
+        autoBallChooser.addObject("No Ball", 3);
         autoBallChooser.addObject("Sit There and Cry", 4);
-        autoBallChooser.addObject("Ramp", 5);
+        autoBallChooser.addObject("Batter", 5);
 
         autoDefenseChooser.addDefault(defenses[0], 1);
         for (int i = 2; i < defenses.length + 1; i++) {
