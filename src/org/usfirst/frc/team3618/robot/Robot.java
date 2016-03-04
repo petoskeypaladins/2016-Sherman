@@ -110,7 +110,11 @@ public class Robot extends IterativeRobot {
     	Robot.turretSubsystem.resetGyro();
         try {
         	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
-    		autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected());
+    		if ((int) autoBallChooser.getSelected() == 4) {
+    			autonomousCommand = new AutonomousCommandManager();
+    		} else {
+    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected());
+    		}
     		autonomousCommand.start();
         } catch(Exception e) {
         	System.out.println("Unable to read chooser data!");
