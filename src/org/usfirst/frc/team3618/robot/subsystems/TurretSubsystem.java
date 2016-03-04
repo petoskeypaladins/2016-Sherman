@@ -94,11 +94,11 @@ public class TurretSubsystem extends Subsystem {
     public void tiltTurret(double output) {
     	if (!overrideTilt) {
 	    	if (output < 0) {
-	    		if (tiltMinLimit.get() == true) {
+	    		if (tiltMinLimit.get()) {
 	    			output = 0;
 	    		}
 	    	} else if (output > 0) {
-	    		if (tiltMaxLimit.get() == true) {
+	    		if (tiltMaxLimit.get()) {
 	    			output = 0;
 	    		}
 	    	}

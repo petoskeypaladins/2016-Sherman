@@ -35,6 +35,8 @@ public class RobotMap {
 	public static int TILT_MIN_DIO = 5;
 	public static int TILT_MAX_DIO = 6;
 	
-	public static int ROTATE_DIO = 7;
+	public static int ARM_MAX_LIMIT = 7;
+	public static int ARM_MIN_LIMIT = 8;
+	
 	
 }

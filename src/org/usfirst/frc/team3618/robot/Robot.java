@@ -29,8 +29,8 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 
 public class Robot extends IterativeRobot {
 
-	public static boolean IS_USING_OPENCV = true;
-	public static boolean IS_COMPETITION_ROBOT = false;
+	public static boolean IS_USING_OPENCV = false;
+	public static boolean IS_COMPETITION_ROBOT = true;
 	
 	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 	public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();

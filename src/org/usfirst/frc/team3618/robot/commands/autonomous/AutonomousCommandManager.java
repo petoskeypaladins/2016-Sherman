@@ -25,6 +25,7 @@ public class AutonomousCommandManager extends CommandGroup {
     }
     
     public AutonomousCommandManager(int defense) {
+    	addParallel(new ArmDownCommand());
     	addSequential(new DriveCommand(1.0), DRIVE_TIME + defenseTimes[defense - 1]);
     	addSequential(new AutoAlignShooterCommand());
     	addParallel(new SpinShooterCommand());
