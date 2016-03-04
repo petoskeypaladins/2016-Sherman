@@ -28,6 +28,8 @@ public class TurretSubsystem extends Subsystem {
 	
 	private final double RIGHT_HOLD_POSITION = 45;
 	
+	private boolean centered;
+	
 	//Servo Declarations
 	Servo leftServo;
 	Servo rightServo;
@@ -71,6 +73,34 @@ public class TurretSubsystem extends Subsystem {
     
 	public void resetGyro() {
 		tiltGyro.reset();
+	}
+	
+	public void centerTurret() {
+		double error = rotatePot.get();
+		double mvmtRatio = 0;
+		if ((Math.abs(error) >= 3)) {
+	    	if (error < 40 && error > 0) {
+		    	// The value is too small for the motor to do anything
+		    	mvmtRatio = 0.06;
+		    	if (error < 20 && error > 0) {
+		    		mvmtRatio = 0.0525;
+		    	}
+		    } else if (error > -40 && error < 0) {
+		    	mvmtRatio = -0.06;
+		    	if (error > -20 && error < 0) {
+		    		mvmtRatio = -0.0525;
+		    	}
+		    }
+		    
+		    Robot.turretSubsystem.rotateTurret(mvmtRatio);
+			
+		    SmartDashboard.putBoolean("Centered Shooter (x)", false);
+		    
+	    } else {
+	    	SmartDashboard.putBoolean("Centered Shooter (x)", true);
+		    Robot.turretSubsystem.rotateTurret(0);
+		    centered = true;
+	    }
 	}
 	
 	public void initDefaultCommand() {
@@ -128,6 +158,15 @@ public class TurretSubsystem extends Subsystem {
 	    		}
 	    	}
     	}
+    	
+    	double error = rotatePot.get();
+		double mvmtRatio = 0;
+		if ((Math.abs(error) >= 3)) {
+			centered = true;
+		} else {
+			centered = false;
+		}
+    	
     	rotateMotor.set(output);
     }
     public void shoot() {
@@ -164,6 +203,10 @@ public class TurretSubsystem extends Subsystem {
     
     public void setOverrideTilt(boolean overrideTilt) {
     	this.overrideTilt = overrideTilt;
+    }
+    
+    public boolean getCentered() {
+    	return centered;
     }
 }
 

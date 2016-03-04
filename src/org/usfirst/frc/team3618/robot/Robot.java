@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 
 public class Robot extends IterativeRobot {
 
-	public static boolean IS_USING_OPENCV = false;
+	public static boolean IS_USING_OPENCV = true;
 	public static boolean IS_COMPETITION_ROBOT = true;
 	
 	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
@@ -40,7 +40,6 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	
-	private DigitalInput frontSensor = new DigitalInput(RobotMap.FRONT_BALL_SENSOR);
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
 	
 	private boolean lastRunBackSensor = false; 
@@ -72,12 +71,13 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putData("Autonomous Defense Type", autoDefenseChooser);
     	SmartDashboard.putData("Autonomous Position", autoPositionChooser);
 
-        defenses = new String[]{"Low Bar", "Portcullis", "Cheval de Frise", "Rock Wall", "Rough Terrain", "Ramparts", "Moat", "DrawBridge", "Sally Port"};
+        defenses = new String[]{"Rock Wall", "Rough Terrain", "Ramparts", "Moat", "Low Bar", "Portcullis", "Cheval de Frise", "DrawBridge", "Sally Port"};
         
         autoBallChooser.addDefault("One Ball", 1);
         autoBallChooser.addObject("Two Ball", 2);
         autoBallChooser.addObject("Defense", 3);
         autoBallChooser.addObject("Sit There and Cry", 4);
+        autoBallChooser.addObject("Ramp", 5);
 
         autoDefenseChooser.addDefault(defenses[0], 1);
         for (int i = 2; i < defenses.length + 1; i++) {
@@ -112,6 +112,10 @@ public class Robot extends IterativeRobot {
         	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
     		if ((int) autoBallChooser.getSelected() == 4) {
     			autonomousCommand = new AutonomousCommandManager();
+    		} else if ((int) autoBallChooser.getSelected() == 3) {
+    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
+    					(int) autoBallChooser.getSelected(),
+    					(int) autoPositionChooser.getSelected());
     		} else {
     			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected());
     		}
@@ -136,6 +140,7 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null) autonomousCommand.cancel();
         
         Robot.turretSubsystem.resetGyro();
+        Robot.driveSubsystem.resetGyros();
         Robot.driveSubsystem.resetEncoders();
         
         lastRunBackSensor = false; 
@@ -168,7 +173,6 @@ public class Robot extends IterativeRobot {
         this.displayData();
 	        
         boolean thisRunBackSensor = backSensor.get();
-        boolean thisRunFrontSensor = frontSensor.get();
         
         if (!thisRunBackSensor && lastRunBackSensor) {
         	Scheduler.getInstance().add(new IntakeStopCommand());
@@ -176,14 +180,9 @@ public class Robot extends IterativeRobot {
 			System.out.println("Hold ball");
 		} else if (thisRunBackSensor && !lastRunBackSensor) {
 			Scheduler.getInstance().add(new ReleaseBallCommand());
-		}
-        
-		if (!thisRunFrontSensor && lastRunFrontSensor) {
-			Scheduler.getInstance().add(new IntakeStartCommand());		
 		} 
 		
 		lastRunBackSensor = thisRunBackSensor;
-		lastRunFrontSensor = thisRunFrontSensor;
 		
 		if (!IS_USING_OPENCV) {
 	        lifecam.getImage(frame);
@@ -220,6 +219,5 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Total Robot Power", pdp.getTotalPower());
     	
     	SmartDashboard.putBoolean("Sensor - Hold Photosensor", backSensor.get());
-        SmartDashboard.putBoolean("Sensor - Front", frontSensor.get());
     }
 }

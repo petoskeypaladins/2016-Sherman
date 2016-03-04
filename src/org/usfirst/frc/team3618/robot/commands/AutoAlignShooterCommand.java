@@ -49,12 +49,12 @@ public class AutoAlignShooterCommand extends Command {
 			    	// The value is too small for the motor to do anything
 			    	mvmtRatioX = 0.06;
 			    	if (xError < 20 && xError > 0) {
-			    		mvmtRatioX = 0.0525;
+			    		mvmtRatioX = 0.0475;
 			    	}
 			    } else if (xError > -40 && xError < 0) {
 			    	mvmtRatioX = -0.06;
 			    	if (xError > -20 && xError < 0) {
-			    		mvmtRatioX = -0.0525;
+			    		mvmtRatioX = -0.0475;
 			    	}
 			    }
 			    
@@ -70,10 +70,10 @@ public class AutoAlignShooterCommand extends Command {
 		    SmartDashboard.putNumber("X Error", xError);
 		    SmartDashboard.putNumber("X Ratio", mvmtRatioX);
 		    
-		    double farHeight = .82;
-	    	double nearHeight = .75;
-	    	double farPixels = 40;
-	    	double nearPixels = 80;
+		    double farHeight = .45;
+	    	double nearHeight = .50;
+	    	double farPixels = 51;
+	    	double nearPixels = 75;
 	    	
 	    	double slope = (farHeight - nearHeight) / (farPixels - nearPixels); // -0.003125
 	    	double intercept = farHeight - (slope*farPixels); // 1 

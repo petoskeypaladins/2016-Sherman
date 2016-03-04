@@ -30,7 +30,7 @@ public class DriveSubsystem extends Subsystem {
 	
 	int steps = 0;
 	
-	private double kP = 0.3;
+	private double kP = 0.7;
 	
 	public DriveSubsystem() {
 		leftFrontMotor = new CANTalon(RobotMap.LEFT_FRONT_MOTOR);
@@ -76,6 +76,11 @@ public class DriveSubsystem extends Subsystem {
 		SmartDashboard.putNumber("SPI Gyro Angle", spiGyro.getAngle());
 	}
 	
+	public void resetGyros() {
+		imuGyro.reset();
+		spiGyro.reset();
+	}
+	
     public void initDefaultCommand() {
     	setDefaultCommand(new DriveCommand());
     }
@@ -86,10 +91,6 @@ public class DriveSubsystem extends Subsystem {
     
     public void driveMe(double left, double right) {
     	myRobotDrive.tankDrive(left, right);
-    }
-    
-    public void driveMe(double speed) {
-    	myRobotDrive.tankDrive(speed, speed);
     }
     
     public void autonDrive(double power) {

@@ -30,6 +30,7 @@ public class OI {
 	public Button overrideRotate;
 	public Button overrideTilt;
 	
+	
 	public OI() {
 		
 		shootButton = new JoystickButton(shootJoystick, 1);
@@ -64,6 +65,9 @@ public class OI {
 		
 		overrideTilt = new JoystickButton(shootJoystick, 8);
 		overrideRotate.whileHeld(new OverrideTiltCommand());
+		
+		centerTurret = new JoystickButton(shootJoystick, 9);
+		centerTurret.whileHeld(new CenterTurretCommand());
 	}
 	
 }
