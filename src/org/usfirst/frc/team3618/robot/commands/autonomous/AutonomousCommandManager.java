@@ -27,10 +27,11 @@ public class AutonomousCommandManager extends CommandGroup {
     
     public AutonomousCommandManager(int defense) {
     	addParallel(new HoldBallCommand());
-//    	addParallel(new ArmDownCommand(), 2.25);
+    	addParallel(new ArmDownCommand(), 2.25);
     	System.out.println("driving for: " + Double.toString(DRIVE_TIME + defenseTimes[defense -1]));
     	addSequential(new DriveStraightCommand(DRIVE_TIME + defenseTimes[defense - 1]));
-    	addSequential(new AutoAlignShooterCommand(), 5.0);
+    	addParallel(new AutoAlignShooterCommand());
+    	addSequential(new WaitCommand(), 5.0);
     	addParallel(new SpinShooterCommand());
     	addSequential(new WaitCommand(), 1.5);
     	addSequential(new ShootCommand());
@@ -40,7 +41,7 @@ public class AutonomousCommandManager extends CommandGroup {
     public AutonomousCommandManager(int defense, int balls, int position) {
         //do something neat
     	addParallel(new HoldBallCommand());
-//    	addParallel(new ArmDownCommand(), 2.25);
+    	addParallel(new ArmDownCommand(), 2.25);
     	System.out.println("driving for: " + Double.toString(DRIVE_TIME + defenseTimes[defense -1]));
     	addSequential(new DriveStraightCommand(DRIVE_TIME + defenseTimes[defense - 1]));
     	if (balls == 2) {

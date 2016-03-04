@@ -26,9 +26,9 @@ public class AutoAlignShooterCommand extends Command {
     	vCamWidth = 320;
     	vCamHeight = 240;
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		camOffset = 8.125;
+    		camOffset = 6.25;
     	} else {
-    		camOffset = 12.125;
+    		camOffset = 10;
     	}
     }
 
@@ -47,14 +47,14 @@ public class AutoAlignShooterCommand extends Command {
 		    if ((Math.abs(xError) >= 3)) {
 		    	if (xError < 40 && xError > 0) {
 			    	// The value is too small for the motor to do anything
-			    	mvmtRatioX = 0.06;
+			    	mvmtRatioX = 0.055;
 			    	if (xError < 20 && xError > 0) {
-			    		mvmtRatioX = 0.05;
+			    		mvmtRatioX = 0.0475;
 			    	}
 			    } else if (xError > -40 && xError < 0) {
-			    	mvmtRatioX = -0.06;
+			    	mvmtRatioX = -0.055;
 			    	if (xError > -20 && xError < 0) {
-			    		mvmtRatioX = -0.05;
+			    		mvmtRatioX = -0.0475;
 			    	}
 			    }
 			    
@@ -117,7 +117,7 @@ public class AutoAlignShooterCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	// Correct the turret horizontally
-        return getCentered() || isTimedOut();
+        return getCentered();
     }
 
     // Called once after isFinished returns true
