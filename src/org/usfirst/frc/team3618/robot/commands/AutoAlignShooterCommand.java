@@ -26,7 +26,7 @@ public class AutoAlignShooterCommand extends Command {
     	vCamWidth = 320;
     	vCamHeight = 240;
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		camOffset = 6.25;
+    		camOffset = 12;
     	} else {
     		camOffset = 10;
     	}
@@ -64,12 +64,18 @@ public class AutoAlignShooterCommand extends Command {
 			    	// The value is too small for the motor to do anything
 			    	mvmtRatioX = 0.055;
 			    	if (xError < 20 && xError > 0) {
-			    		mvmtRatioX = 0.0475;
+			    		mvmtRatioX = 0.05;
+			    		SmartDashboard.putBoolean("Is to left", true);
+			    	} else {
+			    		SmartDashboard.putBoolean("Is to left", false);
 			    	}
 			    } else if (xError > -40 && xError < 0) {
 			    	mvmtRatioX = -0.055;
 			    	if (xError > -20 && xError < 0) {
-			    		mvmtRatioX = -0.0475;
+			    		mvmtRatioX = -0.05;
+			    		SmartDashboard.putBoolean("Is to right", true);
+			    	} else {
+			    		SmartDashboard.putBoolean("Is to right", false);
 			    	}
 			    }
 			    
@@ -91,7 +97,7 @@ public class AutoAlignShooterCommand extends Command {
 	    	double nearPixels = 75;
 	    	
 	    	double slope = (farHeight - nearHeight) / (farPixels - nearPixels); // -0.003125
-	    	double intercept = farHeight - (slope*farPixels); // 1 
+	    	double intercept = farHeight - (slope*farPixels) + .05; // 1 
 	    	double yAlignRatio = slope * targetWidth + intercept;
 		    
 		    double yError = -(cenY - ((vCamHeight*yAlignRatio)));

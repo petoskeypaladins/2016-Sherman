@@ -37,9 +37,9 @@ public class AutonomousCommandManager extends CommandGroup {
     	addParallel(new ArmDownCommand(), 2.25);
     	System.out.println("driving for: " + Double.toString(DRIVE_TIME + DEFENSE_TIME[defense -1]));
     	addSequential(new DriveStraightCommand(DRIVE_TIME + DEFENSE_TIME[defense - 1]));
-    	if (position < 6) {
-    		addSequential(new RotateCommand(POSITION_ANGLE[position - 1]));
-    	}
+//    	if (position < 6) {
+//    		addSequential(new RotateCommand(POSITION_ANGLE[position - 1]));
+//    	}
     	addParallel(new AutoAlignShooterCommand());
     	addSequential(new WaitCommand(), 5.0);
     	addParallel(new SpinShooterCommand());

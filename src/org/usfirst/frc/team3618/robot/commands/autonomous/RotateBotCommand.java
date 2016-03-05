@@ -31,7 +31,7 @@ public class RotateBotCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (Robot.driveSubsystem.getRobotAngle() >= Math.abs(degrees));
+        return (Math.abs(Robot.driveSubsystem.getRobotAngle()) >= Math.abs(degrees));
     }
 
     // Called once after isFinished returns true
