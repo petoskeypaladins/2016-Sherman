@@ -108,6 +108,7 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
     	Robot.turretSubsystem.resetGyro();
+    	Robot.driveSubsystem.resetGyros();
         try {
         	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
     		if ((int) autoBallChooser.getSelected() == 4) {
@@ -117,7 +118,8 @@ public class Robot extends IterativeRobot {
     					(int) autoBallChooser.getSelected(),
     					(int) autoPositionChooser.getSelected());
     		} else {
-    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected());
+    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
+    					(int) autoPositionChooser.getSelected());
     		}
     		autonomousCommand.start();
         } catch(Exception e) {
