@@ -34,9 +34,24 @@ public class AutoAlignShooterCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	cenX = SmartDashboard.getNumber("Center X");
-    	cenY = SmartDashboard.getNumber("Center Y");
-    	targetWidth = SmartDashboard.getNumber("Goal Width");
+    	try {
+    		cenX = SmartDashboard.getNumber("Center X");
+    	} catch(Exception e) {
+    		cenX = -1;
+    		System.out.println("Can't acquire Center X");
+    	}
+    	try {
+    		cenY = SmartDashboard.getNumber("Center Y");
+    	} catch(Exception e) {
+    		cenY = -1;
+    		System.out.println("Can't acquire Center Y");
+    	}
+    	try {
+    		targetWidth = SmartDashboard.getNumber("Goal Width");
+    	} catch(Exception e) {
+    		targetWidth = -1;
+    		System.out.println("Can't acquire Goal Width");
+    	}
     	
     	if (cenX > 0 && cenY > 0  && targetWidth > 0) {
     		
