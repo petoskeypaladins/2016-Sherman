@@ -19,6 +19,9 @@ public class AutonomousCommandManager extends CommandGroup {
                              	2.58,//Ramparts
                              	3.05,//Moat
     };
+    
+    
+    
     final double DRIVE_TIME = 1.0;
     
     public AutonomousCommandManager() {
@@ -30,6 +33,7 @@ public class AutonomousCommandManager extends CommandGroup {
     	addParallel(new ArmDownCommand(), 2.25);
     	System.out.println("driving for: " + Double.toString(DRIVE_TIME + defenseTimes[defense -1]));
     	addSequential(new DriveStraightCommand(DRIVE_TIME + defenseTimes[defense - 1]));
+    	addSequential(new RotateCommand())
     	addParallel(new AutoAlignShooterCommand());
     	addSequential(new WaitCommand(), 5.0);
     	addParallel(new SpinShooterCommand());

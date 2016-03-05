@@ -135,6 +135,15 @@ public class DriveSubsystem extends Subsystem {
     
     public double getEncoders() {
     	return rightEncoder.get();
-    }    
+    }
+
+	public void rotate(int rotateDirection) {
+		// TODO Auto-generated method stub
+		driveMe(rotateDirection, -rotateDirection);
+	}    
+	
+	public double getRobotAngle() {
+		return spiGyro.getAngle();
+	}
 }
 
