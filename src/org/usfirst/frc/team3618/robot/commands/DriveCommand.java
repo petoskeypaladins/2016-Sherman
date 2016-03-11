@@ -27,26 +27,23 @@ public class DriveCommand extends Command {
     	double left = Robot.oi.driveJoystick.getRawAxis(1);
     	double right = Robot.oi.driveJoystick.getRawAxis(5);
     	double limit = 1.0;
-    	if (drivePower > 1) {
-    		Robot.driveSubsystem.driveMe(left*limit, right*limit);
-    	} else {
-    		Robot.driveSubsystem.autonStraightDrive(Robot.driveSubsystem.accel(drivePower, .05));
-    	}
+    	
+    	Robot.driveSubsystem.driveMe(Robot.driveSubsystem.accel(left*limit, .03, "l"), 
+    			Robot.driveSubsystem.accel(right*limit, .03, "r"));
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return isTimedOut();
+    	return false;
     }
     
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.driveSubsystem.deccel(0, .15);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }

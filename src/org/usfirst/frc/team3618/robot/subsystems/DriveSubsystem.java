@@ -114,23 +114,27 @@ public class DriveSubsystem extends Subsystem {
 		rightEncoder.reset();
     }
     
-    public double accel(double targetSpeed, double rate) {
-    	double newSpeed = getSpeed() + rate;
+    public double accel(double targetSpeed, double rate, String tread) {
+    	double newSpeed = getSpeed(tread) + rate;
     	if(newSpeed >= targetSpeed) {
     		newSpeed = targetSpeed;
     	}
 		return newSpeed;
     }
     
-    public void deccel(double targetSpeed, double rate) {
-    	while (getSpeed() > targetSpeed) {
-	    	double newSpeed = getSpeed() - rate;
+    public void deccel(double targetSpeed, double rate, String tread) {
+    	while (getSpeed(tread) > targetSpeed) {
+	    	double newSpeed = getSpeed(tread) - rate;
 	    	autonStraightDrive(newSpeed);
     	}
     }
     
-    public double getSpeed() {
-    	return rightRearMotor.getSpeed();
+    public double getSpeed(String tread) {
+    	if (tread.equals("l")) {
+    		return leftRearMotor.getSpeed();
+    	} else {
+    		return rightRearMotor.getSpeed();
+    	}
     }
     
     public double getEncoders() {
