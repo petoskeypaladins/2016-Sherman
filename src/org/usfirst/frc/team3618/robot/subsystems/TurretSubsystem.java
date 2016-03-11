@@ -51,7 +51,6 @@ public class TurretSubsystem extends Subsystem {
 		leftServo = new Servo(RobotMap.LEFT_BALL_SERVO);
 		rightServo = new Servo(RobotMap.RIGHT_BALL_SERVO);
 		tiltMotor = new CANTalon(RobotMap.TILT_SHOOTER_MOTOR);
-		tiltPot = new AnalogPotentiometer(RobotMap.TILT_ANALOG);
 		tiltMinLimit = new DigitalInput(RobotMap.TILT_MIN_DIO);
 		tiltMaxLimit = new DigitalInput(RobotMap.TILT_MAX_DIO);
 		tiltGyro = new AnalogGyro(RobotMap.TILT_GYRO);
