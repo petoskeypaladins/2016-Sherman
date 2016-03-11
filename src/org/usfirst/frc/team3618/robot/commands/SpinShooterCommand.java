@@ -20,7 +20,7 @@ public class SpinShooterCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double speed = 1 - (Robot.oi.shootJoystick.getThrottle() * .5);
+    	double speed = 1 - (Robot.oi.shootJoystick.getThrottle() * .45);
     	if (speed > 1.0) {
     		speed = 1.0;
     	}

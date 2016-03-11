@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3618.robot;
 
 import org.usfirst.frc.team3618.robot.commands.HoldBallCommand;
-import org.usfirst.frc.team3618.robot.commands.IntakeStartCommand;
 import org.usfirst.frc.team3618.robot.commands.IntakeStopCommand;
 import org.usfirst.frc.team3618.robot.commands.ReleaseBallCommand;
 import org.usfirst.frc.team3618.robot.commands.autonomous.AutonomousCommandManager;

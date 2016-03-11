@@ -64,7 +64,7 @@ public class AutoAlignShooterCommand extends Command {
 			    	// The value is too small for the motor to do anything
 			    	mvmtRatioX = 0.055;
 			    	if (xError < 20 && xError > 0) {
-			    		mvmtRatioX = 0.05;
+			    		mvmtRatioX = 0.055;
 			    		SmartDashboard.putBoolean("Is to left", true);
 			    	} else {
 			    		SmartDashboard.putBoolean("Is to left", false);
@@ -72,7 +72,7 @@ public class AutoAlignShooterCommand extends Command {
 			    } else if (xError > -40 && xError < 0) {
 			    	mvmtRatioX = -0.055;
 			    	if (xError > -20 && xError < 0) {
-			    		mvmtRatioX = -0.05;
+			    		mvmtRatioX = -0.055;
 			    		SmartDashboard.putBoolean("Is to right", true);
 			    	} else {
 			    		SmartDashboard.putBoolean("Is to right", false);

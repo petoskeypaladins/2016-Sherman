@@ -29,6 +29,7 @@ public class OI {
 	
 	public Button overrideRotate;
 	public Button overrideTilt;
+	public Button lowSpeedShoot;
 	
 	
 	public OI() {
@@ -68,6 +69,9 @@ public class OI {
 		
 		centerTurret = new JoystickButton(shootJoystick, 9);
 		centerTurret.whileHeld(new CenterTurretCommand());
+		
+		lowSpeedShoot = new JoystickButton(shootJoystick, 12);
+		lowSpeedShoot.whileHeld(new SpinShooterLowCommand());
 	}
 	
 }
