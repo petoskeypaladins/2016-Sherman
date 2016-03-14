@@ -39,7 +39,8 @@ public class TurretSubsystem extends Subsystem {
     CANTalon tiltMotor;
     Potentiometer tiltPot;
     DigitalInput tiltMaxLimit;
-    Gyro tiltGyro;
+    Gyro rotateGyro = new AnalogGyro(RobotMap.ROTATE_GYRO);
+    
     
     boolean overrideRotate = false, overrideTilt = false;
 
@@ -53,10 +54,10 @@ public class TurretSubsystem extends Subsystem {
 		tiltMotor = new CANTalon(RobotMap.TILT_SHOOTER_MOTOR);
 		tiltMinLimit = new DigitalInput(RobotMap.TILT_MIN_DIO);
 		tiltMaxLimit = new DigitalInput(RobotMap.TILT_MAX_DIO);
-		tiltGyro = new AnalogGyro(RobotMap.TILT_GYRO);
 
 		rotateMotor = new CANTalon(RobotMap.ROTATE_SHOOTER_MOTOR);
 		rotatePot = new AnalogPotentiometer(RobotMap.ROTATE_ANALOG, 360);
+		
 		
     	// TODO - Always check before deploying
 		if (Robot.IS_COMPETITION_ROBOT) {
@@ -66,12 +67,8 @@ public class TurretSubsystem extends Subsystem {
 			tiltMotor.setInverted(false);
 			rotateMotor.setInverted(false);
 		}
-		
-		tiltGyro.calibrate();
-	}
-    
-	public void resetGyro() {
-		tiltGyro.reset();
+		rotateGyro.reset();
+		resetTiltEncoder();
 	}
 	
 	public void centerTurret() {
@@ -110,28 +107,41 @@ public class TurretSubsystem extends Subsystem {
 	
 	public void displayData() {
 		SmartDashboard.putNumber("Sensor - Rotate Pot", rotatePot.get());
-		SmartDashboard.putNumber("Sensor - Tilt Pot", tiltPot.get());
 		SmartDashboard.putNumber("Sensor - Left Servo", leftServo.getAngle());
 		SmartDashboard.putNumber("Sensor - Right Servo", rightServo.getAngle());
 		SmartDashboard.putNumber("Output - Rotate Motor", rotateMotor.get());
 		SmartDashboard.putNumber("Output - Tilt Motor", tiltMotor.get());
-		SmartDashboard.putNumber("Sensor - Tilt Gyro", tiltGyro.getAngle());
-		SmartDashboard.putBoolean("Sensor - Tilt Min Limit", tiltMinLimit.get());
-		SmartDashboard.putBoolean("Sensor - Tilt Max Limit", tiltMaxLimit.get());
+		SmartDashboard.putNumber("Encoder - Tilt Motor", tiltMotor.getEncPosition());
+		SmartDashboard.putNumber("Angle - Tilt Motor", getTiltAngle());
+		SmartDashboard.putNumber("Encoder Inches - Tilt Motor", getInchesFromTicks());
+		SmartDashboard.putNumber("Joystick - Rotate Value", Robot.oi.shootJoystick.getZ());
+		SmartDashboard.putNumber("Gyro - Rotate Gyro", rotateGyro.getAngle());
+		if (Robot.IS_COMPETITION_ROBOT) {
+			SmartDashboard.putBoolean("Sensor - Tilt Min Limit", tiltMinLimit.get());
+			SmartDashboard.putBoolean("Sensor - Tilt Max Limit", tiltMaxLimit.get());
+		}
 	}
     
     public void tiltTurret(double output) {
-    	if (!overrideTilt) {
-	    	if (output < 0) {
-	    		if (tiltMinLimit.get()) {
-	    			output = 0;
-	    		}
-	    	} else if (output > 0) {
-	    		if (tiltMaxLimit.get()) {
-	    			output = 0;
-	    		}
+    	if (Robot.IS_COMPETITION_ROBOT) {
+	    	if (!overrideTilt) {
+		    	if (output < 0) {
+		    		if (tiltMinLimit.get()) {
+		    			output = 0;
+		    			resetTiltEncoder();
+		    		}
+		    	} else if (output > 0) {
+		    		if (tiltMaxLimit.get()) {
+		    			output = 0;
+		    		}
+		    	}
 	    	}
     	}
+    	
+    	if (tiltMotor.getEncPosition() > 0) {
+    		resetTiltEncoder();
+    	}
+    	
     	tiltMotor.set(output);
     }
     
@@ -144,32 +154,34 @@ public class TurretSubsystem extends Subsystem {
     	} else {
     		offset = 200;
     	}
-    	if (!overrideRotate) {
-	    	if (output < 0) {
-	    		// Left
-	    		if (rotatePot.get() >= 216 + offset) {
-	    			output = 0;
-	    		}
-	    	} else if (output > 0) {
-	    		// Right
-	    		if (rotatePot.get() <= 37 + offset) {
-	    			output = 0;
-	    		}
+    	if (Robot.IS_COMPETITION_ROBOT) {
+	    	if (!overrideRotate) {
+		    	if (output < 0) {
+		    		// Left
+		    		if (rotatePot.get() >= 216 + offset) {
+		    			output = 0;
+		    		}
+		    	} else if (output > 0) {
+		    		// Right
+		    		if (rotatePot.get() <= 37 + offset) {
+		    			output = 0;
+		    		}
+		    	}
 	    	}
     	}
     	
-    	double error = rotatePot.get();
-		double mvmtRatio = 0;
-		if ((Math.abs(error) >= 3)) {
-			centered = true;
-		} else {
-			centered = false;
-		}
+    	if (output > .4) {
+    		output = .4;
+    	}
     	
     	rotateMotor.set(output);
     }
     public void shoot() {
-		leftServo.set(LEFT_SHOOT_POSITION);
+		if (Robot.IS_COMPETITION_ROBOT) {
+			leftServo.set(LEFT_SHOOT_POSITION);
+		} else {
+			leftServo.set(LEFT_SHOOT_POSITION - 30);
+		}
     	rightServo.set(RIGHT_SHOOT_POSITION);	
     }
     
@@ -207,5 +219,44 @@ public class TurretSubsystem extends Subsystem {
     public boolean getCentered() {
     	return centered;
     }
+    
+    public void resetTiltEncoder() {
+    	tiltMotor.setEncPosition(0);
+    }
+    
+    public double getInchesFromTicks() {
+    	int TICKS_IN_INCH = 30621;
+    	return -tiltMotor.getEncPosition() / ((double) TICKS_IN_INCH);
+    }
+    
+    public double getRotateAngle() {
+    	return rotateGyro.getAngle();
+    }
+    
+    public double getTiltAngle() {
+    	double a;
+    	double b;
+    	double c;
+    	double angle;
+    	
+    	// TODO - Configure values for real robot
+    	if (Robot.IS_COMPETITION_ROBOT) {
+    		a = 3.875;
+        	b = 2.25;
+        	c = 6.34 - getInchesFromTicks();
+    	} else {
+    		a = 4;
+        	b = 2.75;
+        	c = 6.75 - getInchesFromTicks();
+    	}
+    	angle = (double) Math.toDegrees(Math.acos((Math.pow(a, 2) - Math.pow(b, 2) - Math.pow(c, 2)) / (-2 * b * c)));
+    	
+    	return angle;
+    }
+    
+    public void resetGyros() {
+    	rotateGyro.reset();
+    }
+    
 }
 

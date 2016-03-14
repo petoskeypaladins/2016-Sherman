@@ -6,7 +6,6 @@ import org.usfirst.frc.team3618.robot.Robot;
  *
  */
 public class DriveCommand extends Command {
-	private double drivePower = 2;
 	
     public DriveCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -15,7 +14,6 @@ public class DriveCommand extends Command {
     
     public DriveCommand(double drivePower) {
     	requires(Robot.driveSubsystem);
-    	this.drivePower = drivePower;
     }
 
     // Called just before this Command runs the first time
@@ -27,10 +25,9 @@ public class DriveCommand extends Command {
     	double left = Robot.oi.driveJoystick.getRawAxis(1);
     	double right = Robot.oi.driveJoystick.getRawAxis(5);
     	double limit = 1.0;
-    	
-    	Robot.driveSubsystem.driveMe(Robot.driveSubsystem.accel(left*limit, .03, "l"), 
-    			Robot.driveSubsystem.accel(right*limit, .03, "r"));
-    	
+    	int LEFT = 0, RIGHT = 1;
+    	Robot.driveSubsystem.driveMe(Robot.driveSubsystem.accel(left*limit, .07, LEFT), 
+    			Robot.driveSubsystem.accel(right*limit, .07, RIGHT));
     }
 
     // Make this return true when this Command no longer needs to run execute()

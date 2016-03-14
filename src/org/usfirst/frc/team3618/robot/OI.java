@@ -45,10 +45,7 @@ public class OI {
 		
 		startIntakeButton = new JoystickButton(shootJoystick, 4);
 		startIntakeButton.whileHeld(new IntakeStartCommand());
-		
-		stopIntakeButton = new JoystickButton(shootJoystick, 9);
-		stopIntakeButton.whenPressed(new IntakeStopCommand());
-		
+				
 		holdBallButton = new JoystickButton(shootJoystick, 6);
 		holdBallButton.whileHeld(new HoldBallCommand());
 		

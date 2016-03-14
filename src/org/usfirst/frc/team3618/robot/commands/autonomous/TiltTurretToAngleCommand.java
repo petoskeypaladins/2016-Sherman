@@ -2,46 +2,49 @@ package org.usfirst.frc.team3618.robot.commands.autonomous;
 
 import org.usfirst.frc.team3618.robot.Robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class EncoderDriveCommand extends Command {
+public class TiltTurretToAngleCommand extends Command {
 
-	double distance, power;
+	Timer timer;
+	double goalAngle;
 	
-    public EncoderDriveCommand(double distance, double power) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.driveSubsystem);
+    public TiltTurretToAngleCommand(double goalAngle) {
+    	this.goalAngle = goalAngle;
     	
-    	this.distance = distance;
-    	this.power = power;
+        requires(Robot.turretSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.driveSubsystem.resetEncoders();
+    	timer = new Timer();
+    	timer.reset();
+    	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveSubsystem.autonDrive(Robot.driveSubsystem.accel(power, 0.03, 0));
+    	Robot.turretSubsystem.tiltTurret(0.3);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.driveSubsystem.getEncoders() >= Robot.driveSubsystem.getTicksFromFeet(distance);
+        return (Robot.turretSubsystem.getTiltAngle() >= goalAngle) || timer.get() >= 1.0;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.driveSubsystem.stopMe();
+    	timer.stop();
+    	Robot.turretSubsystem.tiltTurret(0.0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

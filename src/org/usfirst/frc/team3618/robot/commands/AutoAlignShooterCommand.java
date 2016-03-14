@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class AutoAlignShooterCommand extends Command {
 
-	double cenX, cenY, targetWidth, camOffset;
+	double cenX, cenY, targetWidth;
 	int vCamWidth, vCamHeight;
 	boolean centeredX = false, centeredY = false;
 	
@@ -25,11 +25,6 @@ public class AutoAlignShooterCommand extends Command {
     	// These are as interpreted by the openCV program
     	vCamWidth = 320;
     	vCamHeight = 240;
-    	if (Robot.IS_COMPETITION_ROBOT) {
-    		camOffset = 12;
-    	} else {
-    		camOffset = 10;
-    	}
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -46,58 +41,46 @@ public class AutoAlignShooterCommand extends Command {
     		cenY = -1;
     		System.out.println("Can't acquire Center Y");
     	}
-    	try {
-    		targetWidth = SmartDashboard.getNumber("Goal Width");
-    	} catch(Exception e) {
-    		targetWidth = -1;
-    		System.out.println("Can't acquire Goal Width");
-    	}
+    	targetWidth = SmartDashboard.getNumber("Goal Width", 0);
     	
     	if (cenX > 0 && cenY > 0  && targetWidth > 0) {
-    		
-    		double xOff = (targetWidth / 20) * camOffset; //TargetWidth/20 gives pixels/inch. Times camOffset in inches gives pixel offset.
-		    double xError = cenX - (vCamWidth / 2) + xOff;
-		    double mvmtRatioX = (xError / 400);
+		    final double TARGET_FEET = ((double) 20/12);
+		    // TODO - CONFIGURE FOR REAL ROBOT
+		    double camOffsetAngle = 5.0;
+		    final double FOV = 25; //half of real FOV
+    		double xError = ((double) cenX - (vCamWidth / 2)) * ((double) TARGET_FEET / targetWidth); //feet
+		    double frameAngle = SmartDashboard.getNumber("Frame Gyro", 0);
+		    double distanceFromGoal = ((double) TARGET_FEET * vCamWidth) / 
+		    				   (2 * targetWidth * Math.tan(Math.toRadians(FOV)));
+		    double angleError = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
+		    double targetAngle = frameAngle + angleError;
+		    double output = (targetAngle - Robot.turretSubsystem.getRotateAngle()) / 20;
 		    
-		    if ((Math.abs(xError) >= 3)) {
-		    	if (xError < 40 && xError > 0) {
-			    	// The value is too small for the motor to do anything
-			    	mvmtRatioX = 0.055;
-			    	if (xError < 20 && xError > 0) {
-			    		mvmtRatioX = 0.055;
-			    		SmartDashboard.putBoolean("Is to left", true);
-			    	} else {
-			    		SmartDashboard.putBoolean("Is to left", false);
-			    	}
-			    } else if (xError > -40 && xError < 0) {
-			    	mvmtRatioX = -0.055;
-			    	if (xError > -20 && xError < 0) {
-			    		mvmtRatioX = -0.055;
-			    		SmartDashboard.putBoolean("Is to right", true);
-			    	} else {
-			    		SmartDashboard.putBoolean("Is to right", false);
-			    	}
-			    }
-			    
-			    Robot.turretSubsystem.rotateTurret(mvmtRatioX);
-				
-			    SmartDashboard.putBoolean("Centered Shooter (x)", false);
-			    
+		    SmartDashboard.putNumber("X Error", angleError);
+		    
+		    if ((Math.abs(angleError) <= 0.95)) {
+		    	Robot.turretSubsystem.rotateTurret(0.0);
+			    SmartDashboard.putBoolean("Centered Shooter (x)", true);
 		    } else {
-		    	SmartDashboard.putBoolean("Centered Shooter (x)", true);
-			    Robot.turretSubsystem.rotateTurret(0);
+		    	Robot.turretSubsystem.rotateTurret(output);
+			    SmartDashboard.putBoolean("Centered Shooter (x)", false);
 		    }
-			    
-		    SmartDashboard.putNumber("X Error", xError);
-		    SmartDashboard.putNumber("X Ratio", mvmtRatioX);
 		    
 		    double farHeight = .45;
 	    	double nearHeight = .50;
 	    	double farPixels = 51;
 	    	double nearPixels = 75;
 	    	
+	    	if (!Robot.IS_COMPETITION_ROBOT) {
+	    		farHeight = .45;
+	    		nearHeight = .58;
+	    		farPixels = 81;
+	    		nearPixels = 40;
+	    	}
+	    	
 	    	double slope = (farHeight - nearHeight) / (farPixels - nearPixels); // -0.003125
-	    	double intercept = farHeight - (slope*farPixels) + .05; // 1 
+	    	double intercept = (slope*(-farPixels)) + farHeight;
+//	    	double intercept = farHeight - (slope*farPixels) + .05; 
 	    	double yAlignRatio = slope * targetWidth + intercept;
 		    
 		    double yError = -(cenY - ((vCamHeight*yAlignRatio)));
@@ -111,14 +94,14 @@ public class AutoAlignShooterCommand extends Command {
 		    	 yError <= -3) {
 		    	if (yError < 30 && yError > 0) {
 			    	// The value is too small for the motor to do anything
-			    	mvmtRatioY = 0.08;
+			    	mvmtRatioY = 0.115;
 			    	if (yError < 15 && yError > 0) {
-			    		mvmtRatioY = 0.075;
+			    		mvmtRatioY = 0.095;
 			    	}
 			    } else if (yError > -30 && yError < 0) {
-			    	mvmtRatioY = -0.08;
+			    	mvmtRatioY = -0.115;
 			    	if (yError > -20 && yError < 0) {
-			    		mvmtRatioY = -0.075;
+			    		mvmtRatioY = -0.095;
 			    	}
 			    }
 		    	SmartDashboard.putBoolean("Centered Shooter (y)", false);

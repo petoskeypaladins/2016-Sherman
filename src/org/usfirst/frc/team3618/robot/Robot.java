@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 public class Robot extends IterativeRobot {
 
 	public static boolean IS_USING_OPENCV = true;
-	public static boolean IS_COMPETITION_ROBOT = true;
+	public static boolean IS_COMPETITION_ROBOT = false;
 	
 	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 	public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
@@ -42,7 +42,6 @@ public class Robot extends IterativeRobot {
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
 	
 	private boolean lastRunBackSensor = false; 
-	private boolean lastRunFrontSensor = false;
 	private SendableChooser autoBallChooser, autoDefenseChooser, autoPositionChooser;
 	
 	private PowerDistributionPanel pdp;
@@ -60,6 +59,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	oi = new OI();
     	
+    	clearVisionData();
+    	
     	autoBallChooser = new SendableChooser();
         autoDefenseChooser = new SendableChooser();
         autoPositionChooser = new SendableChooser();
@@ -76,7 +77,6 @@ public class Robot extends IterativeRobot {
         autoBallChooser.addObject("Two Ball", 2);
         autoBallChooser.addObject("No Ball", 3);
         autoBallChooser.addObject("Sit There and Cry", 4);
-        autoBallChooser.addObject("Batter", 5);
 
         autoDefenseChooser.addDefault(defenses[0], 1);
         for (int i = 2; i < defenses.length + 1; i++) {
@@ -95,6 +95,7 @@ public class Robot extends IterativeRobot {
 	        lifecam = new USBCamera("cam1");
 	        frame = NIVision.imaqCreateImage(ImageType.IMAGE_RGB, 0);
         }
+        
     }
 	
     public void disabledInit(){
@@ -106,20 +107,24 @@ public class Robot extends IterativeRobot {
 	}
 
     public void autonomousInit() {
-    	Robot.turretSubsystem.resetGyro();
     	Robot.driveSubsystem.resetGyros();
+    	Robot.turretSubsystem.resetGyros();
+    	this.clearVisionData();
         try {
         	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
-    		if ((int) autoBallChooser.getSelected() == 4) {
-    			autonomousCommand = new AutonomousCommandManager();
-    		} else if ((int) autoBallChooser.getSelected() == 3) {
-    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
-    					(int) autoBallChooser.getSelected(),
-    					(int) autoPositionChooser.getSelected());
-    		} else {
-    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
-    					(int) autoPositionChooser.getSelected());
-    		}
+//    		if ((int) autoBallChooser.getSelected() == 4) { // Sit there and cry
+//    			autonomousCommand = new AutonomousCommandManager();
+//    		} else if ((int) autoBallChooser.getSelected() == 3) { // Drive forward
+//    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
+//    					(int) autoBallChooser.getSelected(),
+//    					(int) autoPositionChooser.getSelected());
+//    		} else { // One ball or Two ball
+//    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
+//    					(int) autoPositionChooser.getSelected());
+//    		}
+        	autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
+					(int) autoBallChooser.getSelected(),
+					(int) autoPositionChooser.getSelected());
     		autonomousCommand.start();
         } catch(Exception e) {
         	System.out.println("Unable to read chooser data!");
@@ -140,12 +145,12 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         if (autonomousCommand != null) autonomousCommand.cancel();
         
-        Robot.turretSubsystem.resetGyro();
         Robot.driveSubsystem.resetGyros();
+        Robot.turretSubsystem.resetGyros();
         Robot.driveSubsystem.resetEncoders();
+        this.clearVisionData();
         
         lastRunBackSensor = false; 
-        lastRunFrontSensor = false;
         
         if (!IS_USING_OPENCV) {
         	lifecam.setFPS(30);
@@ -220,5 +225,13 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Total Robot Power", pdp.getTotalPower());
     	
     	SmartDashboard.putBoolean("Sensor - Hold Photosensor", backSensor.get());
+    }
+    
+    public void clearVisionData() {
+    	SmartDashboard.putNumber("Center X", -1);
+    	SmartDashboard.putNumber("Center Y", -1);
+    	SmartDashboard.putNumber("Goal Width", -1);
+    	SmartDashboard.putBoolean("Centered Shooter (x)", false);
+    	SmartDashboard.putBoolean("Centered Shooter (y)", false);
     }
 }

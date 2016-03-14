@@ -1,6 +1,5 @@
 package org.usfirst.frc.team3618.robot.subsystems;
 
-import org.usfirst.frc.team3618.robot.Robot;
 import org.usfirst.frc.team3618.robot.RobotMap;
 import org.usfirst.frc.team3618.robot.commands.ArmLiftCommand;
 

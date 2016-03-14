@@ -34,6 +34,7 @@ public class ADXRS453Gyro {
 
 	//angle integration
 	public volatile double currentRate;
+	@SuppressWarnings("unused")
 	private volatile double lastRate;
 	public volatile double deltaTime;
 	public volatile double currentTime;

@@ -17,6 +17,7 @@ public class DriveSubsystem extends Subsystem {
 	CANTalon leftRearMotor;
 	CANTalon rightFrontMotor;
 	CANTalon rightRearMotor;
+	double[] lastSpeed = {0, 0};
 	
 	RobotDrive myRobotDrive;
 
@@ -74,6 +75,7 @@ public class DriveSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Output - RR Drive", rightRearMotor.get());
 		SmartDashboard.putNumber("IMU Gyro Angle", imuGyro.getAngleX());
 		SmartDashboard.putNumber("SPI Gyro Angle", spiGyro.getAngle());
+		SmartDashboard.putString("Drive Motor Mode", leftRearMotor.getControlMode().toString());
 	}
 	
 	public void resetGyros() {
@@ -114,27 +116,31 @@ public class DriveSubsystem extends Subsystem {
 		rightEncoder.reset();
     }
     
-    public double accel(double targetSpeed, double rate, String tread) {
-    	double newSpeed = getSpeed(tread) + rate;
-    	if(newSpeed >= targetSpeed) {
+    public double accel(double targetSpeed, double rate, int tread) {
+    	int direction = 0;
+    	double difference = targetSpeed - lastSpeed[tread];
+    	if (difference != 0) {
+    		direction = (int) (difference / Math.abs(difference)); //1 or -1
+    	}
+    
+    	double newSpeed = lastSpeed[tread] + (rate * direction);
+    	if (Math.abs(difference) < rate) {
     		newSpeed = targetSpeed;
     	}
-		return newSpeed;
+    	lastSpeed[tread] = newSpeed;
+    	SmartDashboard.putNumber("Accel direction", direction);
+    	SmartDashboard.putNumber("difference", difference);
+    	SmartDashboard.putNumber("target speed", targetSpeed);
+    	SmartDashboard.putNumber("new speed", newSpeed);
+    	return newSpeed;
     }
     
-    public void deccel(double targetSpeed, double rate, String tread) {
-    	while (getSpeed(tread) > targetSpeed) {
-	    	double newSpeed = getSpeed(tread) - rate;
-	    	autonStraightDrive(newSpeed);
+    public double accel(double speed, double time, double ramp) {
+    	double curSpeed = (speed*time)/ramp;
+    	if(curSpeed >= speed) {
+    		curSpeed = speed;
     	}
-    }
-    
-    public double getSpeed(String tread) {
-    	if (tread.equals("l")) {
-    		return leftRearMotor.getSpeed();
-    	} else {
-    		return rightRearMotor.getSpeed();
-    	}
+		return curSpeed;   
     }
     
     public double getEncoders() {
@@ -142,12 +148,16 @@ public class DriveSubsystem extends Subsystem {
     }
 
 	public void rotate(int rotateDirection) {
-		// TODO Auto-generated method stub
 		driveMe(rotateDirection, -rotateDirection);
 	}    
 	
 	public double getRobotAngle() {
 		return spiGyro.getAngle();
 	}
+	
+	public double getSpeed() {
+		return leftRearMotor.get();
+	}
+	
 }
 

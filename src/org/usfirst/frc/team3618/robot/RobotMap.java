@@ -20,7 +20,7 @@ public class RobotMap {
 	public static int RIGHT_BALL_SERVO = 1;
 	
 	//ANALOG
-	public static int TILT_GYRO = 0; //needed on practice bot
+	public static int ROTATE_GYRO = 0; //gyro on the shooter
 	public static int ROTATE_ANALOG = 1; //rotate potentiometer
 	
 	//DIGITAL
