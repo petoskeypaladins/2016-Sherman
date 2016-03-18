@@ -65,8 +65,8 @@ public class AutonomousCommandManager extends CommandGroup {
     	
     	positionDriveTime.put("Position 1", 2.0);
     	positionDriveTime.put("Position 2", 2.0);
-    	positionDriveTime.put("Position 3", 0.5);
-    	positionDriveTime.put("Position 4", 0.5);
+    	positionDriveTime.put("Position 3", 1.0);
+    	positionDriveTime.put("Position 4", .75);
     	positionDriveTime.put("Position 5", 1.5);
     	
     	positionTurretRotateAngle.put("Position 1", 15.0);
