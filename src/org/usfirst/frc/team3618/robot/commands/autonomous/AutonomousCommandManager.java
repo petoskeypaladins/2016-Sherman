@@ -65,14 +65,14 @@ public class AutonomousCommandManager extends CommandGroup {
     	
     	positionDriveTime.put("Position 1", 2.0);
     	positionDriveTime.put("Position 2", 2.0);
-    	positionDriveTime.put("Position 3", 1.0);
+    	positionDriveTime.put("Position 3", 0.8);
     	positionDriveTime.put("Position 4", .75);
     	positionDriveTime.put("Position 5", 1.5);
     	
     	positionTurretRotateAngle.put("Position 1", 15.0);
     	positionTurretRotateAngle.put("Position 2", 45.0);
     	positionTurretRotateAngle.put("Position 3", 0.0);
-    	positionTurretRotateAngle.put("Position 4", 0.0);
+    	positionTurretRotateAngle.put("Position 4", -15.0);
     	positionTurretRotateAngle.put("Position 5", -25.0);
     	
     	positionTiltAngle.put("Position 1", 30.0);
@@ -102,7 +102,7 @@ public class AutonomousCommandManager extends CommandGroup {
     	addSequential(new DriveStraightCommand(DRIVE_TIME_BEFORE_DEFENSE, true));
     	System.out.println("Defense: " + defense);
     	if (defense == 1) {
-    		addSequential(new DriveBackwardCommand(defenseDriveTime.get("Rock Wall")));	
+    		addSequential(new DriveStraightCommand(defenseDriveTime.get("Rock Wall")));	
     	} else if (defense == 2) {
     		addSequential(new DriveStraightCommand(defenseDriveTime.get("Rough Terrain"), false));
     	} else if (defense == 3) {
@@ -117,11 +117,10 @@ public class AutonomousCommandManager extends CommandGroup {
     }
     
     private void shootBallOne(int position) {
-    	addSequential(new RotateBotCommand());
+//    	addSequential(new RotateBotCommand());
     	addSequential(new DriveStraightCommand((double) positionDriveTime.get("Position " + Integer.toString(position)), false, true));  
 		// Turn the turret
-    	addSequential(new TiltTurretCommand());
-    	addSequential(new RotateTurretToAngleCommand(positionTurretRotateAngle.get("Position " + position)));
+    	addSequential(new RotateTurretToAngleCommand(positionTurretRotateAngle.get("Position " + Integer.toString(position))));
 		addParallel(new AutoAlignShooterCommand());
     	addSequential(new WaitCommand(), 4.0);
     	addParallel(new SpinShooterCommand());
