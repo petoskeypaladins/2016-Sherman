@@ -55,7 +55,7 @@ public class OI {
 		rollerOut = new JoystickButton(driveJoystick, 5);
 		rollerOut.whileHeld(new RollerOutCommand());
 	
-		autoAlignShooter = new JoystickButton(shootJoystick, 11);
+		autoAlignShooter = new JoystickButton(shootJoystick, 12);
 		autoAlignShooter.whileHeld(new AutoAlignShooterCommand());
 		
 		overrideRotate = new JoystickButton(shootJoystick, 7);
@@ -67,8 +67,8 @@ public class OI {
 		centerTurret = new JoystickButton(shootJoystick, 9);
 		centerTurret.whileHeld(new CenterTurretCommand());
 		
-		lowSpeedShoot = new JoystickButton(shootJoystick, 12);
-		lowSpeedShoot.whileHeld(new SpinShooterLowCommand());
+//		lowSpeedShoot = new JoystickButton(shootJoystick, 12);
+//		lowSpeedShoot.whileHeld(new SpinShooterLowCommand());
 	}
 	
 }

@@ -61,7 +61,7 @@ public class TurretSubsystem extends Subsystem {
 		
     	// TODO - Always check before deploying
 		if (Robot.IS_COMPETITION_ROBOT) {
-			tiltMotor.setInverted(true);
+			tiltMotor.setInverted(false);
 			rotateMotor.setInverted(true);
 		} else {
 			tiltMotor.setInverted(false);
@@ -69,34 +69,6 @@ public class TurretSubsystem extends Subsystem {
 		}
 		rotateGyro.reset();
 		resetTiltEncoder();
-	}
-	
-	public void centerTurret() {
-		double error = rotatePot.get();
-		double mvmtRatio = 0;
-		if ((Math.abs(error) >= 3)) {
-	    	if (error < 40 && error > 0) {
-		    	// The value is too small for the motor to do anything
-		    	mvmtRatio = 0.06;
-		    	if (error < 20 && error > 0) {
-		    		mvmtRatio = 0.0525;
-		    	}
-		    } else if (error > -40 && error < 0) {
-		    	mvmtRatio = -0.06;
-		    	if (error > -20 && error < 0) {
-		    		mvmtRatio = -0.0525;
-		    	}
-		    }
-		    
-		    Robot.turretSubsystem.rotateTurret(mvmtRatio);
-			
-		    SmartDashboard.putBoolean("Centered Shooter (x)", false);
-		    
-	    } else {
-	    	SmartDashboard.putBoolean("Centered Shooter (x)", true);
-		    Robot.turretSubsystem.rotateTurret(0);
-		    centered = true;
-	    }
 	}
 	
 	public void initDefaultCommand() {
@@ -116,6 +88,12 @@ public class TurretSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Encoder Inches - Tilt Motor", getInchesFromTicks());
 		SmartDashboard.putNumber("Joystick - Rotate Value", Robot.oi.shootJoystick.getZ());
 		SmartDashboard.putNumber("Gyro - Rotate Gyro", rotateGyro.getAngle());
+		double center = 150.0;
+		if (rotatePot.get() < (center + 10) && rotatePot.get() > (center - 10)) {
+			SmartDashboard.putBoolean("Feedback - Centered Turret", true);
+		} else {
+			SmartDashboard.putBoolean("Feedback - Centered Turret", true);
+		}
 		if (Robot.IS_COMPETITION_ROBOT) {
 			SmartDashboard.putBoolean("Sensor - Tilt Min Limit", tiltMinLimit.get());
 			SmartDashboard.putBoolean("Sensor - Tilt Max Limit", tiltMaxLimit.get());
@@ -150,7 +128,7 @@ public class TurretSubsystem extends Subsystem {
     	
     	// TODO - Always check before deploying
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		offset = 0;
+    		offset = 27;
     	} else {
     		offset = 200;
     	}
@@ -214,6 +192,15 @@ public class TurretSubsystem extends Subsystem {
     
     public void setOverrideTilt(boolean overrideTilt) {
     	this.overrideTilt = overrideTilt;
+    }
+    
+    public double getCenterPotVal() {
+    	if (Robot.IS_COMPETITION_ROBOT) {
+    		return 150.0;
+    	} else {
+    		// TODO - Configure value for practice bot
+    		return 200.0;
+    	}
     }
     
     public boolean getCentered() {

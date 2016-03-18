@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class DriveStraightCommand extends Command {
+public class DriveBackwardCommand extends Command {
 
 	Timer timer;
 	double timeUntilStop;
 	boolean accel;
 	boolean straightDrive;
 	
-    public DriveStraightCommand(double timeUntilStop) {
+    public DriveBackwardCommand(double timeUntilStop) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.driveSubsystem);
@@ -24,14 +24,14 @@ public class DriveStraightCommand extends Command {
     	this.timeUntilStop = timeUntilStop;
     }
 
-    public DriveStraightCommand(double timeUntilStop, boolean accel) {
+    public DriveBackwardCommand(double timeUntilStop, boolean accel) {
     	requires(Robot.driveSubsystem);
     	this.accel = accel;
     	this.straightDrive = false;
     	this.timeUntilStop = timeUntilStop;
     }
     
-    public DriveStraightCommand(double timeUntilStop, boolean accel, boolean straightDrive) {
+    public DriveBackwardCommand(double timeUntilStop, boolean accel, boolean straightDrive) {
     	requires(Robot.driveSubsystem);
     	this.accel = accel;
     	this.straightDrive = straightDrive;

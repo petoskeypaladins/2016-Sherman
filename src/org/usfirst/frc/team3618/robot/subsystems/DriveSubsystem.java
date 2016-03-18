@@ -31,7 +31,7 @@ public class DriveSubsystem extends Subsystem {
 	
 	int steps = 0;
 	
-	private double kP = 0.7;
+	private double kP = 0.1;
 	
 	public DriveSubsystem() {
 		leftFrontMotor = new CANTalon(RobotMap.LEFT_FRONT_MOTOR);
@@ -100,7 +100,7 @@ public class DriveSubsystem extends Subsystem {
     }
     
     public void autonStraightDrive(double power) {
-    	myRobotDrive.drive(power, -spiGyro.getAngle()*this.kP);
+    	myRobotDrive.drive(-power, -spiGyro.getAngle()*this.kP);
     }
     
     public double getFeetFromTicks(double ticks) {

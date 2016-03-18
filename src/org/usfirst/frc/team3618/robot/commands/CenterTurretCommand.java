@@ -20,16 +20,23 @@ public class CenterTurretCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.turretSubsystem.centerTurret();
+    	if (Robot.turretSubsystem.rotatePot.get() > Robot.turretSubsystem.getCenterPotVal()) {
+    		Robot.turretSubsystem.rotateTurret(0.25);
+    	} else {
+    		Robot.turretSubsystem.rotateTurret(-0.25);
+    	}
+    	Robot.turretSubsystem.tiltTurret(-0.3);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Math.abs(Robot.turretSubsystem.rotatePot.get() - Robot.turretSubsystem.getCenterPotVal()) <= 3.0 && Robot.turretSubsystem.isMinLimitSet();
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.turretSubsystem.rotateTurret(0.0);
+    	Robot.turretSubsystem.tiltTurret(0.0);
     }
 
     // Called when another command which requires one or more of the same
@@ -38,3 +45,4 @@ public class CenterTurretCommand extends Command {
     	end();
     }
 }
+

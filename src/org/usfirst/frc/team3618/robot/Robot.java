@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 public class Robot extends IterativeRobot {
 
 	public static boolean IS_USING_OPENCV = true;
-	public static boolean IS_COMPETITION_ROBOT = false;
+	public static boolean IS_COMPETITION_ROBOT = true;
 	
 	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 	public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
@@ -109,19 +109,9 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
     	Robot.driveSubsystem.resetGyros();
     	Robot.turretSubsystem.resetGyros();
-    	this.clearVisionData();
+    	Robot.clearVisionData();
         try {
         	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
-//    		if ((int) autoBallChooser.getSelected() == 4) { // Sit there and cry
-//    			autonomousCommand = new AutonomousCommandManager();
-//    		} else if ((int) autoBallChooser.getSelected() == 3) { // Drive forward
-//    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
-//    					(int) autoBallChooser.getSelected(),
-//    					(int) autoPositionChooser.getSelected());
-//    		} else { // One ball or Two ball
-//    			autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
-//    					(int) autoPositionChooser.getSelected());
-//    		}
         	autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
 					(int) autoBallChooser.getSelected(),
 					(int) autoPositionChooser.getSelected());
@@ -148,7 +138,7 @@ public class Robot extends IterativeRobot {
         Robot.driveSubsystem.resetGyros();
         Robot.turretSubsystem.resetGyros();
         Robot.driveSubsystem.resetEncoders();
-        this.clearVisionData();
+        Robot.clearVisionData();
         
         lastRunBackSensor = false; 
         
@@ -227,7 +217,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putBoolean("Sensor - Hold Photosensor", backSensor.get());
     }
     
-    public void clearVisionData() {
+    public static void clearVisionData() {
     	SmartDashboard.putNumber("Center X", -1);
     	SmartDashboard.putNumber("Center Y", -1);
     	SmartDashboard.putNumber("Goal Width", -1);

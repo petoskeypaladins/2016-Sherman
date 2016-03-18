@@ -34,6 +34,7 @@ public class ShootCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.clearVisionData();
     	timer.stop();
     	Robot.turretSubsystem.stopShoot();
     }

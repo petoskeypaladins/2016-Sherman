@@ -46,7 +46,12 @@ public class AutoAlignShooterCommand extends Command {
     	if (cenX > 0 && cenY > 0  && targetWidth > 0) {
 		    final double TARGET_FEET = ((double) 20/12);
 		    // TODO - CONFIGURE FOR REAL ROBOT
-		    double camOffsetAngle = 5.0;
+		    double camOffsetAngle;
+		    if (Robot.IS_COMPETITION_ROBOT) {
+		    	camOffsetAngle = 3.0;
+		    } else {
+		    	camOffsetAngle = 5.0;
+		    }
 		    final double FOV = 25; //half of real FOV
     		double xError = ((double) cenX - (vCamWidth / 2)) * ((double) TARGET_FEET / targetWidth); //feet
 		    double frameAngle = SmartDashboard.getNumber("Frame Gyro", 0);
@@ -54,11 +59,11 @@ public class AutoAlignShooterCommand extends Command {
 		    				   (2 * targetWidth * Math.tan(Math.toRadians(FOV)));
 		    double angleError = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
 		    double targetAngle = frameAngle + angleError;
-		    double output = (targetAngle - Robot.turretSubsystem.getRotateAngle()) / 20;
+		    double output = (targetAngle - Robot.turretSubsystem.getRotateAngle()) / 22;
 		    
 		    SmartDashboard.putNumber("X Error", angleError);
 		    
-		    if ((Math.abs(angleError) <= 0.95)) {
+		    if ((Math.abs(angleError) <= 1.25)) {
 		    	Robot.turretSubsystem.rotateTurret(0.0);
 			    SmartDashboard.putBoolean("Centered Shooter (x)", true);
 		    } else {
@@ -66,10 +71,10 @@ public class AutoAlignShooterCommand extends Command {
 			    SmartDashboard.putBoolean("Centered Shooter (x)", false);
 		    }
 		    
-		    double farHeight = .45;
-	    	double nearHeight = .50;
-	    	double farPixels = 51;
-	    	double nearPixels = 75;
+		    double farHeight = .4125;
+	    	double nearHeight = .6166;
+	    	double farPixels = 86;
+	    	double nearPixels = 43;
 	    	
 	    	if (!Robot.IS_COMPETITION_ROBOT) {
 	    		farHeight = .45;
@@ -80,28 +85,23 @@ public class AutoAlignShooterCommand extends Command {
 	    	
 	    	double slope = (farHeight - nearHeight) / (farPixels - nearPixels); // -0.003125
 	    	double intercept = (slope*(-farPixels)) + farHeight;
-//	    	double intercept = farHeight - (slope*farPixels) + .05; 
 	    	double yAlignRatio = slope * targetWidth + intercept;
-		    
-		    double yError = -(cenY - ((vCamHeight*yAlignRatio)));
+		    double yOffset = 7.5;
+		    double yError = -(cenY - ((vCamHeight*yAlignRatio)) + yOffset);
 		    double mvmtRatioY = (yError / 240);
 		    	
-		    SmartDashboard.putNumber("Y Align Ratio", yAlignRatio);
-	    	SmartDashboard.putNumber("Y Error", yError);
-	    	SmartDashboard.putNumber("Y Ratio", mvmtRatioY);
-		    
-		    if ((yError >= 3 && !Robot.turretSubsystem.isMaxLimitSet()) || 
-		    	 yError <= -3) {
+		    // !TiltMaxLimit
+		    if (Math.abs(yError) >= 6 && !Robot.turretSubsystem.isMaxLimitSet()) {
 		    	if (yError < 30 && yError > 0) {
 			    	// The value is too small for the motor to do anything
-			    	mvmtRatioY = 0.115;
+			    	mvmtRatioY = 0.25;
 			    	if (yError < 15 && yError > 0) {
-			    		mvmtRatioY = 0.095;
+			    		mvmtRatioY = 0.1;
 			    	}
 			    } else if (yError > -30 && yError < 0) {
-			    	mvmtRatioY = -0.115;
-			    	if (yError > -20 && yError < 0) {
-			    		mvmtRatioY = -0.095;
+			    	mvmtRatioY = -0.25;
+			    	if (yError > -15 && yError < 0) {
+			    		mvmtRatioY = -0.1;
 			    	}
 			    }
 		    	SmartDashboard.putBoolean("Centered Shooter (y)", false);
@@ -110,6 +110,11 @@ public class AutoAlignShooterCommand extends Command {
 		    	SmartDashboard.putBoolean("Centered Shooter (y)", true);
 			    Robot.turretSubsystem.tiltTurret(0);
 		    }
+		    
+		    SmartDashboard.putNumber("Y Align Ratio", yAlignRatio);
+	    	SmartDashboard.putNumber("Y Error", yError);
+	    	SmartDashboard.putNumber("Y Ratio", mvmtRatioY);
+		    
     	}
     }
     
@@ -121,7 +126,7 @@ public class AutoAlignShooterCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	// Correct the turret horizontally
-        return getCentered();
+        return false;
     }
 
     // Called once after isFinished returns true

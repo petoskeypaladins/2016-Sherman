@@ -18,13 +18,14 @@ public class RotateTurretToAngleCommand extends Command {
     }
 
     protected void initialize() {
+    	System.out.println("Turning to Angle: " + goalAngle);
     }
 
     protected void execute() {
     	if (goalAngle > 0) {
-    		Robot.turretSubsystem.rotateTurret(0.3);
+    		Robot.turretSubsystem.rotateTurret(0.2);
     	} else if (goalAngle < 0) {
-    		Robot.turretSubsystem.rotateTurret(-0.3);
+    		Robot.turretSubsystem.rotateTurret(-0.2);
     	}
     }
 

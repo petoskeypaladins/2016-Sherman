@@ -26,8 +26,8 @@ public class DriveCommand extends Command {
     	double right = Robot.oi.driveJoystick.getRawAxis(5);
     	double limit = 1.0;
     	int LEFT = 0, RIGHT = 1;
-    	Robot.driveSubsystem.driveMe(Robot.driveSubsystem.accel(left*limit, .07, LEFT), 
-    			Robot.driveSubsystem.accel(right*limit, .07, RIGHT));
+    	Robot.driveSubsystem.driveMe(Robot.driveSubsystem.accel(left*limit, .2, LEFT), 
+    			Robot.driveSubsystem.accel(right*limit, .35, RIGHT));
     }
 
     // Make this return true when this Command no longer needs to run execute()
