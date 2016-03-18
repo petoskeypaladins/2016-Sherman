@@ -19,8 +19,9 @@ public class AutonomousCommandManager extends CommandGroup {
     
 	private HashMap<String, Double> defenseDriveTime;
 	private HashMap<String, Double> positionDriveTime;
-	private HashMap<String, Double> positionRotateAngle;
+	private HashMap<String, Double> positionTurretRotateAngle;
 	private HashMap<String, Double> positionTiltAngle;
+	private HashMap<String, Double> positionRobotRotateAngle;
     
     final double DRIVE_TIME_BEFORE_DEFENSE = 1.5;
     
@@ -31,7 +32,8 @@ public class AutonomousCommandManager extends CommandGroup {
     	
     	defenseDriveTime = new HashMap<String, Double>();
     	positionDriveTime = new HashMap<String, Double>();
-    	positionRotateAngle = new HashMap<String, Double>();
+    	positionTurretRotateAngle = new HashMap<String, Double>();
+    	positionRobotRotateAngle = new HashMap<String, Double>();
     	positionTiltAngle = new HashMap<String, Double>();
     	
     	initHashMaps();
@@ -67,11 +69,11 @@ public class AutonomousCommandManager extends CommandGroup {
     	positionDriveTime.put("Position 4", 0.5);
     	positionDriveTime.put("Position 5", 1.5);
     	
-    	positionRotateAngle.put("Position 1", 15.0);
-    	positionRotateAngle.put("Position 2", 45.0);
-    	positionRotateAngle.put("Position 3", 0.0);
-    	positionRotateAngle.put("Position 4", 0.0);
-    	positionRotateAngle.put("Position 5", -25.0);
+    	positionTurretRotateAngle.put("Position 1", 15.0);
+    	positionTurretRotateAngle.put("Position 2", 45.0);
+    	positionTurretRotateAngle.put("Position 3", 0.0);
+    	positionTurretRotateAngle.put("Position 4", 0.0);
+    	positionTurretRotateAngle.put("Position 5", -25.0);
     	
     	positionTiltAngle.put("Position 1", 30.0);
     	positionTiltAngle.put("Position 2", 30.0);
@@ -83,7 +85,7 @@ public class AutonomousCommandManager extends CommandGroup {
     private void clearHashMaps() {
     	defenseDriveTime.clear();
     	positionDriveTime.clear();
-    	positionRotateAngle.clear();
+    	positionTurretRotateAngle.clear();
     	positionTiltAngle.clear();
     }
     
@@ -100,7 +102,7 @@ public class AutonomousCommandManager extends CommandGroup {
     	addSequential(new DriveStraightCommand(DRIVE_TIME_BEFORE_DEFENSE, true));
     	System.out.println("Defense: " + defense);
     	if (defense == 1) {
-    		addSequential(new DriveStraightCommand(defenseDriveTime.get("Rock Wall")));	
+    		addSequential(new DriveBackwardCommand(defenseDriveTime.get("Rock Wall")));	
     	} else if (defense == 2) {
     		addSequential(new DriveStraightCommand(defenseDriveTime.get("Rough Terrain"), false));
     	} else if (defense == 3) {
@@ -108,7 +110,7 @@ public class AutonomousCommandManager extends CommandGroup {
     	} else if (defense == 4) {
     		addSequential(new DriveStraightCommand(defenseDriveTime.get("Moat")));
     	} else if (defense == 5) {
-    		addSequential(new DriveStraightCommand(defenseDriveTime.get("Low Bar")));
+    		addSequential(new DriveBackwardCommand(defenseDriveTime.get("Low Bar")));
     	} else {
     		// Don't do anything. Program fault as we cannot do any other defenses in autonomous right now
     	}
@@ -117,8 +119,9 @@ public class AutonomousCommandManager extends CommandGroup {
     private void shootBallOne(int position) {
     	addSequential(new RotateBotCommand());
     	addSequential(new DriveStraightCommand((double) positionDriveTime.get("Position " + Integer.toString(position)), false, true));  
-		// Turn the turret?
-    	addSequential(new RotateTurretToAngleCommand(positionRotateAngle.get("Position " + position)));
+		// Turn the turret
+    	addSequential(new TiltTurretCommand());
+    	addSequential(new RotateTurretToAngleCommand(positionTurretRotateAngle.get("Position " + position)));
 		addParallel(new AutoAlignShooterCommand());
     	addSequential(new WaitCommand(), 4.0);
     	addParallel(new SpinShooterCommand());

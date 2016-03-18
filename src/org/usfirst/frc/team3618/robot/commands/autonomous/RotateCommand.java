@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class RotateCommand extends Command {
 	double degrees;
 	int rotateDirection;
+	boolean atAngle;
 	
     public RotateCommand(double degrees) {
         // Use requires() here to declare subsystem dependencies
@@ -17,6 +18,7 @@ public class RotateCommand extends Command {
     	requires(Robot.driveSubsystem);
     	this.degrees = degrees;
     	rotateDirection = (int) (degrees / Math.abs(degrees));//returns 1 or -1
+    	atAngle = false;
     }
 
     // Called just before this Command runs the first time
@@ -26,11 +28,12 @@ public class RotateCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.driveSubsystem.rotate(rotateDirection);
+    	atAngle = Math.abs(Robot.driveSubsystem.getRobotAngle()) >= Math.abs(degrees);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.driveSubsystem.getRobotAngle() >= degrees;
+        return atAngle;
     }
 
     // Called once after isFinished returns true

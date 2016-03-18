@@ -49,15 +49,15 @@ public class DriveBackwardCommand extends Command {
     protected void execute() {
     	if (!accel) {
     		if (straightDrive) {
-    			Robot.driveSubsystem.autonStraightDrive(1.0);
+    			Robot.driveSubsystem.autonStraightDrive(-1.0);
     		} else {
-    			Robot.driveSubsystem.autonDrive(1.0);
+    			Robot.driveSubsystem.autonDrive(-1.0);
     		}
     	} else {
     		if (straightDrive) {
-    			Robot.driveSubsystem.autonStraightDrive(Robot.driveSubsystem.accel(1.0, timeSinceInitialized(), 0.75));
+    			Robot.driveSubsystem.autonStraightDrive(Robot.driveSubsystem.accel(-1.0, timeSinceInitialized(), 0.75));
     		} else {
-    			Robot.driveSubsystem.autonDrive(Robot.driveSubsystem.accel(1.0, timeSinceInitialized(), 0.75));
+    			Robot.driveSubsystem.autonDrive(Robot.driveSubsystem.accel(-1.0, timeSinceInitialized(), 0.75));
     		}
     	}
     }

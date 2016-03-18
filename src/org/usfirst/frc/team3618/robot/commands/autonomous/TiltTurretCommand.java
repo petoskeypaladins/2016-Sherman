@@ -8,37 +8,32 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class TiltTurretToAngleCommand extends Command {
+public class TiltTurretCommand extends Command {
 
-	Timer timer;
-	double goalAngle;
+	boolean atAngle;
+	final int TARGET_ANGLE = 25000;
 	
-    public TiltTurretToAngleCommand(double goalAngle) {
-    	this.goalAngle = goalAngle;
-    	
-        requires(Robot.turretSubsystem);
+    public TiltTurretCommand() {
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	timer = new Timer();
-    	timer.reset();
-    	timer.start();
+    	atAngle = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.turretSubsystem.tiltTurret(0.3);
+    	atAngle = Robot.turretSubsystem.getTiltTicks() >= TARGET_ANGLE;
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (Robot.turretSubsystem.getTiltAngle() >= goalAngle) || timer.get() >= 1.0;
+        return atAngle;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	timer.stop();
     	Robot.turretSubsystem.tiltTurret(0.0);
     }
 

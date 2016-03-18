@@ -216,6 +216,10 @@ public class TurretSubsystem extends Subsystem {
     	return -tiltMotor.getEncPosition() / ((double) TICKS_IN_INCH);
     }
     
+    public double getTiltTicks() {
+    	return tiltMotor.getEncPosition();
+    }
+    
     public double getRotateAngle() {
     	return rotateGyro.getAngle();
     }
