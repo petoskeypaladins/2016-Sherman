@@ -57,30 +57,30 @@ public class AutonomousCommandManager extends CommandGroup {
     }
     
     private void initHashMaps() {
-        defenseDriveTime.put("Rough Terrain", 2.0);
-        defenseDriveTime.put("Rock Wall", 2.0);
-        defenseDriveTime.put("Ramparts", 2.0);
-        defenseDriveTime.put("Moat", 2.0);
-        defenseDriveTime.put("Low Bar", 1.5);
+    	defenseDriveTime.put("Rough Terrain", 2.0);
+    	defenseDriveTime.put("Rock Wall", 2.0);
+    	defenseDriveTime.put("Ramparts", 2.0);
+    	defenseDriveTime.put("Moat", 2.0);
+    	defenseDriveTime.put("Low Bar", 1.5);
         defenseDriveTime.put("Cheval de Frise", 1.0);
-        
-        positionDriveTime.put("Position 1", 2.0);
-        positionDriveTime.put("Position 2", 2.0);
-        positionDriveTime.put("Position 3", 0.8);
-        positionDriveTime.put("Position 4", .75);
-        positionDriveTime.put("Position 5", 1.5);
-        
-        positionTurretRotateAngle.put("Position 1", 15.0);
-        positionTurretRotateAngle.put("Position 2", 45.0);
-        positionTurretRotateAngle.put("Position 3", 0.0);
-        positionTurretRotateAngle.put("Position 4", -15.0);
-        positionTurretRotateAngle.put("Position 5", -25.0);
-        
-        positionTiltAngle.put("Position 1", 30.0);
-        positionTiltAngle.put("Position 2", 30.0);
-        positionTiltAngle.put("Position 3", 30.0);
-        positionTiltAngle.put("Position 4", 30.0);
-        positionTiltAngle.put("Position 5", 40.0);
+    	
+    	positionDriveTime.put("Position 1", 2.0);
+    	positionDriveTime.put("Position 2", 2.0);
+    	positionDriveTime.put("Position 3", 0.5);
+    	positionDriveTime.put("Position 4", .75);
+    	positionDriveTime.put("Position 5", 1.5);
+    	
+    	positionTurretRotateAngle.put("Position 1", 15.0);
+    	positionTurretRotateAngle.put("Position 2", 45.0);
+    	positionTurretRotateAngle.put("Position 3", 0.0);
+    	positionTurretRotateAngle.put("Position 4", -15.0);
+    	positionTurretRotateAngle.put("Position 5", -25.0);
+    	
+    	positionTiltAngle.put("Position 1", 30.0);
+    	positionTiltAngle.put("Position 2", 30.0);
+    	positionTiltAngle.put("Position 3", 30.0);
+    	positionTiltAngle.put("Position 4", 30.0);
+    	positionTiltAngle.put("Position 5", 40.0);
     }
     
     private void clearHashMaps() {
