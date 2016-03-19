@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class EncoderDriveCommand extends Command {
 
 	double distance, power;
+	boolean atDistance;
 	
     public EncoderDriveCommand(double distance, double power) {
         // Use requires() here to declare subsystem dependencies
@@ -18,6 +19,7 @@ public class EncoderDriveCommand extends Command {
     	
     	this.distance = distance;
     	this.power = power;
+    	atDistance = false;
     }
 
     // Called just before this Command runs the first time
@@ -28,11 +30,12 @@ public class EncoderDriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.driveSubsystem.autonDrive(Robot.driveSubsystem.accel(power, 0.03, 0));
+    	atDistance = Robot.driveSubsystem.getEncoders() >= Robot.driveSubsystem.getTicksFromFeet(distance);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.driveSubsystem.getEncoders() >= Robot.driveSubsystem.getTicksFromFeet(distance);
+        return atDistance;
     }
 
     // Called once after isFinished returns true
