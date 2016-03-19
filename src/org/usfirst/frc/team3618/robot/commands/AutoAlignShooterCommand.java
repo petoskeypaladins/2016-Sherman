@@ -62,12 +62,26 @@ public class AutoAlignShooterCommand extends Command {
 		    double output = (targetAngle - Robot.turretSubsystem.getRotateAngle()) / 22;
 		    
 		    SmartDashboard.putNumber("X Error", angleError);
-		    
-		    if ((Math.abs(angleError) <= 1.25)) {
-		    	Robot.turretSubsystem.rotateTurret(0.0);
-			    SmartDashboard.putBoolean("Centered Shooter (x)", true);
+		    SmartDashboard.putNumber("Target angle", targetAngle);
+		    if (Math.abs(angleError) <= 5) {
+		    	if (angleError < 0) {
+		    		SmartDashboard.putBoolean("close left", true);
+		    	} else if (angleError > 0) {
+		    		SmartDashboard.putBoolean("close Right", true);
+		    	} else {
+		    		SmartDashboard.putBoolean("close left", true);
+		    		SmartDashboard.putBoolean("close Right", true);
+		    	}
+			    if (Math.abs(angleError) <= 1.25) {
+			    	Robot.turretSubsystem.rotateTurret(0.0);
+				    SmartDashboard.putBoolean("Centered Shooter (x)", true);
+			    } else {
+			    	Robot.turretSubsystem.rotateTurret(output);
+				    SmartDashboard.putBoolean("Centered Shooter (x)", false);
+			    }
 		    } else {
-		    	Robot.turretSubsystem.rotateTurret(output);
+	    		SmartDashboard.putBoolean("close left", false);
+	    		SmartDashboard.putBoolean("close Right", false);
 			    SmartDashboard.putBoolean("Centered Shooter (x)", false);
 		    }
 		    
@@ -95,19 +109,26 @@ public class AutoAlignShooterCommand extends Command {
 		    	if (yError < 30 && yError > 0) {
 			    	// The value is too small for the motor to do anything
 			    	mvmtRatioY = 0.25;
+			    	SmartDashboard.putBoolean("close bottom", true);
 			    	if (yError < 15 && yError > 0) {
 			    		mvmtRatioY = 0.1;
 			    	}
 			    } else if (yError > -30 && yError < 0) {
 			    	mvmtRatioY = -0.25;
+			    	SmartDashboard.putBoolean("close top", true);
 			    	if (yError > -15 && yError < 0) {
 			    		mvmtRatioY = -0.1;
 			    	}
+			    } else {
+			    	SmartDashboard.putBoolean("close bottom", false);
+			    	SmartDashboard.putBoolean("close top", false);
 			    }
 		    	SmartDashboard.putBoolean("Centered Shooter (y)", false);
 			    Robot.turretSubsystem.tiltTurret(mvmtRatioY);
 		    } else {
 		    	SmartDashboard.putBoolean("Centered Shooter (y)", true);
+		    	SmartDashboard.putBoolean("close bottom", false);
+		    	SmartDashboard.putBoolean("close top", false);
 			    Robot.turretSubsystem.tiltTurret(0);
 		    }
 		    
