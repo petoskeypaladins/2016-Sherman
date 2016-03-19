@@ -103,7 +103,7 @@ public class AutonomousCommandManager extends CommandGroup {
         addSequential(new DriveStraightCommand(DRIVE_TIME_BEFORE_DEFENSE, true));
         System.out.println("Defense: " + defense);
         if (defense == 1) {
-            addSequential(new DriveBackwardCommand(defenseDriveTime.get("Rock Wall"))); 
+            addSequential(new DriveStraightCommand(defenseDriveTime.get("Rock Wall"))); 
         } else if (defense == 2) {
             addSequential(new DriveStraightCommand(defenseDriveTime.get("Rough Terrain"), false));
         } else if (defense == 3) {
@@ -113,7 +113,7 @@ public class AutonomousCommandManager extends CommandGroup {
         } else if (defense == 5) {
             addSequential(new DriveBackwardCommand(defenseDriveTime.get("Low Bar")));
         } else if (defense == 7) {
-            final double DISTANCE_TO_CHEVAL = 1, DRIVE_POWER = .3;	
+            final double DISTANCE_TO_CHEVAL = 3.79, DRIVE_POWER = .3;	
             addSequential(new EncoderDriveCommand(DISTANCE_TO_CHEVAL, DRIVE_POWER)); 
             addSequential(new ArmDownCommand());
             addSequential(new DriveStraightCommand(defenseDriveTime.get("Cheval de Frise")));
