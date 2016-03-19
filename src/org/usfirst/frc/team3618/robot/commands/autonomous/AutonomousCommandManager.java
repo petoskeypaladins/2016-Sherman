@@ -60,7 +60,7 @@ public class AutonomousCommandManager extends CommandGroup {
     	defenseDriveTime.put("Rough Terrain", 2.0);
     	defenseDriveTime.put("Rock Wall", 2.0);
     	defenseDriveTime.put("Ramparts", 2.0);
-    	defenseDriveTime.put("Moat", 2.0);
+    	defenseDriveTime.put("Moat", 1.75);
     	defenseDriveTime.put("Low Bar", 1.5);
         defenseDriveTime.put("Cheval de Frise", 1.0);
     	
