@@ -17,7 +17,7 @@ public class HoldBallCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.turretSubsystem.holdBall();
+    	Robot.shooterSubsystem.holdBall();
     }
 
     // Called repeatedly when this Command is scheduled to run

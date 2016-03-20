@@ -95,14 +95,14 @@ public class AutoAlignShooterCommand extends Command {
 		    	if (yError < 30 && yError > 0) {
 			    	// The value is too small for the motor to do anything
 			    	mvmtRatioY = 0.25;
-			    	if (yError < 15 && yError > 0) {
-			    		mvmtRatioY = 0.1;
-			    	}
+//			    	if (yError < 15 && yError > 0) {
+//			    		mvmtRatioY = 0.1;
+//			    	}
 			    } else if (yError > -30 && yError < 0) {
 			    	mvmtRatioY = -0.25;
-			    	if (yError > -15 && yError < 0) {
-			    		mvmtRatioY = -0.1;
-			    	}
+//			    	if (yError > -15 && yError < 0) {
+//			    		mvmtRatioY = -0.1;
+//			    	}
 			    }
 		    	SmartDashboard.putBoolean("Centered Shooter (y)", false);
 			    Robot.turretSubsystem.tiltTurret(mvmtRatioY);

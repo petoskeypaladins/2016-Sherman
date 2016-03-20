@@ -60,12 +60,12 @@ public class AutonomousCommandManager extends CommandGroup {
     	defenseDriveTime.put("Rough Terrain", 2.0);
     	defenseDriveTime.put("Rock Wall", 2.0);
     	defenseDriveTime.put("Ramparts", 2.0);
-    	defenseDriveTime.put("Moat", 1.75);
+    	defenseDriveTime.put("Moat", 2.0);
     	defenseDriveTime.put("Low Bar", 1.5);
     	
     	positionDriveTime.put("Position 1", 2.0);
     	positionDriveTime.put("Position 2", 2.0);
-    	positionDriveTime.put("Position 3", 0.5);
+    	positionDriveTime.put("Position 3", 0.8);
     	positionDriveTime.put("Position 4", .75);
     	positionDriveTime.put("Position 5", 1.5);
     	
@@ -127,6 +127,5 @@ public class AutonomousCommandManager extends CommandGroup {
     	addSequential(new WaitCommand(), 1.0);
     	addSequential(new ShootCommand());
     	addSequential(new StopShooterCommand());
-    }
-    
+    } 
 }
