@@ -18,21 +18,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class TurretSubsystem extends Subsystem {
-	private final double LEFT_SHOOT_POSITION = 0;
-	private final double LEFT_OPEN_POSITION = 90;
 	
-	private final double LEFT_HOLD_POSITION = 135;
-	
-	private final double RIGHT_SHOOT_POSITION = 180;
-	private final double RIGHT_OPEN_POSITION = 90;
-	
-	private final double RIGHT_HOLD_POSITION = 45;
 	
 	private boolean centered;
 	
-	//Servo Declarations
-	Servo leftServo;
-	Servo rightServo;
+	
 	
 	//Tilt Declarations
 	DigitalInput tiltMinLimit;
@@ -49,8 +39,6 @@ public class TurretSubsystem extends Subsystem {
     public Potentiometer rotatePot;
     
 	public TurretSubsystem() {
-		leftServo = new Servo(RobotMap.LEFT_BALL_SERVO);
-		rightServo = new Servo(RobotMap.RIGHT_BALL_SERVO);
 		tiltMotor = new CANTalon(RobotMap.TILT_SHOOTER_MOTOR);
 		tiltMinLimit = new DigitalInput(RobotMap.TILT_MIN_DIO);
 		tiltMaxLimit = new DigitalInput(RobotMap.TILT_MAX_DIO);
@@ -79,8 +67,6 @@ public class TurretSubsystem extends Subsystem {
 	
 	public void displayData() {
 		SmartDashboard.putNumber("Sensor - Rotate Pot", rotatePot.get());
-		SmartDashboard.putNumber("Sensor - Left Servo", leftServo.getAngle());
-		SmartDashboard.putNumber("Sensor - Right Servo", rightServo.getAngle());
 		SmartDashboard.putNumber("Output - Rotate Motor", rotateMotor.get());
 		SmartDashboard.putNumber("Output - Tilt Motor", tiltMotor.get());
 		SmartDashboard.putNumber("Encoder - Tilt Motor", tiltMotor.getEncPosition());
@@ -154,30 +140,7 @@ public class TurretSubsystem extends Subsystem {
     	
     	rotateMotor.set(output);
     }
-    public void shoot() {
-		if (Robot.IS_COMPETITION_ROBOT) {
-			leftServo.set(LEFT_SHOOT_POSITION);
-		} else {
-			leftServo.set(LEFT_SHOOT_POSITION - 30);
-		}
-    	rightServo.set(RIGHT_SHOOT_POSITION);	
-    }
-    
-    public void stopShoot() {
-    	leftServo.setAngle(LEFT_OPEN_POSITION);
-		rightServo.setAngle(RIGHT_OPEN_POSITION);
-    }
-    
-    public void holdBall() {
-    	leftServo.setAngle(LEFT_HOLD_POSITION);
-    	rightServo.setAngle(RIGHT_HOLD_POSITION);
-    }
-    
-    public void releaseBall() {
-    	leftServo.setAngle(LEFT_OPEN_POSITION);
-    	rightServo.setAngle(RIGHT_OPEN_POSITION);
-    }
-    
+        
     public boolean isMinLimitSet() {
     	return tiltMinLimit.get();
     }

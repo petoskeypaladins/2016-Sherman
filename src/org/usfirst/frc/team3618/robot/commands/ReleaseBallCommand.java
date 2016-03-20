@@ -17,7 +17,7 @@ public class ReleaseBallCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.turretSubsystem.releaseBall();
+    	Robot.shooterSubsystem.releaseBall();
     }
 
     // Called repeatedly when this Command is scheduled to run

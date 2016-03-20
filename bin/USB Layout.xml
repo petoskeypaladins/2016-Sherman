@@ -1,0 +1,9 @@
+<xml version="1.0">
+<dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
+		<location x="1012" y="7"/>
+	</static-widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>
