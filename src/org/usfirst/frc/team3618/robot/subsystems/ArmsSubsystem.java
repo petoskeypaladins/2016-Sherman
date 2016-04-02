@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3618.robot.subsystems;
 
+import org.usfirst.frc.team3618.robot.Robot;
 import org.usfirst.frc.team3618.robot.RobotMap;
 import org.usfirst.frc.team3618.robot.commands.ArmLiftCommand;
 
@@ -46,7 +47,16 @@ public class ArmsSubsystem extends Subsystem {
 				power = 0;
 			}
 		}
+		
+		if (!Robot.turretSubsystem.getCentered()) {
+			power = 0;
+		}
+		
 		armMotor.set(power);
+    }
+    
+    public void armDown() {
+    	armMotor.set(-1);
     }
     
     public boolean getLowerLimitState() {

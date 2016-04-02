@@ -37,6 +37,7 @@ public class TurretSubsystem extends Subsystem {
     //Rotate Declarations
     CANTalon rotateMotor;
     public Potentiometer rotatePot;
+    double lastShooterCenter;
     
 	public TurretSubsystem() {
 		tiltMotor = new CANTalon(RobotMap.TILT_SHOOTER_MOTOR);
@@ -57,6 +58,7 @@ public class TurretSubsystem extends Subsystem {
 		}
 		rotateGyro.reset();
 		resetTiltEncoder();
+		centered = true;
 	}
 	
 	public void initDefaultCommand() {
@@ -74,6 +76,12 @@ public class TurretSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Encoder Inches - Tilt Motor", getInchesFromTicks());
 		SmartDashboard.putNumber("Joystick - Rotate Value", Robot.oi.shootJoystick.getZ());
 		SmartDashboard.putNumber("Gyro - Rotate Gyro", rotateGyro.getAngle());
+		SmartDashboard.putBoolean("Centered Turret", centered);
+		SmartDashboard.putNumber("Rotate Angle", getRotateAngle());
+		SmartDashboard.putNumber("Angle From Center", getAngleFromCenter());
+		SmartDashboard.putNumber("Last Centered Angle", lastShooterCenter);
+		SmartDashboard.putBoolean("Override Rotate", overrideRotate);
+		SmartDashboard.putBoolean("Override Tilt", overrideTilt);
 		double center = 150.0;
 		if (rotatePot.get() < (center + 10) && rotatePot.get() > (center - 10)) {
 			SmartDashboard.putBoolean("Feedback - Centered Turret", true);
@@ -106,6 +114,12 @@ public class TurretSubsystem extends Subsystem {
     		resetTiltEncoder();
     	}
     	
+    	if (output > 1) {
+    		output = 1;
+    	} else if (output < -1) {
+    		output = -1;
+    	}
+    	
     	tiltMotor.set(output);
     }
     
@@ -134,11 +148,33 @@ public class TurretSubsystem extends Subsystem {
 	    	}
     	}
     	
-    	if (output > .4) {
-    		output = .4;
+    	if (output > 1) {
+    		output = 1;
+    	} else if (output < -1) {
+    		output = -1;
     	}
     	
     	rotateMotor.set(output);
+    	
+    	final double DEGREES_BEFORE_BREAKING = 3;
+    	if (Math.abs(getAngleFromCenter()) <= DEGREES_BEFORE_BREAKING && !centered) {
+    		centered = true;
+    	} else if (Math.abs(getAngleFromCenter()) > DEGREES_BEFORE_BREAKING) {
+    		centered = false;
+    	}
+    }
+    
+    public boolean tiltToDegree(double degree) {
+    	double angleDifference = degree - getTiltAngle();
+    	double direction = angleDifference / Math.abs(angleDifference);
+    	if (Math.abs(angleDifference) > 3) {
+    		double output = angleDifference / 5;
+    		tiltTurret(output);
+    		return false;
+    	} else {
+    		tiltTurret(0);
+    		return true;
+    	}
     }
         
     public boolean isMinLimitSet() {
@@ -179,8 +215,8 @@ public class TurretSubsystem extends Subsystem {
     	return -tiltMotor.getEncPosition() / ((double) TICKS_IN_INCH);
     }
     
-    public double getTiltTicks() {
-    	return tiltMotor.getEncPosition();
+    public double getTiltPos() {
+    	return -tiltMotor.getEncPosition();
     }
     
     public double getRotateAngle() {
@@ -193,24 +229,36 @@ public class TurretSubsystem extends Subsystem {
     	double c;
     	double angle;
     	
-    	// TODO - Configure values for real robot
+    	// TODO - Configure values for practice robot
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		a = 3.875;
-        	b = 2.25;
-        	c = 6.34 - getInchesFromTicks();
+    		a = -5.4012120941422 * Math.pow(10, -9);
+        	b = .0012074873980199;
+        	c = 5.683275712955;
     	} else {
-    		a = 4;
-        	b = 2.75;
-        	c = 6.75 - getInchesFromTicks();
+    		a = -5.4012120941422 * Math.pow(10, -9);
+        	b = .0012074873980199;
+        	c = 5.683275712955;
     	}
-    	angle = (double) Math.toDegrees(Math.acos((Math.pow(a, 2) - Math.pow(b, 2) - Math.pow(c, 2)) / (-2 * b * c)));
-    	
+    	angle = ((a * Math.pow(getTiltPos(), 2)) + (b * getTiltPos()) + c);
+    			
     	return angle;
     }
     
-    public void resetGyros() {
+    public void resetGyro() {
     	rotateGyro.reset();
     }
     
+    public double getAngleFromCenter() {
+    	return rotatePot.get() - getCenterPotVal();
+    }
+    
+    public void centerTurret() {
+    	final double ratio = 35;
+    	double power = getAngleFromCenter() / ratio;
+    	if (centered) {
+    		power = 0;
+    	}
+    	rotateTurret(power);
+    }
 }
 

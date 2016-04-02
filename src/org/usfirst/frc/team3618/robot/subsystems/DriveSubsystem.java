@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3618.robot.subsystems;
 
+import org.usfirst.frc.team3618.robot.Robot;
 import org.usfirst.frc.team3618.robot.RobotMap;
 import org.usfirst.frc.team3618.robot.commands.DriveCommand;
 import org.usfirst.frc.team3618.sensorlib.ADIS16448_IMU;
@@ -7,6 +8,7 @@ import org.usfirst.frc.team3618.sensorlib.ADXRS453Gyro;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -93,10 +95,29 @@ public class DriveSubsystem extends Subsystem {
     
     public void driveMe(double left, double right) {
     	myRobotDrive.tankDrive(left, right);
+    	
+    	if (getLeftDriveCurrent() >= 90) {
+    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kLeftRumble, 1);
+    	} else {
+    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kLeftRumble, 0);
+    	}
+    	if (getRightDriveCurrent() >= 90) {
+    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kRightRumble, 1);
+    	} else {
+    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kRightRumble, 0);
+    	}
     }
     
     public void autonDrive(double power) {
     	myRobotDrive.tankDrive(-power, -power);
+    }
+    
+    public double getLeftDriveCurrent() {
+    	return leftFrontMotor.getOutputCurrent() + leftRearMotor.getOutputCurrent();
+    }
+    
+    public double getRightDriveCurrent() {
+    	return rightFrontMotor.getOutputCurrent() + rightRearMotor.getOutputCurrent();
     }
     
     public void autonStraightDrive(double power) {
