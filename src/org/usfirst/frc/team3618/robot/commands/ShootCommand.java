@@ -12,20 +12,18 @@ public class ShootCommand extends Command {
     public ShootCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooterSubsystem);
+    	requires(Robot.servoSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	timer = new Timer();
-    	
-    	Robot.shooterSubsystem.shoot();
+    	Robot.servoSubsystem.shoot();
     	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println(timer.get());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,14 +35,12 @@ public class ShootCommand extends Command {
     protected void end() {
     	Robot.clearVisionData();
     	timer.stop();
-    	Robot.shooterSubsystem.stopShoot();
-    	System.out.println("ended servo command");
+    	Robot.servoSubsystem.stopShoot();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	System.out.println("servos interrupted");
-//    	end();
+    	end();
     }
 }

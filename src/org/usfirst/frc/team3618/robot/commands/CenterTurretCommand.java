@@ -12,6 +12,7 @@ public class CenterTurretCommand extends Command {
     public CenterTurretCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.turretSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -20,23 +21,18 @@ public class CenterTurretCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (Robot.turretSubsystem.rotatePot.get() > Robot.turretSubsystem.getCenterPotVal()) {
-    		Robot.turretSubsystem.rotateTurret(0.25);
-    	} else {
-    		Robot.turretSubsystem.rotateTurret(-0.25);
-    	}
-    	Robot.turretSubsystem.tiltTurret(-0.3);
+    	Robot.turretSubsystem.centerTurret();
+    	Robot.turretSubsystem.tiltTurret(-1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Math.abs(Robot.turretSubsystem.rotatePot.get() - Robot.turretSubsystem.getCenterPotVal()) <= 3.0 && Robot.turretSubsystem.isMinLimitSet();
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.turretSubsystem.rotateTurret(0.0);
-    	Robot.turretSubsystem.tiltTurret(0.0);
+    	Robot.turretSubsystem.rotateTurret(0);
     }
 
     // Called when another command which requires one or more of the same

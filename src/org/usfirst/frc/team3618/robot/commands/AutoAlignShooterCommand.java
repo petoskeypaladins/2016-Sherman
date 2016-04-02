@@ -57,17 +57,18 @@ public class AutoAlignShooterCommand extends Command {
 		    double frameAngle = SmartDashboard.getNumber("Frame Gyro", 0);
 		    double distanceFromGoal = ((double) TARGET_FEET * vCamWidth) / 
 		    				   (2 * targetWidth * Math.tan(Math.toRadians(FOV)));
-		    double angleError = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
-		    double targetAngle = frameAngle + angleError;
-		    double output = (targetAngle - Robot.turretSubsystem.getRotateAngle()) / 22;
 		    
-		    SmartDashboard.putNumber("X Error", angleError);
+		    double angleErrorX = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
+		    double targetAngleX = frameAngle + angleErrorX;
+		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 22;
 		    
-		    if ((Math.abs(angleError) <= 1.25)) {
+		    SmartDashboard.putNumber("X Error", angleErrorX);
+		    
+		    if ((Math.abs(angleErrorX) <= 1.25)) {
 		    	Robot.turretSubsystem.rotateTurret(0.0);
 			    SmartDashboard.putBoolean("Centered Shooter (x)", true);
 		    } else {
-		    	Robot.turretSubsystem.rotateTurret(output);
+		    	Robot.turretSubsystem.rotateTurret(rotateOutput);
 			    SmartDashboard.putBoolean("Centered Shooter (x)", false);
 		    }
 		    
@@ -83,26 +84,53 @@ public class AutoAlignShooterCommand extends Command {
 	    		nearPixels = 40;
 	    	}
 	    	
+//	    	final double HEIGHT_TO_GOAL_BOTTOM = 5.24; // feet
+//	    	final double HEIGHT_TO_GOAL = HEIGHT_TO_GOAL_BOTTOM; //feet
+//	    	final double g = 32.174; //ft/s^2
+//	    	final double VELOCITY = 80; //feet per second
+//	    	double lateralDistance = Math.max(Math.sqrt(Math.pow(distanceFromGoal, 2) - Math.pow(HEIGHT_TO_GOAL_BOTTOM, 2)), .00001); //feet
+//	    	double targetAngleY = Math.toDegrees(Math.atan(
+//	    			(Math.pow(VELOCITY, 2) - 
+//	    					Math.sqrt(Math.pow(VELOCITY, 4) - g *(g * Math.pow(lateralDistance, 2) + 2 * HEIGHT_TO_GOAL * Math.pow(VELOCITY, 2))))
+//	    			/ (g * lateralDistance)));
+//	    	double angleErrorY = targetAngleY - Robot.turretSubsystem.getTiltAngle();
+//		    double tiltOutput = angleErrorY / 10;
+//		    
+//		    SmartDashboard.putNumber("lateral distance", lateralDistance);
+//		    SmartDashboard.putNumber("target angle y", targetAngleY);
+//		    SmartDashboard.putNumber("angle error", angleErrorY);
+//		    SmartDashboard.putNumber("hypotenuse", distanceFromGoal);
+//	    	
+//	    	if (Math.abs(angleErrorY) <= 1.25) {
+//	    		SmartDashboard.putBoolean("Centered Shooter (y)", true);
+//			    Robot.turretSubsystem.tiltTurret(0);
+//	    	} else {
+//	    		SmartDashboard.putBoolean("Centered Shooter (y)", false);
+//	    		Robot.turretSubsystem.tiltTurret(tiltOutput);
+//	    	}
+	    	
 	    	double slope = (farHeight - nearHeight) / (farPixels - nearPixels); // -0.003125
 	    	double intercept = (slope*(-farPixels)) + farHeight;
 	    	double yAlignRatio = slope * targetWidth + intercept;
 		    double yOffset = 7.5;
 		    double yError = -(cenY - ((vCamHeight*yAlignRatio)) + yOffset);
 		    double mvmtRatioY = (yError / 240);
-		    	
-		    // !TiltMaxLimit
+		    
+		    
+    	
+    	// !TiltMaxLimit
 		    if (Math.abs(yError) >= 6 && !Robot.turretSubsystem.isMaxLimitSet()) {
 		    	if (yError < 30 && yError > 0) {
 			    	// The value is too small for the motor to do anything
 			    	mvmtRatioY = 0.25;
-//			    	if (yError < 15 && yError > 0) {
-//			    		mvmtRatioY = 0.1;
-//			    	}
+			    	if (yError < 15 && yError > 0) {
+			    		mvmtRatioY = 0.15;
+			    	}
 			    } else if (yError > -30 && yError < 0) {
-			    	mvmtRatioY = -0.25;
-//			    	if (yError > -15 && yError < 0) {
-//			    		mvmtRatioY = -0.1;
-//			    	}
+		    		mvmtRatioY = -0.25;
+			    	if (yError > -15 && yError < 0) {
+			    		mvmtRatioY = -0.15;
+			    	}
 			    }
 		    	SmartDashboard.putBoolean("Centered Shooter (y)", false);
 			    Robot.turretSubsystem.tiltTurret(mvmtRatioY);

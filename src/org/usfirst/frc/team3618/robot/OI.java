@@ -11,7 +11,6 @@ public class OI {
 	public Joystick shootJoystick = new Joystick(0);
 	public Joystick driveJoystick = new Joystick(1);
 	
-	
 	public Button shootButton;
 	public Button spinShooterButton;
 	public Button stopShooterButton;
@@ -33,7 +32,6 @@ public class OI {
 	
 	
 	public OI() {
-		
 		shootButton = new JoystickButton(shootJoystick, 1);
 		shootButton.whenPressed(new ShootCommand());
 		
@@ -64,7 +62,7 @@ public class OI {
 		overrideTilt = new JoystickButton(shootJoystick, 8);
 		overrideRotate.whileHeld(new OverrideTiltCommand());
 		
-		centerTurret = new JoystickButton(shootJoystick, 9);
+		centerTurret = new JoystickButton(shootJoystick, 11);
 		centerTurret.whileHeld(new CenterTurretCommand());
 		
 //		lowSpeedShoot = new JoystickButton(shootJoystick, 12);

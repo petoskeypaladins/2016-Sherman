@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3618.robot.commands.autonomous;
+	package org.usfirst.frc.team3618.robot.commands.autonomous;
 
 import java.util.HashMap;
 
@@ -27,7 +27,7 @@ public class AutonomousCommandManager extends CommandGroup {
     
     private double finalDriveTime;
     
-    public AutonomousCommandManager(int defense, int balls, int position) {
+    public AutonomousCommandManager(int balls, int defense, int position) {
     	finalDriveTime = 0.0;
     	
     	defenseDriveTime = new HashMap<String, Double>();
@@ -57,17 +57,11 @@ public class AutonomousCommandManager extends CommandGroup {
     }
     
     private void initHashMaps() {
-    	defenseDriveTime.put("Rough Terrain", 2.0);
-    	defenseDriveTime.put("Rock Wall", 2.0);
-    	defenseDriveTime.put("Ramparts", 2.0);
-    	defenseDriveTime.put("Moat", 2.0);
+    	defenseDriveTime.put("Rough Terrain", 1.59);//updated
+    	defenseDriveTime.put("Rock Wall", 2.13);//updated
+    	defenseDriveTime.put("Ramparts", 1.75);//updated
+    	defenseDriveTime.put("Moat", 1.74);//updated
     	defenseDriveTime.put("Low Bar", 1.5);
-    	
-    	positionDriveTime.put("Position 1", 2.0);
-    	positionDriveTime.put("Position 2", 2.0);
-    	positionDriveTime.put("Position 3", 0.8);
-    	positionDriveTime.put("Position 4", .75);
-    	positionDriveTime.put("Position 5", 1.5);
     	
     	positionTurretRotateAngle.put("Position 1", 15.0);
     	positionTurretRotateAngle.put("Position 2", 45.0);
@@ -98,9 +92,9 @@ public class AutonomousCommandManager extends CommandGroup {
     	addParallel(new HoldBallCommand());
 		if (Robot.IS_COMPETITION_ROBOT) {
     		addParallel(new ArmDownCommand(), 2.25);
+    		addParallel(new TiltTurretCommand(), 3.5);
     	}
-    	addSequential(new DriveStraightCommand(DRIVE_TIME_BEFORE_DEFENSE, true));
-    	System.out.println("Defense: " + defense);
+		System.out.println("Defense: " + defense);
     	if (defense == 1) {
     		addSequential(new DriveStraightCommand(defenseDriveTime.get("Rock Wall")));	
     	} else if (defense == 2) {
@@ -118,7 +112,7 @@ public class AutonomousCommandManager extends CommandGroup {
     
     private void shootBallOne(int position) {
 //    	addSequential(new RotateBotCommand());
-    	addSequential(new DriveStraightCommand((double) positionDriveTime.get("Position " + Integer.toString(position)), false, true));  
+    	addSequential(new DriveStraightCommand(.75, false, true));
 		// Turn the turret
     	addSequential(new RotateTurretToAngleCommand(positionTurretRotateAngle.get("Position " + Integer.toString(position))));
 		addParallel(new AutoAlignShooterCommand());

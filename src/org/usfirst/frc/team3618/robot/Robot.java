@@ -7,6 +7,7 @@ import org.usfirst.frc.team3618.robot.commands.autonomous.AutonomousCommandManag
 import org.usfirst.frc.team3618.robot.subsystems.ArmsSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.RollerSubsystem;
+import org.usfirst.frc.team3618.robot.subsystems.ServoSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.ShooterSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.TurretSubsystem;
 
@@ -29,13 +30,14 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 public class Robot extends IterativeRobot {
 
 	public static boolean IS_USING_OPENCV = true;
-	public static boolean IS_COMPETITION_ROBOT = false;
+	public static boolean IS_COMPETITION_ROBOT = true;
 	
 	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 	public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
 	public static TurretSubsystem turretSubsystem = new TurretSubsystem();
 	public static RollerSubsystem rollerSubsystem = new RollerSubsystem();	
 	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+	public static ServoSubsystem servoSubsystem = new ServoSubsystem();
 
 	public static OI oi;
 	
@@ -108,13 +110,19 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
     	Robot.driveSubsystem.resetGyros();
-    	Robot.turretSubsystem.resetGyros();
+    	Robot.turretSubsystem.resetGyro();
     	Robot.clearVisionData();
         try {
-        	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
-        	autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
-					(int) autoBallChooser.getSelected(),
-					(int) autoPositionChooser.getSelected());
+        	System.out.println("Hardcoded");
+        	//one ball: 1
+        	//
+        	//rock wall 1
+        	//rough terrain 2
+        	//ramparts 3
+        	//moat 4
+        	//
+        	//position matches
+        	autonomousCommand = new AutonomousCommandManager(1, 2, 5);
     		autonomousCommand.start();
         } catch(Exception e) {
         	System.out.println("Unable to read chooser data!");
@@ -136,7 +144,7 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null) autonomousCommand.cancel();
         
         Robot.driveSubsystem.resetGyros();
-        Robot.turretSubsystem.resetGyros();
+        Robot.turretSubsystem.resetGyro();
         Robot.driveSubsystem.resetEncoders();
         Robot.clearVisionData();
         

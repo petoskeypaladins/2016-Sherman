@@ -12,12 +12,12 @@ public class ReleaseBallCommand extends Command {
     public ReleaseBallCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.turretSubsystem);
+    	requires(Robot.servoSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooterSubsystem.releaseBall();
+    	Robot.servoSubsystem.releaseBall();
     }
 
     // Called repeatedly when this Command is scheduled to run
