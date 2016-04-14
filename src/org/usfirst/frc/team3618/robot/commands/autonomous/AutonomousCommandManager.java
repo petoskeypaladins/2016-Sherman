@@ -27,7 +27,7 @@ public class AutonomousCommandManager extends CommandGroup {
     
     private double finalDriveTime;
     
-    public AutonomousCommandManager(int defense, int balls, int position) {
+    public AutonomousCommandManager(int balls, int defense, int position) {
     	finalDriveTime = 0.0;
     	
     	defenseDriveTime = new HashMap<String, Double>();
@@ -65,7 +65,7 @@ public class AutonomousCommandManager extends CommandGroup {
     	
     	positionDriveTime.put("Position 1", 2.0);
     	positionDriveTime.put("Position 2", 2.0);
-    	positionDriveTime.put("Position 3", 0.8);
+    	positionDriveTime.put("Position 3", 1.3);
     	positionDriveTime.put("Position 4", .75);
     	positionDriveTime.put("Position 5", 1.5);
     	
@@ -100,7 +100,7 @@ public class AutonomousCommandManager extends CommandGroup {
     		addParallel(new ArmDownCommand(), 2.25);
     		addParallel(new TiltTurretCommand());
     	}
-    	addSequential(new DriveStraightCommand(DRIVE_TIME_BEFORE_DEFENSE, true));
+//    	addSequential(new DriveStraightCommand(DRIVE_TIME_BEFORE_DEFENSE, true));
     	System.out.println("Defense: " + defense);
     	if (defense == 1) {
     		addSequential(new DriveStraightCommand(defenseDriveTime.get("Rock Wall")));	
@@ -111,7 +111,7 @@ public class AutonomousCommandManager extends CommandGroup {
     	} else if (defense == 4) {
     		addSequential(new DriveStraightCommand(defenseDriveTime.get("Moat")));
     	} else if (defense == 5) {
-    		addSequential(new DriveBackwardCommand(defenseDriveTime.get("Low Bar")));
+//    		addSequential(new DriveBackwardCommand(defenseDriveTime.get("Low Bar")));
     	} else {
     		// Don't do anything. Program fault as we cannot do any other defenses in autonomous right now
     	}
@@ -119,7 +119,7 @@ public class AutonomousCommandManager extends CommandGroup {
     
     private void shootBallOne(int position) {
 //    	addSequential(new RotateBotCommand());
-    	addSequential(new DriveStraightCommand((double) positionDriveTime.get("Position " + Integer.toString(position)), false, true));  
+    	addSequential(new DriveStraightCommand((double) .5, false, true));  
 		// Turn the turret
     	addSequential(new RotateTurretToAngleCommand(positionTurretRotateAngle.get("Position " + Integer.toString(position))));
 		addParallel(new AutoAlignShooterCommand());

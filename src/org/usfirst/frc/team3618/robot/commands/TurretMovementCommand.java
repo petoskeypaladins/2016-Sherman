@@ -24,7 +24,7 @@ public class TurretMovementCommand extends Command {
     protected void execute() {
     	// Code for tilt movement
     	double tilt = Robot.oi.shootJoystick.getY();
-    	double tLimit = 0.75;
+    	double tLimit = 1.;
     	
     	if(Math.abs(tilt) < 0.2){
     		tilt = 0;

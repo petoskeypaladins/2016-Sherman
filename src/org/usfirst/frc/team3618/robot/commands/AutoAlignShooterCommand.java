@@ -48,7 +48,7 @@ public class AutoAlignShooterCommand extends Command {
 		    // TODO - CONFIGURE FOR REAL ROBOT
 		    double camOffsetAngle;
 		    if (Robot.IS_COMPETITION_ROBOT) {
-		    	camOffsetAngle = 3.0;
+		    	camOffsetAngle = 3.25;
 		    } else {
 		    	camOffsetAngle = 5.0;
 		    }
@@ -60,9 +60,23 @@ public class AutoAlignShooterCommand extends Command {
 		    
 		    double angleErrorX = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
 		    double targetAngleX = frameAngle + angleErrorX;
-		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 22;
+		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 27;
 		    
 		    SmartDashboard.putNumber("X Error", angleErrorX);
+		    
+//		    if (Math.abs(angleErrorX) <= 4) {
+//		    	rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 25;
+//		    }
+		    
+//		    if (Math.abs((int) angleErrorX) == 8) {
+//		    	Robot.turretSubsystem.rotateTurret(0);
+//		    }
+		    
+		    if (angleErrorX <= 4 && angleErrorX > 0) {
+		    	rotateOutput = .0575;
+		    } else if (angleErrorX >= -4 && angleErrorX < 0) {
+		    	rotateOutput = -.0575;
+		    }
 		    
 		    if ((Math.abs(angleErrorX) <= 1.25)) {
 		    	Robot.turretSubsystem.rotateTurret(0.0);

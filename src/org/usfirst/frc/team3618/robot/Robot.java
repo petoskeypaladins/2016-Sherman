@@ -110,10 +110,11 @@ public class Robot extends IterativeRobot {
 
     public void autonomousInit() {
     	Robot.driveSubsystem.resetGyros();
+    
     	Robot.turretSubsystem.resetGyro();
     	Robot.clearVisionData();
         try {
-        	System.out.println("Hardcoded");
+        	System.out.println("Trying autonomous");
         	//one ball: 1
         	//
         	//rock wall 1
@@ -122,7 +123,11 @@ public class Robot extends IterativeRobot {
         	//moat 4
         	//
         	//position matches
-        	autonomousCommand = new AutonomousCommandManager(1, 2, 5);
+        	int mode = 1;
+        	int defense = 1;
+        	int position = 5;
+        	System.out.println(mode + " | " + defense + " | " + position);
+        	autonomousCommand = new AutonomousCommandManager(mode, defense, position);
     		autonomousCommand.start();
         } catch(Exception e) {
         	System.out.println("Unable to read chooser data!");

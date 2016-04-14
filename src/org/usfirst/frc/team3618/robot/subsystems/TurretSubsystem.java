@@ -148,15 +148,15 @@ public class TurretSubsystem extends Subsystem {
 	    	}
     	}
     	
-    	if (output > 1) {
-    		output = 1;
-    	} else if (output < -1) {
-    		output = -1;
+    	if (output > .5) {
+    		output = .5;
+    	} else if (output < -.5) {
+    		output = -.5;
     	}
     	
     	rotateMotor.set(output);
     	
-    	final double DEGREES_BEFORE_BREAKING = 3;
+    	final double DEGREES_BEFORE_BREAKING = 7.5;
     	if (Math.abs(getAngleFromCenter()) <= DEGREES_BEFORE_BREAKING && !centered) {
     		centered = true;
     	} else if (Math.abs(getAngleFromCenter()) > DEGREES_BEFORE_BREAKING) {
