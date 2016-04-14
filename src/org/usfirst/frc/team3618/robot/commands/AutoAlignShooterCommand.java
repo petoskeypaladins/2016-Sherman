@@ -59,7 +59,7 @@ public class AutoAlignShooterCommand extends Command {
 		    				   (2 * targetWidth * Math.tan(Math.toRadians(FOV)));
 		    double angleError = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
 		    double targetAngle = frameAngle + angleError;
-		    double output = (targetAngle - Robot.turretSubsystem.getRotateAngle()) / 22;
+		    double output = (targetAngle - Robot.turretSubsystem.getRotateAngle()) / 24.5;
 		    
 		    SmartDashboard.putNumber("X Error", angleError);
 		    
