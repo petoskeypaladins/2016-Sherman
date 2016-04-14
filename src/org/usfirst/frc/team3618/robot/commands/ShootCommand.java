@@ -12,14 +12,14 @@ public class ShootCommand extends Command {
     public ShootCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.turretSubsystem);
+    	requires(Robot.servoSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	timer = new Timer();
     	
-    	Robot.turretSubsystem.shoot();
+    	Robot.servoSubsystem.shoot();
     	timer.start();
     }
 
@@ -36,7 +36,7 @@ public class ShootCommand extends Command {
     protected void end() {
     	Robot.clearVisionData();
     	timer.stop();
-    	Robot.turretSubsystem.stopShoot();
+    	Robot.servoSubsystem.stopShoot();
     }
 
     // Called when another command which requires one or more of the same

@@ -7,6 +7,7 @@ import org.usfirst.frc.team3618.robot.commands.autonomous.AutonomousCommandManag
 import org.usfirst.frc.team3618.robot.subsystems.ArmsSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.RollerSubsystem;
+import org.usfirst.frc.team3618.robot.subsystems.ServoSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.ShooterSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.TurretSubsystem;
 
@@ -36,6 +37,7 @@ public class Robot extends IterativeRobot {
 	public static TurretSubsystem turretSubsystem = new TurretSubsystem();
 	public static RollerSubsystem rollerSubsystem = new RollerSubsystem();	
 	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+	public static ServoSubsystem servoSubsystem = new ServoSubsystem();
 
 	public static OI oi;
 	
@@ -112,9 +114,7 @@ public class Robot extends IterativeRobot {
     	Robot.clearVisionData();
         try {
         	System.out.println(autoBallChooser.getSelected() + ", " + autoDefenseChooser.getSelected() + ", " + autoPositionChooser.getSelected());
-        	autonomousCommand = new AutonomousCommandManager((int) autoDefenseChooser.getSelected(),
-					(int) autoBallChooser.getSelected(),
-					(int) autoPositionChooser.getSelected());
+        	autonomousCommand = new AutonomousCommandManager(3, 1, 5); //defense , ball, position
     		autonomousCommand.start();
         } catch(Exception e) {
         	System.out.println("Unable to read chooser data!");
@@ -198,18 +198,18 @@ public class Robot extends IterativeRobot {
     }
     
     public void displayData() {
-    	SmartDashboard.putNumber("Current 0", pdp.getCurrent(0));
-    	SmartDashboard.putNumber("Current 1", pdp.getCurrent(1));
-    	SmartDashboard.putNumber("Current 2", pdp.getCurrent(2));
-    	SmartDashboard.putNumber("Current 3", pdp.getCurrent(3));
-    	SmartDashboard.putNumber("Current 4", pdp.getCurrent(4));
-    	SmartDashboard.putNumber("Current 5", pdp.getCurrent(5));
-    	SmartDashboard.putNumber("Current 6", pdp.getCurrent(6));
-    	SmartDashboard.putNumber("Current 7", pdp.getCurrent(7));
-    	SmartDashboard.putNumber("Current 8", pdp.getCurrent(8));
-    	SmartDashboard.putNumber("Current 9", pdp.getCurrent(9));
-    	SmartDashboard.putNumber("Current 10", pdp.getCurrent(10));
-    	SmartDashboard.putNumber("Current 11", pdp.getCurrent(11));
+//    	SmartDashboard.putNumber("Current 0", pdp.getCurrent(0));
+//    	SmartDashboard.putNumber("Current 1", pdp.getCurrent(1));
+//    	SmartDashboard.putNumber("Current 2", pdp.getCurrent(2));
+//    	SmartDashboard.putNumber("Current 3", pdp.getCurrent(3));
+//    	SmartDashboard.putNumber("Current 4", pdp.getCurrent(4));
+//    	SmartDashboard.putNumber("Current 5", pdp.getCurrent(5));
+//    	SmartDashboard.putNumber("Current 6", pdp.getCurrent(6));
+//    	SmartDashboard.putNumber("Current 7", pdp.getCurrent(7));
+//    	SmartDashboard.putNumber("Current 8", pdp.getCurrent(8));
+//    	SmartDashboard.putNumber("Current 9", pdp.getCurrent(9));
+//    	SmartDashboard.putNumber("Current 10", pdp.getCurrent(10));
+//    	SmartDashboard.putNumber("Current 11", pdp.getCurrent(11));
     	SmartDashboard.putNumber("Total Robot Current", pdp.getTotalCurrent());
     	SmartDashboard.putNumber("Robot Battery Voltage", pdp.getVoltage());
     	SmartDashboard.putNumber("Total Robot Power", pdp.getTotalPower());

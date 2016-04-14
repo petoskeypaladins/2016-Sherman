@@ -12,12 +12,12 @@ public class HoldBallCommand extends Command {
     public HoldBallCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.turretSubsystem);
+    	requires(Robot.servoSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.turretSubsystem.holdBall();
+    	Robot.servoSubsystem.holdBall();
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -18,21 +18,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class TurretSubsystem extends Subsystem {
-	private final double LEFT_SHOOT_POSITION = 0;
-	private final double LEFT_OPEN_POSITION = 90;
-	
-	private final double LEFT_HOLD_POSITION = 135;
-	
-	private final double RIGHT_SHOOT_POSITION = 180;
-	private final double RIGHT_OPEN_POSITION = 90;
-	
-	private final double RIGHT_HOLD_POSITION = 45;
-	
-	private boolean centered;
-	
-	//Servo Declarations
-	Servo leftServo;
-	Servo rightServo;
 	
 	//Tilt Declarations
 	DigitalInput tiltMinLimit;
@@ -41,6 +26,7 @@ public class TurretSubsystem extends Subsystem {
     DigitalInput tiltMaxLimit;
     Gyro rotateGyro = new AnalogGyro(RobotMap.ROTATE_GYRO);
     
+	private boolean centered;
     
     boolean overrideRotate = false, overrideTilt = false;
 
@@ -49,8 +35,6 @@ public class TurretSubsystem extends Subsystem {
     public Potentiometer rotatePot;
     
 	public TurretSubsystem() {
-		leftServo = new Servo(RobotMap.LEFT_BALL_SERVO);
-		rightServo = new Servo(RobotMap.RIGHT_BALL_SERVO);
 		tiltMotor = new CANTalon(RobotMap.TILT_SHOOTER_MOTOR);
 		tiltMinLimit = new DigitalInput(RobotMap.TILT_MIN_DIO);
 		tiltMaxLimit = new DigitalInput(RobotMap.TILT_MAX_DIO);
@@ -79,8 +63,6 @@ public class TurretSubsystem extends Subsystem {
 	
 	public void displayData() {
 		SmartDashboard.putNumber("Sensor - Rotate Pot", rotatePot.get());
-		SmartDashboard.putNumber("Sensor - Left Servo", leftServo.getAngle());
-		SmartDashboard.putNumber("Sensor - Right Servo", rightServo.getAngle());
 		SmartDashboard.putNumber("Output - Rotate Motor", rotateMotor.get());
 		SmartDashboard.putNumber("Output - Tilt Motor", tiltMotor.get());
 		SmartDashboard.putNumber("Encoder - Tilt Motor", tiltMotor.getEncPosition());
@@ -88,7 +70,7 @@ public class TurretSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Encoder Inches - Tilt Motor", getInchesFromTicks());
 		SmartDashboard.putNumber("Joystick - Rotate Value", Robot.oi.shootJoystick.getZ());
 		SmartDashboard.putNumber("Gyro - Rotate Gyro", rotateGyro.getAngle());
-		double center = 150.0;
+		double center = 200.0;
 		if (rotatePot.get() < (center + 10) && rotatePot.get() > (center - 10)) {
 			SmartDashboard.putBoolean("Feedback - Centered Turret", true);
 		} else {
@@ -124,24 +106,26 @@ public class TurretSubsystem extends Subsystem {
     }
     
     public void rotateTurret(double output) {
-    	double offset;
+    	double center = 200.0;
     	
     	// TODO - Always check before deploying
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		offset = 27;
+    		center = 200;
     	} else {
-    		offset = 200;
+    		center = 200;
     	}
     	if (Robot.IS_COMPETITION_ROBOT) {
 	    	if (!overrideRotate) {
 		    	if (output < 0) {
 		    		// Left
-		    		if (rotatePot.get() >= 216 + offset) {
+		    		if (rotatePot.get() >= center + 90) {
+		    			System.out.println("LEFT LIMIT REACHED");
 		    			output = 0;
 		    		}
 		    	} else if (output > 0) {
 		    		// Right
-		    		if (rotatePot.get() <= 37 + offset) {
+		    		if (rotatePot.get() <= center - 90) {
+		    			System.out.println("RIGHT LIMIT REACHED");
 		    			output = 0;
 		    		}
 		    	}
@@ -149,33 +133,14 @@ public class TurretSubsystem extends Subsystem {
     	}
     	
     	if (output > .4) {
+    		System.out.println("Previouos output: " + output);
     		output = .4;
+    	} else if (output < -.4) {
+    		System.out.println("Previouos output: " + output);
+    		output = -.4;
     	}
     	
     	rotateMotor.set(output);
-    }
-    public void shoot() {
-		if (Robot.IS_COMPETITION_ROBOT) {
-			leftServo.set(LEFT_SHOOT_POSITION);
-		} else {
-			leftServo.set(LEFT_SHOOT_POSITION - 30);
-		}
-    	rightServo.set(RIGHT_SHOOT_POSITION);	
-    }
-    
-    public void stopShoot() {
-    	leftServo.setAngle(LEFT_OPEN_POSITION);
-		rightServo.setAngle(RIGHT_OPEN_POSITION);
-    }
-    
-    public void holdBall() {
-    	leftServo.setAngle(LEFT_HOLD_POSITION);
-    	rightServo.setAngle(RIGHT_HOLD_POSITION);
-    }
-    
-    public void releaseBall() {
-    	leftServo.setAngle(LEFT_OPEN_POSITION);
-    	rightServo.setAngle(RIGHT_OPEN_POSITION);
     }
     
     public boolean isMinLimitSet() {
@@ -196,7 +161,7 @@ public class TurretSubsystem extends Subsystem {
     
     public double getCenterPotVal() {
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		return 150.0;
+    		return 200.0;
     	} else {
     		// TODO - Configure value for practice bot
     		return 200.0;
