@@ -23,6 +23,7 @@ public class OI {
 	public Button rollerOut;
 	public Button rollerIn2;
 	public Button rollerOut2;
+	public Button chevalMacro;
 	
 	public Button autoAlignShooter;
 	public Button centerTurret;
@@ -31,6 +32,8 @@ public class OI {
 	public Button overrideTilt;
 	public Button lowSpeedShoot;
 	
+	public Button armUp;
+	public Button armDown;
 	
 	public OI() {
 		
@@ -54,6 +57,9 @@ public class OI {
 		
 		rollerOut = new JoystickButton(driveJoystick, 5);
 		rollerOut.whileHeld(new RollerOutCommand());
+		
+		chevalMacro = new JoystickButton(driveJoystick, 1);
+		chevalMacro.whileHeld(new ChevalCommand());
 	
 		autoAlignShooter = new JoystickButton(shootJoystick, 12);
 		autoAlignShooter.whileHeld(new AutoAlignShooterCommand());
@@ -64,8 +70,14 @@ public class OI {
 		overrideTilt = new JoystickButton(shootJoystick, 8);
 		overrideRotate.whileHeld(new OverrideTiltCommand());
 		
-		centerTurret = new JoystickButton(shootJoystick, 9);
+		centerTurret = new JoystickButton(shootJoystick, 11);
 		centerTurret.whileHeld(new CenterTurretCommand());
+		
+		armUp = new JoystickButton(shootJoystick, 9);
+		armUp.whileHeld(new ArmLiftCommand(1));
+		
+		armDown = new JoystickButton(shootJoystick, 10);
+		armDown.whileHeld(new ArmLiftCommand(-1));
 		
 //		lowSpeedShoot = new JoystickButton(shootJoystick, 12);
 //		lowSpeedShoot.whileHeld(new SpinShooterLowCommand());

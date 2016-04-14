@@ -16,7 +16,7 @@ public class EncoderDriveCommand extends Command {
         // eg. requires(chassis);
     	requires(Robot.driveSubsystem);
     	
-    	this.distance = distance;
+    	this.distance = distance; //feet
     	this.power = power;
     }
 

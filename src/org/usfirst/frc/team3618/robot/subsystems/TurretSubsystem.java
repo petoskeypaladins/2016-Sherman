@@ -134,8 +134,10 @@ public class TurretSubsystem extends Subsystem {
 	    	}
     	}
     	
-    	if (output > .4) {
-    		output = .4;
+    	if (output > 1.) {
+    		output = 1.;
+    	} else if (output < -1.) {
+    		output = -1.;
     	}
     	
     	rotateMotor.set(output);

@@ -31,15 +31,15 @@ public class ArmLiftCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if (direction == -1) {
-    		double speed = Robot.oi.driveJoystick.getRawAxis(2) - Robot.oi.driveJoystick.getRawAxis(3);
+		double speed = Robot.oi.driveJoystick.getRawAxis(2) - Robot.oi.driveJoystick.getRawAxis(3);
+    	if (speed != 0) {
         	double limit = 1.0;
         	SmartDashboard.putNumber("Left trigger", Robot.oi.driveJoystick.getRawAxis(2));
         	SmartDashboard.putNumber("Right trigger", Robot.oi.driveJoystick.getRawAxis(3));
         	
         	Robot.armsSubsystem.liftArm(speed * limit);
     	} else {
-    		Robot.armsSubsystem.liftArm(direction * 1.0);
+    		Robot.armsSubsystem.liftArm(direction);
     	}
     }
 

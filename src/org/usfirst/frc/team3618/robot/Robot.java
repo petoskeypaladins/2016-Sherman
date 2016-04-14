@@ -7,6 +7,7 @@ import org.usfirst.frc.team3618.robot.commands.autonomous.AutonomousCommandManag
 import org.usfirst.frc.team3618.robot.subsystems.ArmsSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.RollerSubsystem;
+import org.usfirst.frc.team3618.robot.subsystems.ServoSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.ShooterSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.TurretSubsystem;
 
@@ -36,6 +37,7 @@ public class Robot extends IterativeRobot {
 	public static TurretSubsystem turretSubsystem = new TurretSubsystem();
 	public static RollerSubsystem rollerSubsystem = new RollerSubsystem();	
 	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+	public static ServoSubsystem servoSubsystem = new ServoSubsystem();
 
 	public static OI oi;
 	
