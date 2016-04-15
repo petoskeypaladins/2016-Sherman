@@ -90,7 +90,7 @@ public class AutoAlignShooterCommand extends Command {
 		    
 		    double direction = rotateOutput / Math.abs(rotateOutput);
 		    
-		    rotateOutput = rotateOutput + (.06 * direction);
+		    rotateOutput = rotateOutput + (.07 * direction);
 //		    
 //		    if (Math.abs(angleErrorX) <= 5) {
 //		    	rotateOutput = .08 * direction;

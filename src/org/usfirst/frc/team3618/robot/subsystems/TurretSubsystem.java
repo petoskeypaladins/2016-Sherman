@@ -21,8 +21,8 @@ public class TurretSubsystem extends Subsystem {
 	
 	
 	private boolean centered;
-	
-	
+	private double tiltLimit;
+	private double rotateLimit;
 	
 	//Tilt Declarations
 	DigitalInput tiltMinLimit;
@@ -47,6 +47,8 @@ public class TurretSubsystem extends Subsystem {
 		rotateMotor = new CANTalon(RobotMap.ROTATE_SHOOTER_MOTOR);
 		rotatePot = new AnalogPotentiometer(RobotMap.ROTATE_ANALOG, 360);
 		
+		tiltLimit = 1.0;
+		rotateLimit = 1.0;
 		
     	// TODO - Always check before deploying
 		if (Robot.IS_COMPETITION_ROBOT) {
@@ -120,7 +122,7 @@ public class TurretSubsystem extends Subsystem {
     		output = -1;
     	}
     	
-    	tiltMotor.set(output);
+    	tiltMotor.set(output * tiltLimit);
     }
     
     public void rotateTurret(double output) {
@@ -156,7 +158,7 @@ public class TurretSubsystem extends Subsystem {
     		output = -.7;
     	}
     	
-    	rotateMotor.set(output);
+    	rotateMotor.set(output * rotateLimit);
     	
     	final double DEGREES_BEFORE_BREAKING = 3.5;
     	if (Math.abs(getAngleFromCenter()) <= DEGREES_BEFORE_BREAKING && !centered) {
@@ -202,6 +204,22 @@ public class TurretSubsystem extends Subsystem {
     		// TODO - Configure value for practice bot
     		return 200.0;
     	}
+    }
+    
+    public double getTiltlLimit() {
+    	return tiltLimit;
+    }
+    
+    public double getRotateLimit() {
+    	return rotateLimit;
+    }
+  
+    public void setTiltLimit(double limit) {
+    	this.tiltLimit = limit;
+    }
+    
+    public void setRotateLimit(double limit) {
+    	this.rotateLimit = limit;
     }
     
     public boolean getCentered() {

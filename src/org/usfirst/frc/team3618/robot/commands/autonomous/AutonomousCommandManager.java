@@ -63,11 +63,11 @@ public class AutonomousCommandManager extends CommandGroup {
     	defenseDriveTime.put("Moat", 2.0);
     	defenseDriveTime.put("Low Bar", 1.5);
     	
-    	positionDriveTime.put("Position 1", 2.0);
-    	positionDriveTime.put("Position 2", 2.0);
-    	positionDriveTime.put("Position 3", 1.3);
+    	positionDriveTime.put("Position 1", .75);
+    	positionDriveTime.put("Position 2", .75);
+    	positionDriveTime.put("Position 3", .75);
     	positionDriveTime.put("Position 4", .75);
-    	positionDriveTime.put("Position 5", 1.5);
+    	positionDriveTime.put("Position 5", 1.0);
     	
     	positionTurretRotateAngle.put("Position 1", 15.0);
     	positionTurretRotateAngle.put("Position 2", 45.0);

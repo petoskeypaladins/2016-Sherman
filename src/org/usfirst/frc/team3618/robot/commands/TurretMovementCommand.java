@@ -26,6 +26,12 @@ public class TurretMovementCommand extends Command {
     	double tilt = Robot.oi.shootJoystick.getY();
     	double tLimit = 1.;
     	
+    	if (Robot.oi.setLowTurretSpeed.get()) {
+    		Robot.turretSubsystem.setTiltLimit(0.4);
+    	} else {
+    		Robot.turretSubsystem.setTiltLimit(1.0);
+    	}
+    	
     	if(Math.abs(tilt) < 0.2){
     		tilt = 0;
     	}
@@ -36,8 +42,10 @@ public class TurretMovementCommand extends Command {
     	double rotate = Robot.oi.shootJoystick.getZ();
     	double rLimit = 0.4;
     	
-    	if(Math.abs(rotate) < 0.5){
-    		rotate = 0;    		
+    	if (Robot.oi.setLowTurretSpeed.get()) {
+    		Robot.turretSubsystem.setRotateLimit(0.5);
+    	} else {
+    		Robot.turretSubsystem.setRotateLimit(1.0);
     	}
     	
     	Robot.turretSubsystem.rotateTurret(rotate*rLimit);
