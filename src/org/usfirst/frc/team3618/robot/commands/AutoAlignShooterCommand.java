@@ -20,6 +20,13 @@ public class AutoAlignShooterCommand extends Command {
 	private Timer timer;
 	private double timeout;
 	
+	private double camOffsetAngle, 
+			xError, 
+			frameAngle,
+			distanceFromGoal,
+			angleErrorX,
+			targetAngleX;
+	
 	public AutoAlignShooterCommand(double timeout) {
 		requires(Robot.turretSubsystem);
 		finished = false;
@@ -46,6 +53,8 @@ public class AutoAlignShooterCommand extends Command {
     	// These are as interpreted by the openCV program
     	vCamWidth = 320;
     	vCamHeight = 240;
+    	getFrameData();
+
     	if (timeout != -99) {
     		timer = new Timer();
         	timer.reset();
@@ -55,41 +64,9 @@ public class AutoAlignShooterCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	try {
-    		cenX = SmartDashboard.getNumber("Center X");
-    	} catch(Exception e) {
-    		cenX = -1;
-    		System.out.println("Can't acquire Center X");
-    	}
-    	try {
-    		cenY = SmartDashboard.getNumber("Center Y");
-    	} catch(Exception e) {
-    		cenY = -1;
-    		System.out.println("Can't acquire Center Y");
-    	}
-    	targetWidth = SmartDashboard.getNumber("Goal Width", 0);
-    	
     	if (cenX > 0 && cenY > 0  && targetWidth > 0) {
-		    final double TARGET_FEET = ((double) 20/12);
-		    // TODO - CONFIGURE FOR REAL ROBOT
-		    double camOffsetAngle;
-		    if (Robot.IS_COMPETITION_ROBOT) {
-		    	camOffsetAngle = 3.25;
-		    } else {
-		    	camOffsetAngle = 5.0;
-		    }
-		    final double FOV = 25; //half of real FOV
-    		double xError = ((double) cenX - (vCamWidth / 2)) * ((double) TARGET_FEET / targetWidth); //feet
-		    double frameAngle = SmartDashboard.getNumber("Frame Gyro", 0);
-		    double distanceFromGoal = ((double) TARGET_FEET * vCamWidth) / 
-		    				   (2 * targetWidth * Math.tan(Math.toRadians(FOV)));
-		    
-		    double angleErrorX = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
-		    double targetAngleX = frameAngle + angleErrorX;
-		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 150;
-		    
+		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 22;
 		    double direction = rotateOutput / Math.abs(rotateOutput);
-		    
 		    rotateOutput = rotateOutput + (.06 * direction);
 //		    
 //		    if (Math.abs(angleErrorX) <= 5) {
@@ -108,7 +85,10 @@ public class AutoAlignShooterCommand extends Command {
 		    
 		    if ((Math.abs(angleErrorX) <= 1.25)) {
 		    	Robot.turretSubsystem.rotateTurret(0.0);
-			    SmartDashboard.putBoolean("Centered Shooter (x)", true);
+		    	getFrameData();
+				if ((Math.abs(angleErrorX) <= 1.25)) {
+					SmartDashboard.putBoolean("Centered Shooter (x)", true);
+				}
 		    } else {
 		    	Robot.turretSubsystem.rotateTurret(rotateOutput);
 			    SmartDashboard.putBoolean("Centered Shooter (x)", false);
@@ -195,6 +175,8 @@ public class AutoAlignShooterCommand extends Command {
 	    	if (timeout != -99) {
 	        	finished = timer.get() >= timeout;
 	        }
+    	} else {
+    		getFrameData();
     	}
     }
     
@@ -219,5 +201,51 @@ public class AutoAlignShooterCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	end();
+    }
+    
+    public void getFrameData() {
+    	try {
+    		cenX = SmartDashboard.getNumber("Center X");
+    	} catch(Exception e) {
+    		cenX = -1;
+    		System.out.println("Can't acquire Center X");
+    	}
+    	try {
+    		cenY = SmartDashboard.getNumber("Center Y");
+    	} catch(Exception e) {
+    		cenY = -1;
+    		System.out.println("Can't acquire Center Y");
+    	}
+    	targetWidth = SmartDashboard.getNumber("Goal Width", -1);
+
+		final double TARGET_FEET = ((double) 20/12);
+		if (Robot.IS_COMPETITION_ROBOT) {
+			camOffsetAngle = 3.25;
+		} else {
+			camOffsetAngle = 5.0;
+		}
+		final double FOV = 25; //half of real FOV
+		xError = ((double) cenX - (vCamWidth / 2)) * ((double) TARGET_FEET / targetWidth); //feet
+		frameAngle = SmartDashboard.getNumber("Frame Gyro", 0);
+		distanceFromGoal = ((double) TARGET_FEET * vCamWidth) / 
+						   (2 * targetWidth * Math.tan(Math.toRadians(FOV)));
+		angleErrorX = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
+		targetAngleX = frameAngle + angleErrorX;
+    }
+    
+    public void getMovementData() {
+		    final double TARGET_FEET = ((double) 20/12);
+		    if (Robot.IS_COMPETITION_ROBOT) {
+		    	camOffsetAngle = 3.25;
+		    } else {
+		    	camOffsetAngle = 5.0;
+		    }
+		    final double FOV = 25; //half of real FOV
+    		xError = ((double) cenX - (vCamWidth / 2)) * ((double) TARGET_FEET / targetWidth); //feet
+		    frameAngle = SmartDashboard.getNumber("Frame Gyro", 0);
+		    distanceFromGoal = ((double) TARGET_FEET * vCamWidth) / 
+		    				   (2 * targetWidth * Math.tan(Math.toRadians(FOV)));
+		    angleErrorX = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
+		    targetAngleX = frameAngle + angleErrorX;
     }
 }

@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
@@ -168,7 +167,6 @@ public class TurretSubsystem extends Subsystem {
     
     public boolean tiltToDegree(double degree) {
     	double angleDifference = degree - getTiltAngle();
-    	double direction = angleDifference / Math.abs(angleDifference);
     	if (Math.abs(angleDifference) > 3) {
     		double output = angleDifference / 5;
     		tiltTurret(output);
