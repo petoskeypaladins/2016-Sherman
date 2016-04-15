@@ -2,6 +2,7 @@ package org.usfirst.frc.team3618.robot.commands;
 
 import org.usfirst.frc.team3618.robot.Robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -13,11 +14,31 @@ public class AutoAlignShooterCommand extends Command {
 	double cenX, cenY, targetWidth;
 	int vCamWidth, vCamHeight;
 	boolean centeredX = false, centeredY = false;
+	boolean finished;
+	boolean isAuto;
+	
+	private Timer timer;
+	private double timeout;
+	
+	public AutoAlignShooterCommand(double timeout) {
+		requires(Robot.turretSubsystem);
+		finished = false;
+		this.timeout = timeout;
+	}
 	
     public AutoAlignShooterCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.turretSubsystem);
+    	finished = false;
+    	timeout = -99;
+    }
+    
+    public AutoAlignShooterCommand(boolean isAuto) {
+    	requires(Robot.turretSubsystem);
+    	this.isAuto = isAuto;
+    	this.timeout = -99;
+    	finished = false;
     }
 
     // Called just before this Command runs the first time
@@ -25,6 +46,11 @@ public class AutoAlignShooterCommand extends Command {
     	// These are as interpreted by the openCV program
     	vCamWidth = 320;
     	vCamHeight = 240;
+    	if (timeout != -99) {
+    		timer = new Timer();
+        	timer.reset();
+        	timer.start();
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -60,7 +86,15 @@ public class AutoAlignShooterCommand extends Command {
 		    
 		    double angleErrorX = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
 		    double targetAngleX = frameAngle + angleErrorX;
-		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 27;
+		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 150;
+		    
+		    double direction = rotateOutput / Math.abs(rotateOutput);
+		    
+		    rotateOutput = rotateOutput + (.06 * direction);
+//		    
+//		    if (Math.abs(angleErrorX) <= 5) {
+//		    	rotateOutput = .08 * direction;
+//		    }
 		    
 		    SmartDashboard.putNumber("X Error", angleErrorX);
 		    
@@ -71,12 +105,6 @@ public class AutoAlignShooterCommand extends Command {
 //		    if (Math.abs((int) angleErrorX) == 8) {
 //		    	Robot.turretSubsystem.rotateTurret(0);
 //		    }
-		    
-		    if (angleErrorX <= 4 && angleErrorX > 0) {
-		    	rotateOutput = .0575;
-		    } else if (angleErrorX >= -4 && angleErrorX < 0) {
-		    	rotateOutput = -.0575;
-		    }
 		    
 		    if ((Math.abs(angleErrorX) <= 1.25)) {
 		    	Robot.turretSubsystem.rotateTurret(0.0);
@@ -157,6 +185,16 @@ public class AutoAlignShooterCommand extends Command {
 	    	SmartDashboard.putNumber("Y Error", yError);
 	    	SmartDashboard.putNumber("Y Ratio", mvmtRatioY);
 		    
+	    	if (isAuto) {
+	    		if (SmartDashboard.getBoolean("Centered Shooter (x)") &&
+	    				SmartDashboard.getBoolean("Centered Shooter (y)")) {
+	    			finished = true;
+	    		}
+	    	}
+	    	
+	    	if (timeout != -99) {
+	        	finished = timer.get() >= timeout;
+	        }
     	}
     }
     
@@ -168,7 +206,7 @@ public class AutoAlignShooterCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	// Correct the turret horizontally
-        return false;
+    	return finished;
     }
 
     // Called once after isFinished returns true

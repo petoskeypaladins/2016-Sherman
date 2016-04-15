@@ -65,7 +65,7 @@ public class OI {
 		overrideTilt = new JoystickButton(shootJoystick, 8);
 		overrideRotate.whileHeld(new OverrideTiltCommand());
 		
-		centerTurret = new JoystickButton(shootJoystick, 11);
+		centerTurret = new JoystickButton(shootJoystick, 5);
 		centerTurret.whileHeld(new CenterTurretCommand());
 		
 		armUp = new JoystickButton(shootJoystick, 9);

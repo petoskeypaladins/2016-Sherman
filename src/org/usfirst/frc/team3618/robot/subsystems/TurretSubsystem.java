@@ -82,7 +82,7 @@ public class TurretSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Last Centered Angle", lastShooterCenter);
 		SmartDashboard.putBoolean("Override Rotate", overrideRotate);
 		SmartDashboard.putBoolean("Override Tilt", overrideTilt);
-		double center = 150.0;
+		double center = 200.0;
 		if (rotatePot.get() < (center + 10) && rotatePot.get() > (center - 10)) {
 			SmartDashboard.putBoolean("Feedback - Centered Turret", true);
 		} else {
@@ -124,39 +124,41 @@ public class TurretSubsystem extends Subsystem {
     }
     
     public void rotateTurret(double output) {
-    	double offset;
+    	double center;
     	
     	// TODO - Always check before deploying
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		offset = 27;
+    		center = 200;
     	} else {
-    		offset = 200;
+    		center = 200;
     	}
     	if (Robot.IS_COMPETITION_ROBOT) {
 	    	if (!overrideRotate) {
 		    	if (output < 0) {
 		    		// Left
-		    		if (rotatePot.get() >= 216 + offset) {
+		    		if (rotatePot.get() >= center + 90) {
 		    			output = 0;
 		    		}
 		    	} else if (output > 0) {
 		    		// Right
-		    		if (rotatePot.get() <= 37 + offset) {
+		    		if (rotatePot.get() <= center - 90) {
 		    			output = 0;
 		    		}
 		    	}
 	    	}
     	}
     	
-    	if (output > .5) {
-    		output = .5;
-    	} else if (output < -.5) {
-    		output = -.5;
+    	if (output > .7) {
+    		System.out.println("PREVIOUS OUTPUT: " + output);
+    		output = .7;
+    	} else if (output < -.7) {
+    		System.out.println("PREVIOUS OUTPUT: " + output);
+    		output = -.7;
     	}
     	
     	rotateMotor.set(output);
     	
-    	final double DEGREES_BEFORE_BREAKING = 7.5;
+    	final double DEGREES_BEFORE_BREAKING = 3.5;
     	if (Math.abs(getAngleFromCenter()) <= DEGREES_BEFORE_BREAKING && !centered) {
     		centered = true;
     	} else if (Math.abs(getAngleFromCenter()) > DEGREES_BEFORE_BREAKING) {
@@ -195,7 +197,7 @@ public class TurretSubsystem extends Subsystem {
     
     public double getCenterPotVal() {
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		return 150.0;
+    		return 202.0;
     	} else {
     		// TODO - Configure value for practice bot
     		return 200.0;

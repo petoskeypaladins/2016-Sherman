@@ -48,9 +48,9 @@ public class ArmsSubsystem extends Subsystem {
 			}
 		}
 		
-		if (!Robot.turretSubsystem.getCentered()) {
-			power = 0;
-		}
+//		if (!Robot.turretSubsystem.getCentered()) {
+//			power = 0;
+//		}
 		
 		armMotor.set(power);
     }

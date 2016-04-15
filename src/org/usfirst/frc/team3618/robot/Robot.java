@@ -6,6 +6,7 @@ import org.usfirst.frc.team3618.robot.commands.ReleaseBallCommand;
 import org.usfirst.frc.team3618.robot.commands.autonomous.AutonomousCommandManager;
 import org.usfirst.frc.team3618.robot.subsystems.ArmsSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.DriveSubsystem;
+import org.usfirst.frc.team3618.robot.subsystems.LawrenceMk7;
 import org.usfirst.frc.team3618.robot.subsystems.RollerSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.ServoSubsystem;
 import org.usfirst.frc.team3618.robot.subsystems.ShooterSubsystem;
@@ -38,6 +39,7 @@ public class Robot extends IterativeRobot {
 	public static RollerSubsystem rollerSubsystem = new RollerSubsystem();	
 	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 	public static ServoSubsystem servoSubsystem = new ServoSubsystem();
+	public static LawrenceMk7 lawrenceMk7 = new LawrenceMk7();
 
 	public static OI oi;
 	
@@ -123,9 +125,9 @@ public class Robot extends IterativeRobot {
         	//moat 4
         	//
         	//position matches
-        	int mode = 1;
-        	int defense = 1;
-        	int position = 5;
+        	int mode = (int) autoBallChooser.getSelected();
+        	int defense = (int) autoDefenseChooser.getSelected();
+        	int position = (int) autoPositionChooser.getSelected();
         	System.out.println(mode + " | " + defense + " | " + position);
         	autonomousCommand = new AutonomousCommandManager(mode, defense, position);
     		autonomousCommand.start();

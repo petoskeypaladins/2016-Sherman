@@ -122,10 +122,10 @@ public class AutonomousCommandManager extends CommandGroup {
     	addSequential(new DriveStraightCommand((double) .5, false, true));  
 		// Turn the turret
     	addSequential(new RotateTurretToAngleCommand(positionTurretRotateAngle.get("Position " + Integer.toString(position))));
-		addParallel(new AutoAlignShooterCommand());
-    	addSequential(new WaitCommand(), 4.0);
+		addParallel(new AutoAlignShooterCommand(6.0));
+    	addSequential(new WaitCommand(), 8.0);
     	addParallel(new SpinShooterCommand());
-    	addSequential(new WaitCommand(), 1.0);
+    	addSequential(new WaitCommand(), 1.5);
     	addSequential(new ShootCommand());
     	addSequential(new StopShooterCommand());
     }

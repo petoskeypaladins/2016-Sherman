@@ -1,5 +1,14 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Autonomous Position" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="385" y="144"/>
+	</widget>
+	<widget field="Autonomous Type" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="42" y="145"/>
+	</widget>
+	<widget field="Autonomous Defense Type" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="244" y="90"/>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.WebcamViewerExtension">
 		<location x="1012" y="7"/>
 	</static-widget>
