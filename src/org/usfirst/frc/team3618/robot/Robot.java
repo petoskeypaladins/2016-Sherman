@@ -117,17 +117,25 @@ public class Robot extends IterativeRobot {
     	Robot.clearVisionData();
         try {
         	System.out.println("Trying autonomous");
-        	//one ball: 1
-        	//
-        	//rock wall 1
-        	//rough terrain 2
-        	//ramparts 3
-        	//moat 4
-        	//
-        	//position matches
-        	int mode = (int) autoBallChooser.getSelected();
-        	int defense = (int) autoDefenseChooser.getSelected();
-        	int position = (int) autoPositionChooser.getSelected();
+        	final boolean CHOOSER = false;
+        	int mode, defense, position;
+        	if (CHOOSER) {
+        		System.out.println("from chooser");
+				mode = (int) autoBallChooser.getSelected();
+				defense = (int) autoDefenseChooser.getSelected();
+				position = (int) autoPositionChooser.getSelected();
+        	} else {
+        		System.out.println("hardcoded");
+        		mode = 1;
+				//rock wall 1
+				//rough terrain 2
+				//ramparts 3
+				//moat 4
+				//
+				//position matches
+        		defense = 4;
+        		position = 4;
+        	}
         	System.out.println(mode + " | " + defense + " | " + position);
         	autonomousCommand = new AutonomousCommandManager(mode, defense, position);
     		autonomousCommand.start();
