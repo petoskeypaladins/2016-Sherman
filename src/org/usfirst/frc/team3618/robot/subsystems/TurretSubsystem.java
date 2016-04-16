@@ -23,6 +23,8 @@ public class TurretSubsystem extends Subsystem {
 	private boolean centered;
 	
 	
+    	double center;
+    	
 	
 	//Tilt Declarations
 	DigitalInput tiltMinLimit;
@@ -47,6 +49,11 @@ public class TurretSubsystem extends Subsystem {
 		rotateMotor = new CANTalon(RobotMap.ROTATE_SHOOTER_MOTOR);
 		rotatePot = new AnalogPotentiometer(RobotMap.ROTATE_ANALOG, 360);
 		
+    	if (Robot.IS_COMPETITION_ROBOT) {
+    		center = 177;
+    	} else {
+    		center = 200;
+    	}
 		
     	// TODO - Always check before deploying
 		if (Robot.IS_COMPETITION_ROBOT) {
@@ -82,7 +89,6 @@ public class TurretSubsystem extends Subsystem {
 		SmartDashboard.putNumber("Last Centered Angle", lastShooterCenter);
 		SmartDashboard.putBoolean("Override Rotate", overrideRotate);
 		SmartDashboard.putBoolean("Override Tilt", overrideTilt);
-		double center = 200.0;
 		if (rotatePot.get() < (center + 10) && rotatePot.get() > (center - 10)) {
 			SmartDashboard.putBoolean("Feedback - Centered Turret", true);
 		} else {
@@ -124,37 +130,29 @@ public class TurretSubsystem extends Subsystem {
     }
     
     public void rotateTurret(double output) {
-    	double center;
-    	
-    	// TODO - Always check before deploying
-    	if (Robot.IS_COMPETITION_ROBOT) {
-    		center = 200;
-    	} else {
-    		center = 200;
-    	}
     	if (Robot.IS_COMPETITION_ROBOT) {
 	    	if (!overrideRotate) {
 		    	if (output < 0) {
 		    		// Left
-		    		if (rotatePot.get() >= center + 90) {
+		    		if (rotatePot.get() >= center + 112) {
 		    			output = 0;
 		    		}
 		    	} else if (output > 0) {
 		    		// Right
-		    		if (rotatePot.get() <= center - 90) {
+		    		if (rotatePot.get() <= center - 112) {
 		    			output = 0;
 		    		}
 		    	}
 	    	}
     	}
     	
-    	if (output > .7) {
-    		System.out.println("PREVIOUS OUTPUT: " + output);
-    		output = .7;
-    	} else if (output < -.7) {
-    		System.out.println("PREVIOUS OUTPUT: " + output);
-    		output = -.7;
-    	}
+//    	if (output > .7) {
+//    		System.out.println("PREVIOUS OUTPUT: " + output);
+//    		output = .7;
+//    	} else if (output < -.7) {
+//    		System.out.println("PREVIOUS OUTPUT: " + output);
+//    		output = -.7;
+//    	}
     	
     	rotateMotor.set(output);
     	
@@ -197,7 +195,7 @@ public class TurretSubsystem extends Subsystem {
     
     public double getCenterPotVal() {
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		return 202.0;
+    		return 209.0;
     	} else {
     		// TODO - Configure value for practice bot
     		return 200.0;
@@ -251,15 +249,15 @@ public class TurretSubsystem extends Subsystem {
     }
     
     public double getAngleFromCenter() {
-    	return rotatePot.get() - getCenterPotVal();
+    	return rotatePot.get() - center;
     }
     
     public void centerTurret() {
     	final double ratio = 35;
     	double power = getAngleFromCenter() / ratio;
-    	if (centered) {
-    		power = 0;
-    	}
+//    	if (centered) {
+//    		power = 0;
+//    	}
     	rotateTurret(power);
     }
 }

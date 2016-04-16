@@ -86,7 +86,7 @@ public class AutoAlignShooterCommand extends Command {
 		    
 		    double angleErrorX = Math.toDegrees(Math.atan(xError / distanceFromGoal)) + camOffsetAngle;
 		    double targetAngleX = frameAngle + angleErrorX;
-		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 150;
+		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 63;
 		    
 		    double direction = rotateOutput / Math.abs(rotateOutput);
 		    
@@ -154,7 +154,7 @@ public class AutoAlignShooterCommand extends Command {
 	    	double slope = (farHeight - nearHeight) / (farPixels - nearPixels); // -0.003125
 	    	double intercept = (slope*(-farPixels)) + farHeight;
 	    	double yAlignRatio = slope * targetWidth + intercept;
-		    double yOffset = 7.5;
+		    double yOffset = 15.0;
 		    double yError = -(cenY - ((vCamHeight*yAlignRatio)) + yOffset);
 		    double mvmtRatioY = (yError / 240);
 		    
@@ -195,7 +195,7 @@ public class AutoAlignShooterCommand extends Command {
 	    	if (timeout != -99) {
 	        	finished = timer.get() >= timeout;
 	        }
-    	}
+    	} 
     }
     
     public boolean getCentered() {
