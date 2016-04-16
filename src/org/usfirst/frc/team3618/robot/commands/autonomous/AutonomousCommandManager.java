@@ -57,17 +57,17 @@ public class AutonomousCommandManager extends CommandGroup {
     }
     
     private void initHashMaps() {
-    	defenseDriveTime.put("Rough Terrain", 2.0);
-    	defenseDriveTime.put("Rock Wall", 2.0);
-    	defenseDriveTime.put("Ramparts", 2.0);
-    	defenseDriveTime.put("Moat", 2.0);
-    	defenseDriveTime.put("Low Bar", 1.5);
+    	defenseDriveTime.put("Rough Terrain", 2.25);
+    	defenseDriveTime.put("Rock Wall", 2.25);
+    	defenseDriveTime.put("Ramparts", 2.25);
+    	defenseDriveTime.put("Moat", 2.25);
+    	defenseDriveTime.put("Low Bar", 1.75);
     	
     	positionDriveTime.put("Position 1", 2.0);
     	positionDriveTime.put("Position 2", 2.0);
     	positionDriveTime.put("Position 3", 1.3);
     	positionDriveTime.put("Position 4", .75);
-    	positionDriveTime.put("Position 5", 1.5);
+    	positionDriveTime.put("Position 5", 1.8);
     	
     	positionTurretRotateAngle.put("Position 1", 15.0);
     	positionTurretRotateAngle.put("Position 2", 45.0);
@@ -122,7 +122,7 @@ public class AutonomousCommandManager extends CommandGroup {
     	addSequential(new DriveStraightCommand((double) .5, false, true));  
 		// Turn the turret
     	addSequential(new RotateTurretToAngleCommand(positionTurretRotateAngle.get("Position " + Integer.toString(position))));
-		addParallel(new AutoAlignShooterCommand(6.0));
+		addParallel(new AutoAlignShooterCommand(9.25));
     	addSequential(new WaitCommand(), 8.0);
     	addParallel(new SpinShooterCommand());
     	addSequential(new WaitCommand(), 1.5);
