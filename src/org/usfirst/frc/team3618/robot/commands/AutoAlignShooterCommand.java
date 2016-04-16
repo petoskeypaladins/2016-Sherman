@@ -192,9 +192,7 @@ public class AutoAlignShooterCommand extends Command {
 	    	if (timeout != -99) {
 	        	finished = timer.get() >= timeout;
 	        }
-    	} else {
-    		Robot.turretSubsystem.rotateTurret(0);
-    	}
+    	} 
     }
     
     public boolean getCentered() {
