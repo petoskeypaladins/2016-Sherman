@@ -22,11 +22,10 @@ public class MoveLawrenceCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	int pov = Robot.oi.shootJoystick.getPOV();
-    	System.out.println(pov);
     	if (pov == 0) {
-    		Robot.lawrenceMk7.move(-1);
+    		Robot.lawrenceMk7.move(-.8);
     	} else if (pov == 180) {
-    		Robot.lawrenceMk7.move(1);
+    		Robot.lawrenceMk7.move(.4);
     	} else {
     		Robot.lawrenceMk7.move(0);
     	}
