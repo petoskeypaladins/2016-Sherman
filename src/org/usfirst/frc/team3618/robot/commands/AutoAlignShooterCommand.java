@@ -88,15 +88,16 @@ public class AutoAlignShooterCommand extends Command {
 		    double targetAngleX = frameAngle + angleErrorX;
 		    double rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 63;
 		    
-		    double direction = rotateOutput / Math.abs(rotateOutput);
+		    double rotateDirection = rotateOutput / Math.abs(rotateOutput);
 		    
-		    rotateOutput = rotateOutput + (.06 * direction);
+		    rotateOutput = rotateOutput + (.06 * rotateDirection);
 //		    
 //		    if (Math.abs(angleErrorX) <= 5) {
 //		    	rotateOutput = .08 * direction;
 //		    }
 		    
 		    SmartDashboard.putNumber("X Error", angleErrorX);
+		    SmartDashboard.putNumber("Target Angle", targetAngleX);
 		    
 //		    if (Math.abs(angleErrorX) <= 4) {
 //		    	rotateOutput = (targetAngleX - Robot.turretSubsystem.getRotateAngle()) / 25;
@@ -158,6 +159,28 @@ public class AutoAlignShooterCommand extends Command {
 		    double yError = -(cenY - ((vCamHeight*yAlignRatio)) + yOffset);
 		    double mvmtRatioY = (yError / 240);
 		    
+//		    double frameTilt = SmartDashboard.getNumber("Frame Tilt", 0);
+//		    double tiltErrorY = Math.toDegrees(Math.atan(yError / distanceFromGoal));
+//		    double targetAngleY = frameTilt + tiltErrorY;
+//		    double tiltOutput = (targetAngleY - Robot.turretSubsystem.getTiltAngle()) / 200;
+//		    
+//		    double tiltDirection = tiltOutput / Math.abs(tiltOutput);
+		    
+//		    tiltOutput = tiltOutput + (.06 * tiltDirection);
+		    
+//		    if (Math.abs(tiltErrorY) <= 5) {
+//		    	tiltOutput = .05 * tiltDirection;
+//		    }
+//		    
+//		    if ((Math.abs(tiltErrorY) <= 1.25)) {
+//		    	Robot.turretSubsystem.tiltTurret(0.0);
+//			    SmartDashboard.putBoolean("Centered Shooter (y)", true);
+//		    } else {
+//		    	Robot.turretSubsystem.tiltTurret(tiltOutput);
+//			    SmartDashboard.putBoolean("Centered Shooter (y)", false);
+//		    }
+		    
+//		    SmartDashboard.putNumber("Y Error", tiltErrorY);
 		    
     	
     	// !TiltMaxLimit
