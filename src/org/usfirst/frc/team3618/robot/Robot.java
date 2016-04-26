@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putData("Autonomous Defense Type", autoDefenseChooser);
     	SmartDashboard.putData("Autonomous Position", autoPositionChooser);
 
-        defenses = new String[]{"Rock Wall", "Rough Terrain", "Ramparts", "Moat", "Low Bar", "Portcullis", "Cheval de Frise", "DrawBridge", "Sally Port"};
+        defenses = new String[]{"Rock Wall", "Rough Terrain", "Ramparts", "Moat", "Low Bar", "Cheval de Frise", "Portcullis", "DrawBridge", "Sally Port"};
         
         autoBallChooser.addDefault("One Ball", 1);
         autoBallChooser.addObject("Two Ball", 2);

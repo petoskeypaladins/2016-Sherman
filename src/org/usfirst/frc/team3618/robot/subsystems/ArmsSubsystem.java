@@ -56,7 +56,11 @@ public class ArmsSubsystem extends Subsystem {
     }
     
     public void armDown() {
-    	armMotor.set(-1);
+    	liftArm(-1);
+    }
+    
+    public void armUp() {
+    	liftArm(1);
     }
     
     public boolean getLowerLimitState() {

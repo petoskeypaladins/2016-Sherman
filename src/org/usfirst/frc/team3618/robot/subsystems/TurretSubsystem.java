@@ -146,17 +146,15 @@ public class TurretSubsystem extends Subsystem {
 	    	}
     	}
     	
-//    	if (output > .7) {
-//    		System.out.println("PREVIOUS OUTPUT: " + output);
-//    		output = .7;
-//    	} else if (output < -.7) {
-//    		System.out.println("PREVIOUS OUTPUT: " + output);
-//    		output = -.7;
-//    	}
+    	if (output > 1) {
+    		output = 1;
+    	} else if (output < -1) {
+    		output = -1;
+    	}
     	
     	rotateMotor.set(output);
     	
-    	final double DEGREES_BEFORE_BREAKING = 3.5;
+    	final double DEGREES_BEFORE_BREAKING = 5;
     	if (Math.abs(getAngleFromCenter()) <= DEGREES_BEFORE_BREAKING && !centered) {
     		centered = true;
     	} else if (Math.abs(getAngleFromCenter()) > DEGREES_BEFORE_BREAKING) {
