@@ -30,8 +30,8 @@ import edu.wpi.first.wpilibj.vision.USBCamera;
 
 public class Robot extends IterativeRobot {
 
-	public static boolean IS_USING_OPENCV = true;
-	public static boolean IS_COMPETITION_ROBOT = true;
+	public final static boolean IS_USING_OPENCV = true;
+	public final static boolean IS_COMPETITION_ROBOT = true;
 	
 	public static DriveSubsystem driveSubsystem = new DriveSubsystem();
 	public static ArmsSubsystem armsSubsystem = new ArmsSubsystem();
@@ -40,7 +40,6 @@ public class Robot extends IterativeRobot {
 	public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 	public static ServoSubsystem servoSubsystem = new ServoSubsystem();
 	public static LawrenceMk7 lawrenceMk7 = new LawrenceMk7();
-
 	public static OI oi;
 	
 	private DigitalInput backSensor = new DigitalInput(RobotMap.BACK_BALL_SENSOR);
@@ -50,15 +49,19 @@ public class Robot extends IterativeRobot {
 	
 	private PowerDistributionPanel pdp;
 	
-	public String[] defenses;
+	private String[] defenses;
 	  
-	CameraServer camServer;
-	USBCamera lifecam;
+	private CameraServer camServer;
+	private USBCamera lifecam;
     
-    int CAM_WIDTH = 640;
-    int CAM_HEIGHT = 480;
+    private int CAM_WIDTH = 640;
+    private int CAM_HEIGHT = 480;
     
     Command autonomousCommand;
+    
+    public Robot() {
+    	driveSubsystem = new DriveSubsystem();
+    }
 
     public void robotInit() {
     	oi = new OI();

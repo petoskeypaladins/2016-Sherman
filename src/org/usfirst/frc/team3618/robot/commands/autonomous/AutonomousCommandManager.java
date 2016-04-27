@@ -8,6 +8,7 @@ import org.usfirst.frc.team3618.robot.commands.HoldBallCommand;
 import org.usfirst.frc.team3618.robot.commands.ShootCommand;
 import org.usfirst.frc.team3618.robot.commands.SpinShooterCommand;
 import org.usfirst.frc.team3618.robot.commands.StopShooterCommand;
+import org.usfirst.frc.team3618.robot.commands.TiltTurretToAngleCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -98,7 +99,21 @@ public class AutonomousCommandManager extends CommandGroup {
     	addParallel(new HoldBallCommand());
 		if (Robot.IS_COMPETITION_ROBOT) {
     		addParallel(new ArmDownCommand(), 2.25);
-    		addParallel(new TiltTurretCommand());
+    		addParallel(new TiltTurretToAngleCommand());
+    	} else if (defense == 5) {
+    		addParallel(new ArmDownCommand(), 2.25);
+    	} else if (defense == 6) {
+			final double TO_CHEVAL_TIME = .48;
+			addSequential(new TiltTurretToAngleCommand());
+			addSequential(new DriveStraightCommand(TO_CHEVAL_TIME));
+			addSequential(new ArmDownCommand(), 2);
+		} else if (defense == 7) {
+			final double TO_PORTCULLIS_TIME = .50;
+    		addParallel(new ArmDownCommand(), 2.25);
+    		addParallel(new LawrenceDownCommand(), .25);
+    		addSequential(new DriveBackwardCommand(TO_PORTCULLIS_TIME));
+    		addParallel(new LawrenceUpCommand(), .8);
+    		addSequential(new WaitCommand(), .05);
     	}
 //    	addSequential(new DriveStraightCommand(DRIVE_TIME_BEFORE_DEFENSE, true));
     	System.out.println("Defense: " + defense);
@@ -111,9 +126,12 @@ public class AutonomousCommandManager extends CommandGroup {
     	} else if (defense == 4) {
     		addSequential(new DriveStraightCommand(defenseDriveTime.get("Moat")));
     	} else if (defense == 5) {
-//    		addSequential(new DriveBackwardCommand(defenseDriveTime.get("Low Bar")));
-    	} else {
-    		// Don't do anything. Program fault as we cannot do any other defenses in autonomous right now
+    		addSequential(new DriveBackwardCommand(defenseDriveTime.get("Low Bar")));
+    	} else if (defense == 6){ 
+    		addSequential(new DriveBackwardCommand(defenseDriveTime.get("Cheval de Frise")));
+    	} else if (defense == 7) {
+    		addParallel(new TiltTurretToAngleCommand());
+    		addSequential(new DriveBackwardCommand(defenseDriveTime.get("Portcullis")));
     	}
     }
     
