@@ -50,7 +50,7 @@ public class TurretSubsystem extends Subsystem {
 		rotatePot = new AnalogPotentiometer(RobotMap.ROTATE_ANALOG, 360);
 		
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		center = 177;
+    		center = 170;
     	} else {
     		center = 200;
     	}
@@ -134,12 +134,12 @@ public class TurretSubsystem extends Subsystem {
 	    	if (!overrideRotate) {
 		    	if (output < 0) {
 		    		// Left
-		    		if (rotatePot.get() >= center + 112) {
+		    		if (rotatePot.get() >= center + 100) {
 		    			output = 0;
 		    		}
 		    	} else if (output > 0) {
 		    		// Right
-		    		if (rotatePot.get() <= center - 112) {
+		    		if (rotatePot.get() <= center - 150) {
 		    			output = 0;
 		    		}
 		    	}
@@ -195,7 +195,7 @@ public class TurretSubsystem extends Subsystem {
     
     public double getCenterPotVal() {
     	if (Robot.IS_COMPETITION_ROBOT) {
-    		return 209.0;
+    		return 200.0;
     	} else {
     		// TODO - Configure value for practice bot
     		return 200.0;

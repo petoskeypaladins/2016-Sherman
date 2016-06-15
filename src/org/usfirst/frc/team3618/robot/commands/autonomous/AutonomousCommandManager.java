@@ -65,9 +65,9 @@ public class AutonomousCommandManager extends CommandGroup {
     	
     	positionDriveTime.put("Position 1", 2.0);
     	positionDriveTime.put("Position 2", 2.0);
-    	positionDriveTime.put("Position 3", 1.3);
-    	positionDriveTime.put("Position 4", .75);
-    	positionDriveTime.put("Position 5", 1.8);
+    	positionDriveTime.put("Position 3", 0.6455);
+    	positionDriveTime.put("Position 4", 0.75);
+    	positionDriveTime.put("Position 5", 0.6455);
     	
     	positionTurretRotateAngle.put("Position 1", 15.0);
     	positionTurretRotateAngle.put("Position 2", 45.0);
@@ -122,10 +122,10 @@ public class AutonomousCommandManager extends CommandGroup {
     	addSequential(new DriveStraightCommand((double) .5, false, true));  
 		// Turn the turret
     	addSequential(new RotateTurretToAngleCommand(positionTurretRotateAngle.get("Position " + Integer.toString(position))));
-		addParallel(new AutoAlignShooterCommand(9.25));
-    	addSequential(new WaitCommand(), 8.0);
+		addSequential(new AutoAlignShooterCommand(8.0));
+    	//addSequential(new WaitCommand(), 8.0);
     	addParallel(new SpinShooterCommand());
-    	addSequential(new WaitCommand(), 1.5);
+    	addSequential(new WaitCommand(), 1.25);
     	addSequential(new ShootCommand());
     	addSequential(new StopShooterCommand());
     }

@@ -114,7 +114,7 @@ public class AutoAlignShooterCommand extends Command {
 			    SmartDashboard.putBoolean("Centered Shooter (x)", false);
 		    }
 		    
-		    double farHeight = .4125;
+		    double farHeight = .5025;
 	    	double nearHeight = .6166;
 	    	double farPixels = 86;
 	    	double nearPixels = 43;
