@@ -96,29 +96,29 @@ public class DriveSubsystem extends Subsystem {
     public void driveMe(double left, double right) {
     	myRobotDrive.tankDrive(left, right);
     	
-    	if (getLeftDriveCurrent() >= 90) {
-    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kLeftRumble, 1);
-    	} else {
-    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kLeftRumble, 0);
-    	}
-    	if (getRightDriveCurrent() >= 90) {
-    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kRightRumble, 1);
-    	} else {
-    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kRightRumble, 0);
-    	}
+//    	if (getLeftDriveCurrent() >= 90) {
+//    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kLeftRumble, 1);
+//    	} else {
+//    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kLeftRumble, 0);
+//    	}
+//    	if (getRightDriveCurrent() >= 90) {
+//    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kRightRumble, 1);
+//    	} else {
+//    		Robot.oi.driveJoystick.setRumble(Joystick.RumbleType.kRightRumble, 0);
+//    	}
     }
     
     public void autonDrive(double power) {
     	myRobotDrive.tankDrive(-power, -power);
     }
     
-    public double getLeftDriveCurrent() {
-    	return leftFrontMotor.getOutputCurrent() + leftRearMotor.getOutputCurrent();
-    }
-    
-    public double getRightDriveCurrent() {
-    	return rightFrontMotor.getOutputCurrent() + rightRearMotor.getOutputCurrent();
-    }
+//    public double getLeftDriveCurrent() {
+//    	return leftFrontMotor.getOutputCurrent() + leftRearMotor.getOutputCurrent();
+//    }
+//    
+//    public double getRightDriveCurrent() {
+//    	return rightFrontMotor.getOutputCurrent() + rightRearMotor.getOutputCurrent();
+//    }
     
     public void autonStraightDrive(double power) {
     	myRobotDrive.drive(-power, -spiGyro.getAngle()*this.kP);

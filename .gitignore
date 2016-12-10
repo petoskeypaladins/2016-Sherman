@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-=======
 /bin/
->>>>>>> f1f8727... WORKING CODE
 
 *.class
 /dist/
+*.fxsdash

@@ -21,10 +21,7 @@ public class TurretSubsystem extends Subsystem {
 	
 	
 	private boolean centered;
-	
-	
-    	double center;
-    	
+	double center;
 	
 	//Tilt Declarations
 	DigitalInput tiltMinLimit;
@@ -105,8 +102,8 @@ public class TurretSubsystem extends Subsystem {
 	    	if (!overrideTilt) {
 		    	if (output < 0) {
 		    		if (tiltMinLimit.get()) {
-		    			output = 0;
-		    			resetTiltEncoder();
+//		    			output = 0;
+//		    			resetTiltEncoder();
 		    		}
 		    	} else if (output > 0) {
 		    		if (tiltMaxLimit.get()) {
@@ -261,4 +258,3 @@ public class TurretSubsystem extends Subsystem {
     	rotateTurret(power);
     }
 }
-

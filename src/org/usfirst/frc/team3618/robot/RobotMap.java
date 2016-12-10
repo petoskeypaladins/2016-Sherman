@@ -4,7 +4,7 @@ public class RobotMap {
 	
 	//CAN Motors
 	public static int ROTATE_SHOOTER_MOTOR = 1;
-	public static int TILT_SHOOTER_MOTOR = 2;
+	public static int TILT_SHOOTER_MOTOR = 3;
 	public static int LAWRENCE = 3;
 	public static int TILT_INTAKE_ARM_MOTOR = 4;
 	public static int LEFT_FRONT_MOTOR = 5;
